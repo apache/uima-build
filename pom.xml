@@ -23,9 +23,11 @@
 		<groupId>org.apache</groupId>
 		<version>7</version>
 	</parent>
+  
 	<modelVersion>4.0.0</modelVersion>
+  
 	<groupId>org.apache.uima</groupId>
-	<artifactId>uima-top-parent</artifactId>
+	<artifactId>parent-pom-top</artifactId>
 	<packaging>pom</packaging>
 	<name>UIMA</name>
 	<version>1</version>
@@ -88,4 +90,7 @@
       http://svn.apache.org/viewvc/uima/parent-poms/tags/uima-1
     </url>
   </scm>
+  <prerequisites>
+    <maven>2.2.0</maven>
+  </prerequisites> 
 </project>

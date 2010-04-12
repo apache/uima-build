@@ -27,31 +27,25 @@
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-uimaj</artifactId>
     <version>1</version>
-    <relativePath>../parent-pom-uima</relativePath> 
+    <relativePath>../parent-pom-top</relativePath> 
   </parent>
 
-  <modelVersion>4.0.0</modelVersion>
-
-  <prerequisites>
-    <maven>2.2.0</maven>
-  </prerequisites>
   <groupId>org.apache.uima</groupId>
   <artifactId>uimaj</artifactId>
   <packaging>pom</packaging>
   <version>2.3.0-incubating</version> <!-- this comment is a flag for changeVersion -->
 
-  <name>Apache UIMA Java SDK</name>
-  <description>UIMA Java SDK - the main Java based part of the UIMA framework.</description>
-  <scm>
-    <url>http://svn.apache.org/viewvc/incubator/uima</url>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/incubator/uima/uimaj/trunk</developerConnection>
-  </scm>
-  <organization>
-    <name>The Apache Software Foundation</name>
-    <url>http://www.apache.org/</url>
-  </organization>
+  <modelVersion>4.0.0</modelVersion>
 
-  <!-- project-wide dependency version levels can go here -->  
+  <name>Apache UIMA Parent Pom Java SDK</name>
+  <description>UIMA Parent Pom for the Java SDK - the main Java based part of the UIMA framework.</description>
+  <scm>
+    <url>http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-uimaj</url>
+    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj</developerConnection>
+    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj</developerConnection>
+  </scm>
+
+  <!-- project-wide dependency version levels for uima java framework can go here -->  
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -60,109 +54,9 @@
         <version>3.8.1</version>
         <scope>test</scope>
       </dependency>
-      <!-- list the modules for uima base release that are released together.
-           POMs that inherit this parent can then omit the release version -->
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-adapter-vinci</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-adapter-soap</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-core</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-cpe</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-examples</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-bootstrap</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>      
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-tools</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-document-annotation</artifactId>
-        <version>${uimaj-release-version}</version>
-      </dependency>
-      
-      <!-- eclipse-versions -->
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-ep-cas-editor</artifactId>
-        <version>${uimaj-release-eclipse-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-ep-configurator</artifactId>
-        <version>${uimaj-release-eclipse-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-ep-debug</artifactId>
-        <version>${uimaj-release-eclipse-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-ep-jcasgen</artifactId>
-        <version>${uimaj-release-eclipse-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-ep-pear-packager</artifactId>
-        <version>${uimaj-release-eclipse-version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-ep-runtime</artifactId>
-        <version>${uimaj-release-eclipse-version}</version>
-      </dependency>
-      <!-- development tools, not in binary distribution -->
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-test-util</artifactId>
-        <version>${uimaj-release-version}</version>
-        <scope>test</scope>
-      </dependency>
-      <dependency>
-        <groupId>org.apache.uima</groupId>
-        <artifactId>uimaj-component-test-util</artifactId>
-        <version>${uimaj-release-version}</version>
-        <scope>test</scope>
-      </dependency>
     </dependencies>
   </dependencyManagement>
    
- <!-- to deploy the artifacts to a Maven staging-repository you have to configure
-      the settings.xml file in your local Maven repository -->
-  <distributionManagement>
-    <repository>
-      <id>staging-repository</id>
-      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-incubating-repository/</url>
-    </repository>
-    <snapshotRepository>
-      <id>snapshot-repository</id>
-      <url>scpexe://people.apache.org/www/people.apache.org/repo/m2-snapshot-repository/</url>
-    </snapshotRepository>
-  </distributionManagement>
-
   <build>
     <pluginManagement>
       <plugins>
@@ -173,48 +67,15 @@
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
-            <encoding>UTF-8</encoding>
           </configuration>
         </plugin>
-        
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <configuration>
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-             
+                     
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.6</version>
           <configuration>
             <source>5</source> <!-- needed to do Enums -->
             <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2-beta-4</version>
-        </plugin>
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-jar-plugin</artifactId>
-          <configuration>
-            <archive>
-              <manifestEntries>
-                <Project-Title>Apache UIMA</Project-Title>
-                <Implementation-Title>${pom.name}</Implementation-Title>
-                <Implementation-Version>${pom.version}</Implementation-Version>
-                <Implementation-Vendor>Apache Software Foundation</Implementation-Vendor>
-                <Implementation-Url>${pom.url}</Implementation-Url>
-                <Implementation-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
-                <Build-Date>${buildNumber}</Build-Date>
-              </manifestEntries>
-            </archive>
           </configuration>
         </plugin>
         
@@ -265,202 +126,25 @@
     </pluginManagement>
     
     <plugins>
-      
-      <!-- We use an ant task to copy the LICENSE, NOTICE, and DISCLAIMER files
-        from a single location in uimaj-distr into the src/main/resources/META-INF
-        directory of all components.  We tried using the Maven resources plugin for 
-        this, but then the Maven eclipse plugin (which runs the lifecycle up thru
-        generate-resources) seeing the <resources> element,
-        adds a classpath src entry for this which references the path outside
-        the project, which eclipse doesn't want.  
-        
-        Solution is to run this in a life-cycle phase after generate-resources
-        (i.e., process-resources), but before compile, so the 
-        eclipse plugin doesn't do this action. 
-        
-        We copy to the src directory so that it is there for the source jar
-        builds (for Maven repo).  We also copy to the target/classes/META-INF
-        directory so it gets picked up by the binary jar as well.-->
             
-      <plugin>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.3</version>
-        <executions>
-          <execution>
-            <id>CopyLicenseNoticeDisclaimer</id>
-            <phase>process-resources</phase>
-            <configuration>
-              <tasks>                
-                <!-- skip if no src/main/java dir -->
-                <condition property="sourceForLicenseNoticeDisclaimer"
-                           value="skip"> <!-- value must be a non-existant file name 
-                                      blank doesn't work (copies everything)-->
-                  <!--not> <available file="src/main/java"/> </not-->
-                  <not>
-                    <equals arg1="jar" arg2="${project.packaging}"></equals>
-                  </not>
-                </condition>
-                  
-                <!-- only sets property if not set by previous above statement -->
-                <property name="sourceForLicenseNoticeDisclaimer"
-                  value="LICENSE NOTICE DISCLAIMER LICENSE.txt NOTICE.txt DISCLAIMER.txt"/>
-                
-                <!-- use LIC/NOT/DIS file from project if available -->
-                <condition property="dirSourceForLicenseNoticeDisclaimer"
-                           value=".">
-                  <or>
-                    <available file="LICENSE.txt"/>
-                    <available file="LICENSE"/>
-                  </or>
-                </condition>
-                
-                <!-- use LIC/NOT/DIS file from project's parent if available & above not available -->
-                <condition property="dirSourceForLicenseNoticeDisclaimer"
-                           value="${project.parent.relativePath}/src/main/readme">
-                  <or>
-                    <available file="${project.parent.relativePath}/src/main/readme/LICENSE.txt"/>
-                    <available file="${project.parent.relativePath}/src/main/readme/LICENSE"/>
-                  </or>
-                </condition>
-                 
-                <!-- use LIC/NOT/DIS file from uimaj-distr project if above not available -->
-                <condition property="dirSourceForLicenseNoticeDisclaimer"
-                           value="../uimaj-distr/src/main/readme">
-                  <or>
-                    <available file="../uimaj-distr/src/main/readme/LICENSE.txt"/>
-                    <available file="../uimaj-distr/src/main/readme/LICENSE"/>
-                  </or>
-                </condition>
-                 
-                                
-                <!-- support POMs nested one deep -->
-                <!--available property="dirSourceForLicenseNoticeDisclaimer"
-                  file="../uimaj-distr/src/main/readme"
-                  value="../uimaj-distr/src/main/readme"/-->
-                  
-                <!-- only sets property if not set by previous statements -->
-                <property name="dirSourceForLicenseNoticeDisclaimer"
-                  value="../../uimaj-distr/src/main/readme"/>
-                
-                <copy todir="src/main/resources/META-INF">
-                  <fileset dir="${dirSourceForLicenseNoticeDisclaimer}"
-                    includes="${sourceForLicenseNoticeDisclaimer}"/>
-                </copy>
-                <copy todir="target/classes/META-INF">
-                  <fileset dir="${dirSourceForLicenseNoticeDisclaimer}"
-                    includes="${sourceForLicenseNoticeDisclaimer}"/>
-                </copy>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>
-          <!-- after compilation has been done and the files have been copied to the
-             target directory, delete them from the source directory. -->
-          <execution>
-            <id>DeleteLicenseNoticeDisclaimer</id>
-            <phase>package</phase>
-            <configuration>
-              <tasks>
-                <typedef resource="net/sf/antcontrib/antlib.xml">
-                  <classpath refid="maven.dependency.classpath"/>
-                </typedef> <!-- set up ant-contrib extensions -->
-                
-                <delete deleteOnExit="true" quiet="true" failOnError="false">
-                  <fileset dir="src/main/resources/META-INF"
-                    includes="LICENSE NOTICE DISCLAIMER LICENSE.txt NOTICE.txt DISCLAIMER.txt"/>
-                </delete>
-                
-                <macrodef name="rmvUnusedDirs">
-                  <attribute name="dir"/>
-                  <attribute name="dirId"/>
-                  <sequential>
-                    <!-- defaultexcludes set to no to retain dirs which were checked into svn
-                         they have .svn files
-                         If these are deleted by this script, svn can't find the svn metadata
-                     -->
-                    <fileset id="@{dirId}" dir="@{dir}" defaultexcludes="no"/>
-                    <if>
-                      <and>
-                        <available file="@{dir}"/>
-                        <resourcecount refid="@{dirId}" count="0" when="equal"/>  
-                      </and>
-                      <then> <delete dir="@{dir}"/> </then>
-                    </if>
-                  </sequential>
-                </macrodef>
-                
-                <rmvUnusedDirs dir="src/main/resources/META-INF" dirId="src.meta.inf.dir"/>
-                <rmvUnusedDirs dir="src/main/resources" dirId="src.main.resources.dir"/>
-                <rmvUnusedDirs dir="src/main" dirId="src.main.dir"/>
-                <rmvUnusedDirs dir="src" dirId="src.dir"/>
-                                
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>  
-          <!-- also delete on clean. -->
-          <execution>
-            <id>CleanLicenseNoticeDisclaimer</id>
-            <phase>clean</phase>
-            <configuration>
-              <tasks>
-                <typedef resource="net/sf/antcontrib/antlib.xml">
-                  <classpath refid="maven.dependency.classpath"/>
-                </typedef> <!-- set up ant-contrib extensions -->
-                
-                <delete deleteOnExit="true" quiet="true" failOnError="false">
-                  <fileset dir="src/main/resources/META-INF"
-                    includes="LICENSE NOTICE DISCLAIMER"/>
-                </delete>
-                
-                <macrodef name="rmvUnusedDirs">
-                  <attribute name="dir"/>
-                  <attribute name="dirId"/>
-                  <sequential>
-                    <fileset id="@{dirId}" dir="@{dir}" defaultexcludes="no"/>
-                    <if>
-                      <and>
-                        <available file="@{dir}"/>
-                        <resourcecount refid="@{dirId}" count="0" when="equal"/>  
-                      </and>
-                      <then> <delete dir="@{dir}"/> </then>
-                    </if>
-                  </sequential>
-                </macrodef>
-                
-                <rmvUnusedDirs dir="src/main/resources/META-INF" dirId="src.meta.inf.dir"/>
-                <rmvUnusedDirs dir="src/main/resources" dirId="src.main.resources.dir"/>
-                <rmvUnusedDirs dir="src/main" dirId="src.main.dir"/>
-                <rmvUnusedDirs dir="src" dirId="src.dir"/>
-              </tasks>
-            </configuration>
-            <goals>
-              <goal>run</goal>
-            </goals>
-          </execution>                      
-        </executions>
-      </plugin>
-      
-      <!-- something to get the timestamp -->
+      <!-- The SVN revision number for the artifact and the time of the build -->
       <!-- this plugin sets the output string into the variable buildNumber -->
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.0-beta-3</version>
         <executions>
           <execution>
-            <phase>process-classes</phase>
+            <phase>validate</phase>
             <goals>
               <goal>create</goal>
             </goals>
           </execution>
         </executions>
         <configuration>
-          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+          <format>r{0} {1,date,yyyy-MM-dd HH:mm:ss}</format>
           <items>
+            <item></item>  <!-- produces the svn revision number -->
             <item>timestamp</item>
           </items>
         </configuration>

@@ -1,0 +1,97 @@
+<!--
+
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
+    
+     http://www.apache.org/licenses/LICENSE-2.0
+    
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+-->
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<parent>
+		<artifactId>apache</artifactId>
+		<groupId>org.apache</groupId>
+		<version>7</version>
+	</parent>
+  
+	<modelVersion>4.0.0</modelVersion>
+  
+	<groupId>org.apache.uima</groupId>
+	<artifactId>parent-pom-top</artifactId>
+	<packaging>pom</packaging>
+	<name>Apache UIMA Top Parent Pom</name>
+	<version>1</version>
+	<description>UIMA (Unstructured Information Management Architecture). UIMA promotes community development and reuse of annotators that extract metadata from unstructured information (text, audio, video, etc.); it provides for externalized declaration of type systems, component configuration, aggregation, and more, supports scalablity, and provides tooling.</description>
+	<url>uima.apache.org</url>
+	<inceptionYear>2006</inceptionYear>
+	<mailingLists>
+	  <mailingList>
+      <name>UIMA Development List</name>
+      <subscribe>dev-subscribe@uima.apache.org</subscribe>
+      <unsubscribe>dev-unsubscribe@uima.apache.org</unsubscribe>
+      <post>mailto:dev@uima.apache.org</post>
+      <archive>
+        http://mail-archives.apache.org/mod_mbox/uima-dev
+      </archive>
+      <otherArchives>
+        <otherArchive>
+          http://dir.gmane.org/gmane.comp.apache.uima.devel
+        </otherArchive>
+         <otherArchive>       
+           http://uima.markmail.org
+        </otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>UIMA Users List</name>
+      <subscribe>user-subscribe@uima.apache.org</subscribe>
+      <unsubscribe>user-unsubscribe@uima.apache.org</unsubscribe>
+      <post>mailto:user@uima.apache.org</post>
+      <archive>
+        http://mail-archives.apache.org/mod_mbox/uima-user
+      </archive>
+      <otherArchives>
+        <otherArchive>
+          http://dir.gmane.org/gmane.comp.apache.uima.general
+        </otherArchive>
+         <otherArchive>       
+           http://uima.markmail.org
+        </otherArchive>
+      </otherArchives>
+    </mailingList>
+    <mailingList>
+      <name>UIMA Commits List</name>
+      <subscribe>commits-subscribe@uima.apache.org</subscribe>
+      <unsubscribe>commits-unsubscribe@uima.apache.org</unsubscribe>
+      <post>mailto:commits@uima.apache.org</post>
+      <archive>
+        http://mail-archives.apache.org/mod_mbox/uima-commits
+      </archive>
+    </mailingList>
+	</mailingLists>
+  <scm>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
+    </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-top
+    </url>
+  </scm>
+  <prerequisites>
+    <!-- 2.2.0 is broken when deploying - checksums invalid -->
+    <maven>2.2.1</maven>
+  </prerequisites>
+</project>

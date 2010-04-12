@@ -29,7 +29,7 @@
 	<groupId>org.apache.uima</groupId>
 	<artifactId>parent-pom-top</artifactId>
 	<packaging>pom</packaging>
-	<name>UIMA</name>
+	<name>Apache UIMA Top Parent Pom</name>
 	<version>1</version>
 	<description>UIMA (Unstructured Information Management Architecture). UIMA promotes community development and reuse of annotators that extract metadata from unstructured information (text, audio, video, etc.); it provides for externalized declaration of type systems, component configuration, aggregation, and more, supports scalablity, and provides tooling.</description>
 	<url>uima.apache.org</url>
@@ -81,16 +81,17 @@
 	</mailingLists>
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/parent-poms/tags/uima-1
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/parent-poms/tags/uima-1
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/parent-poms/tags/uima-1
+      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-top
     </url>
   </scm>
   <prerequisites>
-    <maven>2.2.0</maven>
-  </prerequisites> 
+    <!-- 2.2.0 is broken when deploying - checksums invalid -->
+    <maven>2.2.1</maven>
+  </prerequisites>
 </project>

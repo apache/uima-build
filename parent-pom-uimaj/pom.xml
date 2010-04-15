@@ -22,27 +22,30 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
   
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom-uimaj</artifactId>
-    <version>1</version>
-    <relativePath>../parent-pom-top</relativePath> 
+    <artifactId>parent-pom-top</artifactId>
+    <version>1-SNAPSHOT</version>
   </parent>
 
   <groupId>org.apache.uima</groupId>
-  <artifactId>uimaj</artifactId>
+  <artifactId>parent-pom-uimaj</artifactId>
   <packaging>pom</packaging>
-  <version>2.3.0-incubating</version> <!-- this comment is a flag for changeVersion -->
+  <version>1-SNAPSHOT</version> 
 
-  <modelVersion>4.0.0</modelVersion>
-
-  <name>Apache UIMA Parent Pom Java SDK</name>
+  <name>Apache UIMA Java SDK Parent</name>
   <description>UIMA Parent Pom for the Java SDK - the main Java based part of the UIMA framework.</description>
+  
   <scm>
     <url>http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-uimaj</url>
-    <connection>scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj</developerConnection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj</developerConnection>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj
+    </developerConnection>
   </scm>
 
   <!-- project-wide dependency version levels for uima java framework can go here -->  
@@ -57,263 +60,9 @@
     </dependencies>
   </dependencyManagement>
    
-  <build>
-    <pluginManagement>
-      <plugins>
-        <!-- set Java 1.5 as the source and target of compilation -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-compiler-plugin</artifactId>
-          <configuration>
-            <source>1.5</source>
-            <target>1.5</target>
-          </configuration>
-        </plugin>
-                     
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-javadoc-plugin</artifactId>
-          <configuration>
-            <source>5</source> <!-- needed to do Enums -->
-            <encoding>UTF-8</encoding>
-          </configuration>
-        </plugin>
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-antrun-plugin</artifactId>
-          <dependencies>
-            <!-- put this dependency first -->
-            <!-- otherwise you get ant 1.5 from ant-contrib -->
-            <dependency>
-              <groupId>org.apache.ant</groupId>
-              <artifactId>ant</artifactId>
-              <version>1.7.1</version>
-              <scope>runtime</scope>
-            </dependency>
-            <dependency> <!-- for ant extension supporting "if" -->
-              <groupId>ant-contrib</groupId>
-              <artifactId>ant-contrib</artifactId>
-              <version>1.0b3</version>
-              <scope>runtime</scope>
-            </dependency>
-          </dependencies>          
-        </plugin>  
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.7</version>
-          <configuration>
-            <downloadSources>true</downloadSources>
-          </configuration>
-        </plugin>
-        
-        <plugin>
-          <groupId>org.apache.rat</groupId>
-          <artifactId>apache-rat-plugin</artifactId>
-          <version>0.6</version>
-          <executions>
-            <execution>
-              <id>default-cli</id>
-              <goals><goal>check</goal></goals>
-              <phase>verify</phase>
-            </execution>
-          </executions>
-        </plugin>
-        
-      </plugins>
-    </pluginManagement>
-    
-    <plugins>
-            
-      <!-- The SVN revision number for the artifact and the time of the build -->
-      <!-- this plugin sets the output string into the variable buildNumber -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-3</version>
-        <executions>
-          <execution>
-            <phase>validate</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <format>r{0} {1,date,yyyy-MM-dd HH:mm:ss}</format>
-          <items>
-            <item></item>  <!-- produces the svn revision number -->
-            <item>timestamp</item>
-          </items>
-        </configuration>
-      </plugin>
-    </plugins>
-  </build>
+  <!--build-->                
   
-  <!-- This section configures what happens when the site life-cycle is done -->
-  <!-- This is currently not part of our build/release practice - so is never done -->
+  <!--reporting-->  
   
-  <!-- The Java Doc configuration here is for "developers" - and includes more packages, such as the internal ones -->
-  <!-- There is another JavaDoc configuration in the uimaj-distr POM, for doing javadocs for external APIs in the bin distr -->
-  <reporting>
-    <plugins>
-      <plugin>
-        <artifactId>maven-javadoc-plugin</artifactId>
-        <configuration>
-          <aggregate>true</aggregate>
-          <!-- needs to be 5 to process enums -->
-          <source>5</source>
-          <doctitle>Apache UIMA Java SDK ${pom.version} API Documentation</doctitle>
-          <windowtitle>Apache UIMA Java SDK ${pom.version} API Documentation</windowtitle>
-          <maxmemory>512M</maxmemory>
-          <links>
-            <link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-          </links>
-          <excludePackageNames>org.apache.uima.test.junit_extension</excludePackageNames>
-          <groups>
-            <group>
-              <title>Core Framework</title>
-              <packages>org.apache.uima:org.apache.uima.impl:org.apache.uima.analysis_component:org.apache.uima.analysis_engine*:org.apache.uima.cas*:org.apache.uima.collection*:org.apache.uima.ecore:org.apache.uima.flow*:org.apache.uima.internal*:org.apache.uima.jcas*:org.apache.uima.pear.tools:org.apache.uima.pear.util:org.apache.uima.resource*:org.apache.uima.search*:org.apache.uima.tttypesystem:org.apache.uima.uimacpp:org.apache.uima.util*</packages>
-            </group>
-            <group>
-              <title>Collection Processing Engine</title>
-              <packages>org.apache.uima.collection.impl*:org.apache.uima.cas_data.impl.vinci</packages>             
-            </group>
-            <group>
-              <title>SOAP Adapter</title>
-              <packages>org.apache.uima.adapter.soap*</packages>
-            </group>
-            <group>
-              <title>Vinci Adapter</title>
-              <packages>org.apache.uima.adapter.vinci*</packages>
-            </group>
-            <group>
-              <title>Tools</title>
-              <packages>org.apache.uima.tools*:org.apache.uima.klt</packages>
-            </group>
-            <group>
-              <title>Eclipse Plugins</title>
-              <packages>org.apache.uima.taeconfigurator*:org.apache.uima.typesystem*:org.apache.uima.ep_debug:org.apache.uima.jcas.jcasgenp:org.apache.uima.pear:org.apache.uima.pear.actions:org.apache.uima.pear.generate:org.apache.uima.pear.insd*:org.apache.uima.pear.nature</packages>             
-            </group>
-            <group>
-              <title>Examples</title>
-              <packages>org.apache.uima.examples*:org.apache.uima.tutorial*:example*</packages>
-            </group>
-            <group>
-              <title>JVinci</title>
-              <packages>org.apache.vinci*</packages>
-            </group>
-          </groups>
-        </configuration>
-      </plugin>
-    </plugins>
-  </reporting>
-  
-  
-  <profiles>
-    <profile>
-      <id>buildSourceJar</id>
-      <activation>
-        <file>
-          <exists>src/main/java</exists>
-        </file>
-      </activation>
-      <build>
-        <plugins>        
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <version>2.1</version>
-            <executions>
-              <execution>
-                <id>main-jar</id>
-                <!-- pick a phase that's after the ant script
-                     adds in the LIC/NOT/DIS files (process-resources) and before
-                     it removes them in cleanup (= package) -->
-                <phase>prepare-package</phase>
-                <goals>
-                  <goal>jar-no-fork</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>        
-        </plugins>
-      </build>      
-    </profile>
-    <profile>
-      <id>signArtifacts</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-        <property>
-          <name>signArtifacts</name>
-          <value>true</value>
-        </property>
-      </activation>
-      <build>
-          <plugins>
-            <plugin>
-              <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-gpg-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                  <goal>sign</goal>
-                </goals>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-  
-    
-  <modules>
-    <module>../uimaj-core</module>
-    <module>../uimaj-cpe</module>
-    <module>../uimaj-examples</module>
-    <module>../uimaj-tools</module>
-    <module>../uimaj-adapter-vinci</module>
-    <module>../uimaj-adapter-soap</module>
-    <module>../uimaj-test-util</module>
-    <module>../uimaj-component-test-util</module>
-    <module>../jVinci</module>
-    <module>eclipse-plugin-superPom</module>
-    <module>distr-superPom</module>
-    <module>../uimaj-document-annotation</module>
-    <module>../PearPackagingMavenPlugin</module>
-    <!-- the internal tools project is not part of any release 
-         and can't be built automatically - to build it,
-         cd to the project directory and do mvn install -->
-    <!--module>../uimaj-internal-tools</module-->
-    <module>../uimaj-bootstrap</module>
-  </modules>
-  <repositories>
-    <repository>
-      <id>eclipsePlugins</id>
-      <url>http://repo1.maven.org/eclipse</url>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </repository>
-    <repository> 
-      <id>ApacheIncubatorRepository</id>
-      <url>http://people.apache.org/repo/m2-incubating-repository/</url>
-      <releases>
-        <updatePolicy>never</updatePolicy>
-      </releases>
-      <snapshots>
-        <enabled>false</enabled>
-        <updatePolicy>never</updatePolicy>
-      </snapshots>
-    </repository>    
-  </repositories>
+  <!-- profiles -->    
 </project>

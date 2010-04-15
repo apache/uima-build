@@ -17,23 +17,54 @@
     specific language governing permissions and limitations
     under the License.
 -->
+
+<!--
+  This is the top-most common UIMA parent pom.
+  It contains the project-wide defaults:
+  
+    Parent is the official common Apache POM
+    
+    Defines repositories for 
+      Eclipse - where the good poms are
+      Central - adds default check-the checksums
+      
+    PluginManagement defaults:
+      Java 1.5 as the base
+      Javadoc at 1.5 too
+      Jar Manifest entries, including the build-time
+      AntRun to pick a later version of ant with support for ant extensions like "if"
+      
+    Specify plugin levels for non-standard plugins:
+      RAT
+      eclipse   
+    
+  It contains one build step to set the build time stamp  
+-->
+
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-	<parent>
+  <modelVersion>4.0.0</modelVersion>
+	
+  <parent>
 		<artifactId>apache</artifactId>
 		<groupId>org.apache</groupId>
 		<version>7</version>
 	</parent>
   
-	<modelVersion>4.0.0</modelVersion>
-  
 	<groupId>org.apache.uima</groupId>
 	<artifactId>parent-pom-top</artifactId>
+  <version>1-SNAPSHOT</version>
 	<packaging>pom</packaging>
+
 	<name>Apache UIMA Top Parent Pom</name>
-	<version>1</version>
-	<description>UIMA (Unstructured Information Management Architecture). UIMA promotes community development and reuse of annotators that extract metadata from unstructured information (text, audio, video, etc.); it provides for externalized declaration of type systems, component configuration, aggregation, and more, supports scalablity, and provides tooling.</description>
+	<description>UIMA (Unstructured Information Management Architecture). 
+    UIMA promotes community development and reuse of annotators 
+    that extract metadata from unstructured information (text, audio, video, etc.); 
+    it provides for externalized declaration of type systems, 
+    component configuration, aggregation, and more, 
+    supports scalablity, and provides tooling.</description>
 	<url>uima.apache.org</url>
 	<inceptionYear>2006</inceptionYear>
+ 
 	<mailingLists>
 	  <mailingList>
       <name>UIMA Development List</name>
@@ -79,6 +110,12 @@
       </archive>
     </mailingList>
 	</mailingLists>
+
+  <prerequisites>
+    <!-- 2.2.0 is broken when deploying - checksums invalid -->
+    <maven>2.2.1</maven>
+  </prerequisites>
+
   <scm>
     <connection>
       scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
@@ -90,8 +127,191 @@
       http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-top
     </url>
   </scm>
-  <prerequisites>
-    <!-- 2.2.0 is broken when deploying - checksums invalid -->
-    <maven>2.2.1</maven>
-  </prerequisites>
+  
+  <issueManagement>
+    <system>Jira</system>
+    <url>http://issues.apache.org/jira/uima</url>
+  </issueManagement>
+  
+  <!--ciManagement>
+    <system>Hudson</system>
+    <url/>
+    <notifiers/>
+  </ciManagement-->
+  
+  <!-- distribution management - is inherited from Apache pom
+       and specifies 
+         https://repository.apache.org/service/local/staging/deploy/maven2
+       and for snapshots:
+         https://repository.apache.org/content/repositories/snapshots -->
+  
+  <!-- properties -->
+  
+  <!-- dependencyManagement -->
+  <!-- dependencies-->
+  
+  <repositories>
+    <!-- note: inheritance does *NOT* merge subparts,
+         so, redeclare them -->           
+    <!-- define repositories for getting Eclipse parts
+         because the one in "central" gives broken parts -->
+    <repository>
+      <id>eclipsePlugins</id>
+      <name>Eclipse components</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/eclipse</url>
+      
+      <releases>
+        <updatePolicy>never</updatePolicy>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+      
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+
+    <!-- modify central repository access:
+         Turn on checksum checking-->
+    <repository>
+      <id>central</id>
+      <name>Maven Repository Switchboard</name>
+      <layout>default</layout>
+      <url>http://repo1.maven.org/maven2</url>
+
+      <releases>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+      </releases>
+
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+
+    </repository>
+
+  </repositories>
+  <!--pluginRepositories-->
+  
+  <build>
+    <pluginManagement>
+      <plugins>
+        <!-- set Java 1.5 as the source and target of compilation -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>1.5</source>
+            <target>1.5</target>
+            <!--encoding>UTF-8</encoding   this inherited from apache pom 7 -->
+          </configuration>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <configuration>
+            <source>5</source> <!-- needed to do Enums -->
+            <encoding>UTF-8</encoding>
+          </configuration>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestEntries>
+                <!-- Project-Title>Apache UIMA</Project-Title-->
+                <!-- Implementation-Title>${pom.name}</Implementation-Title from addDefaultImplementationEntries-->
+                <!-- Implementation-Version>${pom.version}</Implementation-Version from addDefaultImplementationEntries-->
+                <!-- Implementation-Vendor>Apache Software Foundation</Implementation-Vendor from addDefaultImplementationEntries-->
+                <!-- also added by default: 
+                       Implementation-Vendor-Id: ${pom.groupId} -->
+                <Implementation-Url>${pom.url}</Implementation-Url>
+                <Implementation-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
+                <Build-Date>${buildNumber}</Build-Date>
+              </manifestEntries>
+              <manifest>
+                <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
+              </manifest>
+            </archive>
+          </configuration>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-antrun-plugin</artifactId>
+          <dependencies>
+            <!-- put this dependency first -->
+            <!-- otherwise you get ant 1.5 from ant-contrib -->
+            <dependency>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant</artifactId>
+              <version>1.7.1</version>
+              <scope>runtime</scope>
+            </dependency>
+            <dependency> <!-- for ant extension supporting "if" -->
+              <groupId>ant-contrib</groupId>
+              <artifactId>ant-contrib</artifactId>
+              <version>1.0b3</version>
+              <scope>runtime</scope>
+            </dependency>
+          </dependencies>          
+        </plugin>
+      
+        <!-- deprecated - move to m2eclipse, but keeping for now -->  
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.7</version>
+          <configuration>
+            <downloadSources>true</downloadSources>
+          </configuration>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.rat</groupId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <version>0.6</version>
+          <executions>
+            <execution>
+              <id>default-cli</id>
+              <goals><goal>check</goal></goals>
+              <phase>verify</phase>
+            </execution>
+          </executions>
+        </plugin>       
+        
+      </plugins>
+    </pluginManagement>
+    
+    <plugins>
+           <!-- something to get the timestamp -->
+      <!-- this plugin sets the output string into the variable buildNumber -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>buildnumber-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>initialize</phase>
+            <goals>
+              <goal>create</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
+          <items>
+            <item>timestamp</item>
+          </items>
+        </configuration>
+      </plugin>
+      
+    </plugins>
+  </build>
+  
+  <!--reporting-->
+  
+  <!--profiles-->
 </project>

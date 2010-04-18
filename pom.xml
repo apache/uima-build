@@ -228,7 +228,7 @@
                 <!-- Implementation-Vendor>Apache Software Foundation</Implementation-Vendor from addDefaultImplementationEntries-->
                 <!-- also added by default: 
                        Implementation-Vendor-Id: ${pom.groupId} -->
-                <Implementation-Url>${pom.url}</Implementation-Url>
+                <Implementation-Url>${project.url}</Implementation-Url>
                 <Implementation-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
                 <Build-Date>${buildNumber}</Build-Date>
               </manifestEntries>
@@ -284,6 +284,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>buildnumber-maven-plugin</artifactId>
+        <version>1.0-beta-4</version>
         <executions>
           <execution>
             <phase>initialize</phase>

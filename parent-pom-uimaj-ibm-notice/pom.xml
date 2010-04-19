@@ -38,25 +38,37 @@
   <name>Apache UIMA Java SDK Parent with IBM copyright in the Notice</name>
   <description>Adds the IBM Copyright to the Notice file for selected source files</description>
   
+  <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the 
+       same as those in super poms, it cannot be inherited because 
+       there is some special code that computes the connection elements
+       from the chain of parent poms, if this is omitted. 
+       
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->  
   <scm>
-    <url>http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-uimaj-ibm-notice</url>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj-ibm-notice
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-uimaj-ibm-notice
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </url>
   </scm>
   
   <properties>
-<postNoticeText>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>parent-poms/parent-pom-uimaj-ibm-notice</uimaScmProject>    
+    <postNoticeText>
 Portions of UIMA were originally developed by
 International Business Machines Corporation and are
 licensed to the Apache Software Foundation under the
 "Software Grant License Agreement", informally known as the
 "IBM UIMA License Agreement".
 Copyright (c) 2003, 2006 IBM Corporation.         
-</postNoticeText>
+    </postNoticeText>
   </properties>
   
   <build>

@@ -62,7 +62,7 @@
     it provides for externalized declaration of type systems, 
     component configuration, aggregation, and more, 
     supports scalablity, and provides tooling.</description>
-	<url>uima.apache.org</url>
+	<url>${uimaWebsiteUrl}</url>
 	<inceptionYear>2006</inceptionYear>
  
 	<mailingLists>
@@ -118,13 +118,13 @@
 
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-top
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-top
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </url>
   </scm>
   
@@ -145,7 +145,11 @@
        and for snapshots:
          https://repository.apache.org/content/repositories/snapshots -->
   
-  <!-- properties -->
+  <properties>
+    <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>parent-poms/parent-pom-top</uimaScmProject>
+  </properties>
   
   <!-- dependencyManagement -->
   <!-- dependencies-->
@@ -222,13 +226,13 @@
           <configuration>
             <archive>
               <manifestEntries>
-                <!-- Project-Title>Apache UIMA</Project-Title-->
+                <Project-Title>Apache UIMA</Project-Title>
                 <!-- Implementation-Title>${pom.name}</Implementation-Title from addDefaultImplementationEntries-->
                 <!-- Implementation-Version>${pom.version}</Implementation-Version from addDefaultImplementationEntries-->
                 <!-- Implementation-Vendor>Apache Software Foundation</Implementation-Vendor from addDefaultImplementationEntries-->
                 <!-- also added by default: 
                        Implementation-Vendor-Id: ${pom.groupId} -->
-                <Implementation-Url>${project.url}</Implementation-Url>
+                <Implementation-Url>${uimaWebsiteUrl}</Implementation-Url>
                 <Implementation-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
                 <Build-Date>${buildNumber}</Build-Date>
               </manifestEntries>
@@ -242,14 +246,14 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
-          <dependencies>
-            <dependency> <!-- for ant extension supporting "if" -->
-              <groupId>ant-contrib</groupId>
+          <!--dependencies>
+            <dependency--> <!-- for ant extension supporting "if" -->
+              <!--groupId>ant-contrib</groupId>
               <artifactId>ant-contrib</artifactId>
               <version>1.0b3</version>
               <scope>runtime</scope>
             </dependency>
-          </dependencies>          
+          </dependencies-->          
         </plugin>
       
         <!-- deprecated - move to m2eclipse, but keeping for now -->  

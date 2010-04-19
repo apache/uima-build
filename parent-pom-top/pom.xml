@@ -305,6 +305,24 @@
         </configuration>
       </plugin>
       
+      <!-- this overrides the apache:7 pom to 
+        use a different resource bundle which
+        allows additional text after the NOTICE file -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>uima-notice</id>
+            <goals><goal>process</goal></goals>
+            <configuration>
+              <resourceBundles>
+                <resourceBundle>org.apache.uima:uima-jar-resource-bundle:1-SNAPSHOT</resourceBundle>
+              </resourceBundles>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>
   </build>
   

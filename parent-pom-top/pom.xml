@@ -186,6 +186,7 @@
       <releases>
         <enabled>true</enabled>
         <checksumPolicy>fail</checksumPolicy>
+        <updatePolicy>never</updatePolicy>
       </releases>
 
       <snapshots>
@@ -323,10 +324,32 @@
           </execution>
         </executions>
       </plugin>
+        
     </plugins>
   </build>
   
   <!--reporting-->
   
-  <!--profiles-->
+  <profiles>
+    <!-- Run RAT --> 
+    <profile>
+      <id>rat</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-cli</id>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>                    
+      </build>
+    </profile>
+  </profiles>
 </project>

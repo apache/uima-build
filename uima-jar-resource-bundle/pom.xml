@@ -33,6 +33,7 @@ under the License.
     the necessary license files and notices for all Apache releases.
     Include via remote-resources plugin, to have the LICENSE,
     NOTICE and DEPENDENCIES files added to the META-INF</description>
+  <url>${uimaWebsiteUrl}</url>
   <scm>
     <connection>scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle</connection>
     <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle</developerConnection>

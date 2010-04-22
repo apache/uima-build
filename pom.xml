@@ -37,6 +37,7 @@
 
   <name>Apache UIMA Java SDK Parent with IBM copyright in the Notice</name>
   <description>Adds the IBM Copyright to the Notice file for selected source files</description>
+  <url>${uimaWebsiteUrl}</url>
   
   <!-- Special inheritance note
        even though the <scm> element that follows is exactly the 

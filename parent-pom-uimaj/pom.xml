@@ -37,6 +37,7 @@
 
   <name>Apache UIMA Java SDK Parent</name>
   <description>UIMA Parent Pom for the Java SDK - the main Java based part of the UIMA framework.</description>
+  <url>${uimaWebsiteUrl}</url>
  
    <!-- Special inheritance note
        even though the <scm> element that follows is exactly the 

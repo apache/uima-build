@@ -30,7 +30,6 @@
     <version>1-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom-uimaj-ibm-notice</artifactId>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version> 
@@ -61,7 +60,7 @@
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/parent-pom-uimaj-ibm-notice</uimaScmProject>    
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>    
     <postNoticeText>
 Portions of UIMA were originally developed by
 International Business Machines Corporation and are

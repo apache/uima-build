@@ -1,0 +1,399 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+
+<!-- this parent is at the top of the chain, but only is activated
+     for docbook processing 
+     (if the leaf POM has src/docbook) -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <parent>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>parent-pom-top</artifactId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>parent-pom-docbook</artifactId>
+  <packaging>pom</packaging>
+  <version>1-SNAPSHOT</version> 
+
+  <name>Apache UIMA Docbook Parent</name>
+  <description>UIMA Parent Pom for Docbook documentation.</description>
+  <url>${uimaWebsiteUrl}</url>
+ 
+   <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the 
+       same as those in super poms, it cannot be inherited because 
+       there is some special code that computes the connection elements
+       from the chain of parent poms, if this is omitted. 
+       
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->  
+  <scm>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </url>
+  </scm>
+  
+  <properties>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
+    
+    <!-- docbook property settings -->
+    <!-- olink databases -->
+    <dolArtifactId>uima-docbook-olink</dolArtifactId>
+    <dolClassifier>olink</dolClassifier>
+    <dolRepo>${settings.localRepository}/org/apache/uima/${dolArtifactId}/1-SNAPSHOT</dolRepo>
+    <dolZip>${dolArtifactId}-1-SNAPSHOT-${dolClassifier}.zip</dolZip>
+    <dolUnzipped>${dolRepo}/docbook-olink</dolUnzipped>
+    <dolBuiltFile>${project.build.directory}/</dolBuiltFile>
+    <dolBuiltArtifactFile>${project.build.directory}/${dolZip}</dolBuiltArtifactFile>
+  </properties>
+
+  <!-- build -->               
+  
+  <!--reporting-->  
+
+  <!-- This pom is high in the tree inheritance tree, but does nothing unless
+       the leaf child project has a docbook directory -->  
+  <profiles>
+    <profile>
+      <id>docbook</id>
+      <activation>
+        <file><exists>src/docbook</exists></file>
+      </activation>
+      
+      <dependencies>
+        <dependency>
+          <groupId>org.apache.uima</groupId>
+          <artifactId>${dolArtifactId}</artifactId>
+          <type>zip</type>
+          <classifier>${dolClassifier}</classifier>
+          <version>1-SNAPSHOT</version>
+        </dependency>
+      </dependencies>
+      
+      <build>
+        <plugins>
+                <!-- something to set some properties for dates used in copyright notices -->
+          <plugin>
+             <groupId>org.codehaus.groovy.maven</groupId>
+             <artifactId>gmaven-plugin</artifactId>
+             <version>1.0</version>
+             <executions>
+                <execution>
+                   <phase>prepare-package</phase>
+                   <goals>
+                      <goal>execute</goal>
+                   </goals>
+                   <configuration>
+                      <source>
+                      import java.util.Date 
+                      import java.text.MessageFormat 
+                      def varYear = MessageFormat.format("{0,date,yyyy}", new Date())
+                      def varMonth = MessageFormat.format("{0,date,MMMMMMMMM}", new Date()) 
+                      project.properties['buildYear'] = varYear
+                      project.properties['buildMonth'] = varMonth
+                      </source>
+                   </configuration>
+                </execution>
+             </executions>
+          </plugin>
+          
+          <!-- use the dependency:unpack goal to get the shared resource
+               that has the docbook-shared directory 
+               Unpack into spot relative to project - because
+               these are referred to in docbook sources using
+               relative references
+               
+               also unpack next to docbook-olink in
+               repository location for olink info, because
+               the site.xml files use relative location to
+               get at the uima entities -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <!-- use the dependency:unpack goal to get the shared resource
+                     that has the docbook-shared directory 
+                     Unpack into spot relative to project - because
+                     these are referred to in docbook sources using
+                     relative references -->
+                <id>copyDocbookInfo</id>
+                <phase>prepare-package</phase>
+                <goals><goal>unpack</goal></goals>
+                <configuration>
+                  <overWriteIfNewer>true</overWriteIfNewer>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.apache.uima</groupId>
+                      <artifactId>uima-docbook-resource-bundle</artifactId>
+                      <version>1-SNAPSHOT</version>
+                      <excludes>META-INF/**</excludes>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+
+              <execution>
+                <!-- also unpack next to docbook-olink in
+                     repository location for olink info, because
+                     the site.xml files use relative location to
+                     get at the uima entities -->
+                <id>copyDocbookInfoNextToOlink</id>
+                <phase>prepare-package</phase>
+                <goals><goal>unpack</goal></goals>
+                <configuration>
+                  <overWriteIfNewer>true</overWriteIfNewer>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.apache.uima</groupId>
+                      <artifactId>uima-docbook-resource-bundle</artifactId>
+                      <version>1-SNAPSHOT</version>
+                      <excludes>META-INF/**</excludes>
+                      <outputDirectory>${uimaDocbookOlinkDbs}/..</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+              
+              <!-- use the dependency:unpack goal to get the
+                   olink databases 
+                   
+                   But wait - we want the unpack to not overwrite
+                   olink database files that might be there which 
+                   are "newer" - but unpack doesn't have this fine
+                   a grain of checking newness - it only does it on
+                   the entire archive
+                   
+                   So we work around that by using dependency:resolve to
+                   get the archive into the local repo (if needed), 
+                   and then antrun unzip to do the 
+                   unzipping -->
+                   
+              <!-- this next just downloads if needed the olink-dbs
+                   zip file from a remote repo into the local one -->
+              <execution>
+                <id>getOlinkDbsIntoLocalRepo</id>
+                <phase>prepare-package</phase>
+                <goals><goal>resolve</goal></goals>
+                <configuration>
+                  <includeGroupIds>org.apache.uima</includeGroupIds>
+                  <includeArtifactIds>${dolArtifactId}</includeArtifactIds>
+                  <includeTypes>zip</includeTypes>
+                  <classifier>${dolClassifier}</classifier>
+                  <type>zip</type>
+                </configuration>
+              </execution>           
+            </executions>
+          </plugin> 
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <!-- unzip and overwrite olink dbs only if newer in the archive -->
+              <execution>
+                <id>unzipOlinkDbs</id>
+                <goals><goal>run</goal></goals>
+                <phase>prepare-package</phase>
+                <configuration>
+                  <tasks>
+                    <unzip src="${dolRepo}/${dolZip}" 
+                           dest="${dolRepo}/docbook-olink" 
+                           overwrite="false"/>
+                  </tasks>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>         
+          
+          <plugin>
+            <groupId>com.agilejava.docbkx</groupId>
+            <artifactId>docbkx-maven-plugin</artifactId>
+            <version>2.0.10</version>
+            <configuration>  <!-- general configuration for both html and pdf -->
+              <sourceDirectory>${basedir}/src/docbook</sourceDirectory>
+              <includes>${bookNameRoot}.xml</includes>
+              <highlightSource>1</highlightSource>
+              <xincludeSupported>true</xincludeSupported>
+              <!-- olink common to pdf and html -->
+              <collectXrefTargets>yes</collectXrefTargets>                  
+            </configuration>
+            <executions>
+              <execution>
+                <id>html</id>
+                <goals>
+                  <goal>generate-html</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <htmlCustomization>${project.build.directory}/docbook-shared/top/html-single.xsl</htmlCustomization>
+                  <htmlStylesheet>${project.build.directory}/docbook-shared/css/stylesheet-html.css</htmlStylesheet>
+                  <!-- olink -->
+                  <targetDatabaseDocument>file:///${dolUnzipped}/htmlsingle/site.xml</targetDatabaseDocument>              
+                  <targetsFilename>${dolUnzipped}/htmlsingle/${bookNameRoot}.db</targetsFilename>
+                </configuration>
+              </execution>
+              <execution>
+                <id>pdf</id>
+                <goals>
+                  <goal>generate-pdf</goal>
+                </goals>
+                <phase>package</phase>
+                <configuration>
+                  <foCustomization>${project.build.directory}/docbook-shared/top/pdf.xsl</foCustomization>
+                  <!-- olink -->
+                  <targetDatabaseDocument>file:///${dolUnzipped}/pdf/site.xml</targetDatabaseDocument>
+                  <targetsFilename>${dolUnzipped}/pdf/${bookNameRoot}.db</targetsFilename>                 
+                  
+                  <fop1Extensions>true</fop1Extensions>
+                      
+                  <fontSelectionStrategy>character-by-character</fontSelectionStrategy>
+                  
+                  <fonts>
+                    <!-- embedded fonts -->
+                    <!--
+                    This information must exactly match the font specified
+                    in the fo file. Otherwise it will use a default font.
+            
+                    For example,
+                    <fo:inline font-family="Arial" font-weight="bold" font-style="normal">
+                        Arial-normal-normal font
+                    </fo:inline>
+                    for the font triplet specified by:
+                    <font-triplet name="Arial" style="normal" weight="bold"/>
+            
+                    If you do not want to embed the font in the pdf document
+                    then do not include the "embed-url" attribute.
+                    The font will be needed where the document is viewed
+                    for it to be displayed properly.
+            
+                    possible styles: normal | italic | oblique | backslant
+                    possible weights: normal | bold | 100 | 200 | 300 | 400
+                                      | 500 | 600 | 700 | 800 | 900
+                    (normal = 400, bold = 700)
+                    -->
+            
+                    <!--
+                    <font metrics-url="arial.xml" kerning="yes" embed-url="arial.ttf">
+                      <font-triplet name="Arial" style="normal" weight="normal"/>
+                      <font-triplet name="ArialMT" style="normal" weight="normal"/>
+                    </font>
+                    <font metrics-url="arialb.xml" kerning="yes" embed-url="arialb.ttf">
+                      <font-triplet name="Arial" style="normal" weight="bold"/>
+                      <font-triplet name="ArialMT" style="normal" weight="bold"/>
+                    </font>
+                    -->
+                    <font>
+                      <name>Palatino</name>
+                      <style>normal</style>
+                      <weight>normal</weight>
+                      <kerning>yes</kerning>
+                      <embedFile>c:/Windows/Fonts/pala.TTF</embedFile>
+                      <metricsFile>${project.build.directory}/docbook-shared/fonts/palatino.xml</metricsFile>
+                    </font>
+                    <font>
+                      <name>Palatino</name>
+                      <style>normal</style>
+                      <weight>bold</weight>
+                      <kerning>yes</kerning>
+                      <embedFile>c:/Windows/Fonts/palab.TTF</embedFile>
+                      <metricsFile>${project.build.directory}/docbook-shared/fonts/palatino-bold.xml</metricsFile>
+                    </font>
+                    <font>
+                      <name>Palatino</name>
+                      <style>italic</style>
+                      <weight>normal</weight>
+                      <kerning>yes</kerning>
+                      <embedFile>c:/Windows/Fonts/palai.TTF</embedFile>
+                      <metricsFile>${project.build.directory}/docbook-shared/fonts/palatino-italic.xml</metricsFile>
+                    </font>
+                    <font>
+                      <name>Palatino</name>
+                      <style>italic</style>
+                      <weight>bold</weight>
+                      <kerning>yes</kerning>
+                      <embedFile>c:/Windows/Fonts/palabi.TTF</embedFile>
+                      <metricsFile>${project.build.directory}/docbook-shared/fonts/palatino-bold-italic.xml</metricsFile>
+                    </font>
+                    
+                  </fonts>
+                  
+                </configuration>
+              </execution>          
+            </executions>
+    
+            <dependencies>
+              <dependency>
+                <groupId>org.docbook</groupId>
+                <artifactId>docbook-xml</artifactId>
+                <version>4.4</version>
+                <scope>runtime</scope>
+              </dependency>
+            </dependencies>   
+          </plugin>
+          
+          <!-- attach generated olink dbs to artifact 
+               by zipping up
+                 project.build.directory/docbook-olink-generated/html-single/artifact-name.db and
+                 project.build.directory/docbook-olink-generated/pdf        /artifact-name.db 
+               with a zip root of project.build.directory/docbook-olink-generated -->
+          <!--plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.2-beta-5</version>
+            <executions>
+              <execution>
+                <id>docbook-olink-dbs</id> 
+                <goals><goal>single</goal></goals>
+                <phase>package</phase>
+                <configuration>
+                  <descriptorRefs>
+                    <descriptorRef>generated-olink-to-zip</descriptorRef>
+                  </descriptorRefs>
+                </configuration>
+              </execution>
+            </executions>
+            <dependencies>
+              <dependency>
+                <groupId>org.apache.uima</groupId>
+                <artifactId>uima-docbook-resource-bundle</artifactId>
+                <version>1-SNAPSHOT</version>
+              </dependency>
+            </dependencies>            
+          </plugin-->             
+        </plugins>                    
+      </build>
+    </profile>
+    
+  </profiles>
+       
+</project>

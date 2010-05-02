@@ -24,7 +24,8 @@
   
     Parent is the official common Apache POM
     
-    Defines repositories for 
+    Defines repositories for
+      Snapshots - at Apache - used during development, and for docbook olinks 
       Eclipse - where the good poms are
       Central - adds default check-the checksums
       
@@ -148,7 +149,17 @@
   <properties>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/parent-pom-top</uimaScmProject>
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
+    <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
+    <buildDateTime>${maven.build.timestamp}</buildDateTime>
+    <!-- next two properties used by other poms -->
+    <localRepoProjVer>
+      ${settings.localRepository}/org/apache/uima/${project.artifactId}/${project.version}
+    </localRepoProjVer>
+    <artifactVersion>
+      ${project.artifactId}-${project.version}
+    </artifactVersion>
+       
   </properties>
   
   <!-- dependencyManagement -->
@@ -214,6 +225,12 @@
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-dependency-plugin</artifactId>
+          <version>2.1</version>
+        </plugin>
+      
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
           <configuration>
             <source>5</source> <!-- needed to do Enums -->
@@ -235,7 +252,7 @@
                        Implementation-Vendor-Id: ${pom.groupId} -->
                 <Implementation-Url>${uimaWebsiteUrl}</Implementation-Url>
                 <Implementation-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
-                <Build-Date>${buildNumber}</Build-Date>
+                <Build-Date>${buildDateTime}</Build-Date>
               </manifestEntries>
               <manifest>
                 <addDefaultSpecificationEntries>false</addDefaultSpecificationEntries>
@@ -247,14 +264,31 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
-          <!--dependencies>
-            <dependency--> <!-- for ant extension supporting "if" -->
-              <!--groupId>ant-contrib</groupId>
+          <dependencies>
+            <dependency>
+              <groupId>org.apache.ant</groupId>
+              <artifactId>ant</artifactId>
+              <!-- version 1.8.0 seems to be incompatible with some part of maven or m2eclipse -->
+              <version>1.7.1</version>
+            </dependency>
+            <dependency> <!-- for ant extension supporting "if" -->
+              <groupId>ant-contrib</groupId>
               <artifactId>ant-contrib</artifactId>
               <version>1.0b3</version>
               <scope>runtime</scope>
             </dependency>
-          </dependencies-->          
+            <!-- next two enable <containsregexp> form for filesets -->
+            <dependency>
+              <groupId>ant</groupId>
+              <artifactId>ant-apache-regexp</artifactId>
+              <version>1.6.5</version>
+            </dependency>
+            <dependency>
+              <groupId>jakarta-regexp</groupId>
+              <artifactId>jakarta-regexp</artifactId>
+              <version>1.4</version>
+            </dependency>
+          </dependencies>          
         </plugin>
       
         <!-- deprecated - move to m2eclipse, but keeping for now -->  
@@ -292,27 +326,6 @@
     </pluginManagement>
     
     <plugins>
-           <!-- something to get the timestamp -->
-      <!-- this plugin sets the output string into the variable buildNumber -->
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>buildnumber-maven-plugin</artifactId>
-        <version>1.0-beta-4</version>
-        <executions>
-          <execution>
-            <phase>initialize</phase>
-            <goals>
-              <goal>create</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <format>{0,date,yyyy-MM-dd HH:mm:ss}</format>
-          <items>
-            <item>timestamp</item>
-          </items>
-        </configuration>
-      </plugin>
       
       <!-- this overrides the apache:7 pom to 
         use a different resource bundle which

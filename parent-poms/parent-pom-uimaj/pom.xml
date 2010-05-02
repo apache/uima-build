@@ -26,11 +26,10 @@
   
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom-top</artifactId>
+    <artifactId>parent-pom-docbook</artifactId>
     <version>1-SNAPSHOT</version>
   </parent>
 
-  <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom-uimaj</artifactId>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version> 
@@ -61,7 +60,7 @@
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/parent-pom-uimaj</uimaScmProject>
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
   </properties>
 
   <!-- project-wide dependency version levels for uima java framework can go here -->  

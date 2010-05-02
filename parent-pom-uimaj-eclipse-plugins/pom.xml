@@ -33,9 +33,6 @@
     <version>1-SNAPSHOT</version>
   </parent>
 
-  <!-- thru testing, discovered that "inheriting" the groupId isn't done
-       when scanning for projects -->
-  <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom-uimaj-eclipse-plugins</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -66,7 +63,7 @@
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/parent-pom-uimaj-eclipse-plugins</uimaScmProject>    
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>    
   </properties>
        
   <build>

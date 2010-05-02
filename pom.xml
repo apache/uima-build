@@ -25,7 +25,6 @@ under the License.
     <version>1-SNAPSHOT</version>
   </parent>
   
-  <groupId>org.apache.uima</groupId>
   <artifactId>uima-jar-resource-bundle</artifactId>
   <version>1-SNAPSHOT</version>
   <name>UIMA Jar shared resources</name>
@@ -34,10 +33,31 @@ under the License.
     Include via remote-resources plugin, to have the LICENSE,
     NOTICE and DEPENDENCIES files added to the META-INF</description>
   <url>${uimaWebsiteUrl}</url>
+  
+  <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the 
+       same as those in super poms, it cannot be inherited because 
+       there is some special code that computes the connection elements
+       from the chain of parent poms, if this is omitted. 
+       
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->  
   <scm>
-    <connection>scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle</connection>
-    <developerConnection>scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle</developerConnection>
-    <url>https://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle</url>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </url>
   </scm>
+  
+  <properties>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>${project.artifactId}</uimaScmProject>
+  </properties>
+
 
 </project>

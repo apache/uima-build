@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Licensed to the Apache Software Foundation (ASF) under one
+or more contributor license agreements.  See the NOTICE file
+distributed with this work for additional information
+regarding copyright ownership.  The ASF licenses this file
+to you under the Apache License, Version 2.0 (the
+"License"); you may not use this file except in compliance
+with the License.  You may obtain a copy of the License at
+
+  http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing,
+software distributed under the License is distributed on an
+"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+KIND, either express or implied.  See the License for the
+specific language governing permissions and limitations
+under the License.
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>parent-pom-top</artifactId>
+    <groupId>org.apache.uima</groupId>
+    <version>1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>uima-docbook-resource-bundle</artifactId>
+  <version>1-SNAPSHOT</version>
+  <name>UIMA Docbooks shared resources</name>
+  <description>An archive which contains various shared resources used by
+    docbook processing</description>
+  <url>${uimaWebsiteUrl}</url>
+  
+  <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the 
+       same as those in super poms, it cannot be inherited because 
+       there is some special code that computes the connection elements
+       from the chain of parent poms, if this is omitted. 
+       
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->  
+  <scm>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </url>
+  </scm>
+  
+  <properties>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>${project.artifactId}</uimaScmProject>
+  </properties>
+  
+  <build>
+    <plugins>
+      <!-- to generate titlepage xsl files:
+             get template and unpack it
+               - run the xsl transform on the title pages using the template 
+               - rename the final result to .xsl 
+               - move to src/main/resources/docbook-shared/titlepage 
+                 so it can be added to jar -->
+                 
+      <!-- get title template from docbook xsl distribution in maven -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <version>2.1</version>
+        <executions>
+          <execution>
+            <id>copyDocbookInfo</id>
+            <phase>generate-sources</phase>
+            <goals><goal>unpack</goal></goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>net.sf.docbook</groupId>
+                  <artifactId>docbook-xsl</artifactId>
+                  <version>1.75.2</version>
+                  <type>zip</type>
+                  <classifier>ns-resources</classifier>
+                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <includes>docbook/template/titlepage.xsl</includes>
+                </artifactItem>
+              </artifactItems>              
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- transform the title page according to the docbook template -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>xml-maven-plugin</artifactId>
+        <version>1.0-beta-3</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>transform</goal>
+            </goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <transformationSets>
+                <transformationSet>
+                  <dir>src/main/titlepage</dir>
+                  <stylesheet>${project.build.directory}/docbook/template/titlepage.xsl</stylesheet>
+                </transformationSet>
+              </transformationSets>
+            </configuration>
+          </execution>
+        </executions>
+        <dependencies>
+          <dependency>
+            <groupId>net.sf.saxon</groupId>
+            <artifactId>saxon</artifactId>
+            <!-- later versions of saxon give warning / error msgs about xsl v 2 -->
+            <version>7.9.1</version>
+          </dependency>
+        </dependencies>
+      </plugin>
+      
+      <!-- move results and rename them to *.xsl -->      
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <goals><goal>run</goal></goals>
+            <phase>generate-sources</phase>
+            <configuration>
+              <tasks>
+                <copy todir="src/main/resources/docbook-shared/titlepage">
+                  <fileset dir="${project.build.directory}/generated-resources/xml/xslt"/>
+                  <globmapper from="*.xml" to="*.xsl"/>
+                </copy>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <!-- don't RAT on the generated output -->     
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <configuration>
+              <excludes>
+                <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
+                <!-- generated -->
+              </excludes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  
+
+</project>

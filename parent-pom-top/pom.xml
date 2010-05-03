@@ -49,6 +49,7 @@
 		<artifactId>apache</artifactId>
 		<groupId>org.apache</groupId>
 		<version>7</version>
+    <relativePath/>
 	</parent>
   
 	<groupId>org.apache.uima</groupId>
@@ -212,6 +213,41 @@
   <build>
     <pluginManagement>
       <plugins>
+        
+        <!-- assembly plugin 
+             configuration to create bin and src distributions
+             from conventional places.
+             
+             Disable running assembly:assembly with
+             warning message to use install instead -->
+        <plugin> 
+          <artifactId>maven-assembly-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>uima-distr</id>
+              <goals><goal>single</goal></goals>
+              <phase>package</phase>
+              <configuration>
+                <descriptors>
+                  <descriptor>src/main/assembly/bin.xml</descriptor>
+                  <descriptor>src/main/assembly/src.xml</descriptor>
+                </descriptors>
+                <finalName>${assemblyFinalName}</finalName>
+                <tarLongFileMode>gnu</tarLongFileMode>
+                <attach>false</attach> <!-- assembly results not put into Maven repos -->
+              </configuration>              
+            </execution>
+            <execution>
+              <id>default-cli</id>
+              <configuration>
+                <descriptors>
+                  <descriptor>do-not-use--mvn-assembly-assembly--instead-use-mvn-install</descriptor>
+                </descriptors>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
+        
         <!-- set Java 1.5 as the source and target of compilation -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>

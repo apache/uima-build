@@ -30,6 +30,7 @@
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
     <version>1-SNAPSHOT</version>
+    <relativePath/>
   </parent>
 
   <artifactId>parent-pom-docbook</artifactId>
@@ -83,7 +84,7 @@
        the leaf child project has a docbook directory -->  
   <profiles>
     <profile>
-      <id>docbook</id>
+      <id>process-docbook</id>
       <activation>
         <file><exists>src/docbook</exists></file>
       </activation>
@@ -256,7 +257,7 @@
                 <phase>package</phase>
                 <configuration>
                   <htmlCustomization>${project.build.directory}/docbook-shared/top/html-single.xsl</htmlCustomization>
-                  <htmlStylesheet>${project.build.directory}/docbook-shared/css/stylesheet-html.css</htmlStylesheet>
+                  <htmlStylesheet>css/stylesheet-html.css</htmlStylesheet>
                   <!-- olink -->
                   <targetDatabaseDocument>file:///${dolUnzipped}/htmlsingle/site.xml</targetDatabaseDocument>              
                   <targetsFilename>${dolUnzipped}/htmlsingle/${bookNameRoot}.db</targetsFilename>
@@ -264,9 +265,7 @@
               </execution>
               <execution>
                 <id>pdf</id>
-                <goals>
-                  <goal>generate-pdf</goal>
-                </goals>
+                <goals><goal>generate-pdf</goal></goals>
                 <phase>package</phase>
                 <configuration>
                   <foCustomization>${project.build.directory}/docbook-shared/top/pdf.xsl</foCustomization>
@@ -360,36 +359,37 @@
               </dependency>
             </dependencies>   
           </plugin>
-          
-          <!-- attach generated olink dbs to artifact 
-               by zipping up
-                 project.build.directory/docbook-olink-generated/html-single/artifact-name.db and
-                 project.build.directory/docbook-olink-generated/pdf        /artifact-name.db 
-               with a zip root of project.build.directory/docbook-olink-generated -->
-          <!--plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-assembly-plugin</artifactId>
-            <version>2.2-beta-5</version>
+        
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
             <executions>
+              <!-- copy the images to the html/images dir -->  
               <execution>
-                <id>docbook-olink-dbs</id> 
-                <goals><goal>single</goal></goals>
+                <id>docbook-copy-images</id>
+                <goals><goal>copy-resources</goal></goals>
                 <phase>package</phase>
                 <configuration>
-                  <descriptorRefs>
-                    <descriptorRef>generated-olink-to-zip</descriptorRef>
-                  </descriptorRefs>
+                  <outputDirectory>${project.build.directory}/docbkx/html/images</outputDirectory>
+                  <resources>
+                    <resource><directory>src/docbook/images</directory></resource>
+                  </resources>
                 </configuration>
               </execution>
+              <!-- copy the css stylesheet to the html dir -->  
+              <execution>
+                <id>docbook-copy-css</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>package</phase>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/docbkx/html/css</outputDirectory>
+                  <resources>
+                    <resource><directory>${project.build.directory}/docbook-shared/css</directory></resource>
+                  </resources>
+                </configuration>
+              </execution>
+              
             </executions>
-            <dependencies>
-              <dependency>
-                <groupId>org.apache.uima</groupId>
-                <artifactId>uima-docbook-resource-bundle</artifactId>
-                <version>1-SNAPSHOT</version>
-              </dependency>
-            </dependencies>            
-          </plugin-->             
+          </plugin>           
         </plugins>                    
       </build>
     </profile>

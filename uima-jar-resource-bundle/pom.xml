@@ -23,6 +23,7 @@ under the License.
     <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
     <version>1-SNAPSHOT</version>
+    <relativePath/>
   </parent>
   
   <artifactId>uima-jar-resource-bundle</artifactId>

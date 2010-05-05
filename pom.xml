@@ -19,7 +19,7 @@
 
 <!-- this POM holds common, factored-out settings for all the eclipse plugins
      Those project's POMs refer to this as their "parent"
-     This POM refers to the parent-pom-uimaj as its parent
+     This POM refers to the parent-pom-docbook as its parent
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -29,11 +29,12 @@
 
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom-uimaj</artifactId>
+    <artifactId>parent-pom-docbook</artifactId>
     <version>1-SNAPSHOT</version>
+    <relativePath/>
   </parent>
 
-  <artifactId>parent-pom-uimaj-eclipse-plugins</artifactId>
+  <artifactId>parent-pom-eclipse-plugins</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
@@ -67,6 +68,8 @@
   </properties>
        
   <build>
+    <finalName>${project.artifactId}_${parsedVersion.osgiVersion}</finalName>         
+            
     <!-- resources are "merged" -->
         <!-- needed to copy resources, icons, and the plugin.xml to the result -->
     <resources>
@@ -82,28 +85,77 @@
         <directory>src/main/resources</directory>
       </resource>
     </resources>
-    
-    <plugins>
-      <!-- special eclipse:eclipse configuration for Eclipse plugins -->
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-eclipse-plugin</artifactId>
-        <version>2.4</version>
-        <configuration>
-          <manifest>.ignore</manifest>
-          <pde>true</pde>
-          <!-- set next to false because refs to runtime project
-               as a project don't work (because it is a library project,
-               and has no sources of its own 
-            
-            A consequence of this: If you change code a plugin depends on,
-            run "mvn install" on the changed code to get your plugin to
-            pick up the changes 
-            -->
-          <useProjectReferences>false</useProjectReferences>
-        </configuration>
-      </plugin>
-    </plugins>
+ 
+    <pluginManagement>
+      
+      <!-- run the felix plugin in manifest mode
+           because that plugin doesn't resolve
+           all properties e.g., parsedVersion.osgiVersion -->
+      <plugins>
+        <plugin>
+          <groupId>org.apache.felix</groupId>
+          <artifactId>maven-bundle-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>uima-bundle</id>
+              <goals><goal>manifest</goal></goals>
+              <phase>process-classes</phase>
+              <configuration>
+                <!-- we put the generate manifest in the spot where Eclipse 
+                     plugins think it will be -->
+               <manifestLocation>META-INF/</manifestLocation>
+              </configuration>
+            </execution>
+            <!-- turn off unneeded executions --> 
+            <execution>
+              <id>default-deploy</id>
+              <phase/>
+            </execution>
+            <execution>
+              <id>default-install</id>
+              <phase/>
+            </execution>
+            <execution>
+              <id>default-bundle</id>
+              <phase/>
+            </execution>
+          </executions>
+        </plugin>
+
+        <!-- pick up the manifest felix generates -->        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-jar-plugin</artifactId>
+          <configuration>
+            <archive>
+              <manifestFile>META-INF/MANIFEST.MF</manifestFile>
+            </archive>
+          </configuration>       
+        </plugin>
+
+        <!-- special eclipse:eclipse configuration for Eclipse plugins -->        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-eclipse-plugin</artifactId>
+          <version>2.4</version>
+          <configuration>
+            <manifest>.ignore</manifest>
+            <pde>true</pde>
+            <!-- set next to false because refs to runtime project
+                 as a project don't work (because it is a library project,
+                 and has no sources of its own 
+              
+              A consequence of this: If you change code a plugin depends on,
+              run "mvn install" on the changed code to get your plugin to
+              pick up the changes 
+              -->
+            <useProjectReferences>false</useProjectReferences>
+          </configuration>
+        </plugin>
+              
+      </plugins>
+    </pluginManagement>
+  
   </build>
 
 </project>

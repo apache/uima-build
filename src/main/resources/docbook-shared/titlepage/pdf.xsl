@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" exclude-result-prefixes="exsl" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" exclude-result-prefixes="exsl" xmlns:exsl="http://exslt.org/common" xmlns:d="http://docbook.org/ns/docbook" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <!-- This stylesheet was created by template/titlepage.xsl; do not edit it by hand. -->
 

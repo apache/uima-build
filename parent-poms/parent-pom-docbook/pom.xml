@@ -173,13 +173,14 @@
                 <goals><goal>unpack</goal></goals>
                 <configuration>
                   <overWriteIfNewer>true</overWriteIfNewer>
+                  <markersDirectory>${dolRepo}/dependency-maven-plugin-markers</markersDirectory>
                   <artifactItems>
                     <artifactItem>
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-docbook-resource-bundle</artifactId>
                       <version>1-SNAPSHOT</version>
                       <excludes>META-INF/**</excludes>
-                      <outputDirectory>${uimaDocbookOlinkDbs}/..</outputDirectory>
+                      <outputDirectory>${dolRepo}</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>
@@ -257,7 +258,6 @@
                 <phase>package</phase>
                 <configuration>
                   <htmlCustomization>${project.build.directory}/docbook-shared/top/html-single.xsl</htmlCustomization>
-                  <htmlStylesheet>css/stylesheet-html.css</htmlStylesheet>
                   <!-- olink -->
                   <targetDatabaseDocument>file:///${dolUnzipped}/htmlsingle/site.xml</targetDatabaseDocument>              
                   <targetsFilename>${dolUnzipped}/htmlsingle/${bookNameRoot}.db</targetsFilename>

@@ -17,28 +17,25 @@
    under the License.    
 -->
 
-<!-- this is the common parent pom for the uima java sdk -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
   
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom-docbook</artifactId>
+    <artifactId>parent-pom-top</artifactId>
     <version>1-SNAPSHOT</version>
     <relativePath/>
   </parent>
-
-  <artifactId>parent-pom-ibm-notice</artifactId>
-  <packaging>pom</packaging>
-  <version>1-SNAPSHOT</version> 
-
-  <name>UIMA ${project.artifactId}</name>
-  <description>Adds the IBM Copyright to the Notice file for selected source files</description>
-  <url>${uimaWebsiteUrl}</url>
   
+	<artifactId>aggregate-parent-poms</artifactId>
+	<packaging>pom</packaging>
+	<version>2.3.1-SNAPSHOT</version>
+	<name>UIMA Aggregate: ${project.artifactId}</name>
+  <description>This aggregates all the parent poms for convenience</description>
+  <url>${uimaWebsiteUrl}</url>
+
   <!-- Special inheritance note
        even though the <scm> element that follows is exactly the 
        same as those in super poms, it cannot be inherited because 
@@ -60,19 +57,20 @@
   </scm>
   
   <properties>
-    <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>    
-    <postNoticeText>
-Portions of Apache UIMA were originally developed by
-International Business Machines Corporation and are
-licensed to the Apache Software Foundation under the
-"Software Grant License Agreement", informally known as the
-"IBM UIMA License Agreement".
-Copyright (c) 2003, 2006 IBM Corporation.         
-    </postNoticeText>
+    <uimaScmRoot>uimaj</uimaScmRoot>
+    <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-    
-  <!--reporting-->  
   
-  <!-- profiles -->    
+  <modules>
+    <module>parent-pom-top</module>
+      <module>parent-pom-docbook</module>
+        <module>parent-pom-ibm-notice</module>
+        <module>parent-pom-eclipse-plugins</module>
+          <module>parent-pom-eclipse-plugins-ibm-notice</module>
+        <module>parent-pom-distr</module>
+
+        <!-- build single projects -->
+        <module>parent-pom-annotator</module>
+        <module>parent-pom-single-project</module>
+  </modules>  
 </project>

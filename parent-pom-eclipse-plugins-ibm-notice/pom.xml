@@ -34,8 +34,7 @@
   <artifactId>parent-pom-eclipse-plugins-ibm-notice</artifactId>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version> 
-
-  <name>Apache UIMA Java SDK Parent for Eclipse Plugins with IBM copyright in the Notice</name>
+  <name>UIMA ${project.artifactId}</name>
   <description>Adds the IBM Copyright to the Notice file for selected source files</description>
   <url>${uimaWebsiteUrl}</url>
   
@@ -63,7 +62,7 @@
     <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>    
     <postNoticeText>
-Portions of UIMA were originally developed by
+Portions of Apache UIMA were originally developed by
 International Business Machines Corporation and are
 licensed to the Apache Software Foundation under the
 "Software Grant License Agreement", informally known as the

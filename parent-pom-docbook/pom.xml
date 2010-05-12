@@ -37,7 +37,7 @@
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version> 
 
-  <name>Apache UIMA Docbook Parent</name>
+  <name>UIMA ${project.artifactId}</name>
   <description>UIMA Parent Pom for Docbook documentation.</description>
   <url>${uimaWebsiteUrl}</url>
  
@@ -102,7 +102,8 @@
       <build>
         <plugins>
                 <!-- something to set some properties for dates used in copyright notices -->
-          <plugin>
+          <!-- Works, but is slow due to loading groovy -->      
+          <!--plugin>
              <groupId>org.codehaus.groovy.maven</groupId>
              <artifactId>gmaven-plugin</artifactId>
              <version>1.0</version>
@@ -124,6 +125,60 @@
                    </configuration>
                 </execution>
              </executions>
+          </plugin-->
+          
+          <!--plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-enforcer-plugin</artifactId>
+            <version>1.0-beta-1</version>
+            <executions>
+              <execution>
+                <id>set buildYear and buildMonth</id>
+                <goals>
+                  <goal>enforce</goal>
+                </goals>
+                <configuration>
+                  <rules>
+                    <evaluateBeanshell>
+                      <condition>
+                        import java.text.MessageFormat;
+                        import org.apache.maven.project.MavenProject;
+                        Date[] date = new Date[] {new Date()};
+                        
+               // doesn't work - project needs to be set by dependency injection, not being set
+                        project.getProperties().setProperty("buildYear", MessageFormat.format("{0,date,yyyy}", date));
+                        project.getProperties().setProperty("buildMonth", MessageFormat.format("{0,date,MMMM}", date));
+                        1==1;
+                      </condition>
+                    </evaluateBeanshell>
+                  </rules>
+                  <fail>true</fail>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin-->
+          <plugin>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>uima-build-helper</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+            <executions>
+              <execution>
+                <id>set buildYear and buildMonth</id>
+                <goals><goal>parse-date-time</goal></goals>
+                <configuration>
+                  <parseSpecs>
+                    <parseSpec>
+                      <name>buildYear</name>
+                      <format>yyyy</format>
+                    </parseSpec>
+                    <parseSpec>
+                      <name>buildMonth</name>
+                      <format>MMMM</format>
+                    </parseSpec>                   
+                  </parseSpecs>
+                </configuration>               
+              </execution>
+            </executions>
           </plugin>
           
           <!-- use the dependency:unpack goal to get the shared resource
@@ -185,43 +240,35 @@
                   </artifactItems>
                 </configuration>
               </execution>
-              
+
               <!-- use the dependency:unpack goal to get the
-                   olink databases 
-                   
-                   But wait - we want the unpack to not overwrite
-                   olink database files that might be there which 
-                   are "newer" - but unpack doesn't have this fine
-                   a grain of checking newness - it only does it on
-                   the entire archive
-                   
-                   So we work around that by using dependency:resolve to
-                   get the archive into the local repo (if needed), 
-                   and then antrun unzip to do the 
-                   unzipping -->
-                   
-              <!-- this next just downloads if needed the olink-dbs
-                   zip file from a remote repo into the local one -->
+                   olink databases  -->
               <execution>
-                <id>getOlinkDbsIntoLocalRepo</id>
+                <id>getOlink</id>
                 <phase>prepare-package</phase>
-                <goals><goal>resolve</goal></goals>
+                <goals><goal>unpack</goal></goals>
                 <configuration>
-                  <includeGroupIds>org.apache.uima</includeGroupIds>
-                  <includeArtifactIds>${dolArtifactId}</includeArtifactIds>
-                  <includeTypes>zip</includeTypes>
-                  <classifier>${dolClassifier}</classifier>
-                  <type>zip</type>
+                  <overWriteIfNewer>true</overWriteIfNewer>
+                  <markersDirectory>${dolRepo}/dependency-maven-plugin-markers</markersDirectory>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.apache.uima</groupId>
+                      <artifactId>${dolArtifactId}</artifactId>
+                      <version>1-SNAPSHOT</version>
+                      <type>zip</type>
+                      <classifier>${dolClassifier}</classifier>
+                      <outputDirectory>${dolRepo}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
                 </configuration>
-              </execution>           
+              </execution>                         
             </executions>
           </plugin> 
           
-          <plugin>
+          <!--plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
-              <!-- unzip and overwrite olink dbs only if newer in the archive -->
               <execution>
                 <id>unzipOlinkDbs</id>
                 <goals><goal>run</goal></goals>
@@ -235,7 +282,7 @@
                 </configuration>
               </execution>
             </executions>
-          </plugin>         
+          </plugin-->         
           
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>

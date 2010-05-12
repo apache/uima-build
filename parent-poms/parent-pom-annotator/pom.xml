@@ -1,0 +1,227 @@
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+
+<!-- this POM holds common, factored-out settings for all 
+     projects that are packaged as annotators
+     
+     Conventions:
+     
+       License/Notice for Jar: using the uimaj-jar-resource-bundle
+       License/Notice for PEAR: using files from project top level
+       Generates a PEAR
+         dependencies on other artifacts: 
+           Specified as scope compile or runtime causes these to be included in Pear lib dir
+  -->
+
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>org.apache.uima</groupId>
+    <artifactId>parent-pom-docbook</artifactId>
+    <version>1-SNAPSHOT</version>
+    <relativePath/>
+  </parent>
+
+  <artifactId>parent-pom-annotator</artifactId>
+  <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging> 
+  <name>UIMA ${project.artifactId}</name>
+  <description>Holds common, factored out settings for annotators</description>
+  <url>${uimaWebsiteUrl}</url>
+  
+  <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the 
+       same as those in super poms, it cannot be inherited because 
+       there is some special code that incorrectly computes the 
+       connection elements from the chain of parent poms, if this is omitted. 
+       
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->  
+  <scm>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </url>
+  </scm>
+  
+  <properties>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
+    <pearPackagingDir>${project.build.directory}/pearPackaging</pearPackagingDir>    
+  </properties>
+       
+  <profiles>
+    <profile>
+      <activation>
+        <file>
+          <missing>marker-file-identifying-parent-pom-annotator</missing>
+        </file>
+      </activation>
+      <build>  
+        
+        <plugins>  
+           <!-- populate the lib dir with all needed dependencies
+             that will be distributed with this component
+             
+             NOTE: TRANSITIVE DEPENDENIES ARE NOT INCLUDED
+                   ANYTHING YOU WANT INCLUDED IN THE JAR 
+                   PLEASE LIST EXPLICITLY AND MODIFY THE LICENSE/NOTICE
+                   APPROPRIATELY
+              
+             Runs during process-resources -->
+                     
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <!-- Copy the dependencies to the target/assembly-bin folder for the PEAR to copy -->
+              <execution>
+                <id>copy dependencies to lib</id>
+                <goals><goal>copy-dependencies</goal></goals>
+                <phase>process-resources</phase>
+                <configuration>
+                  <outputDirectory>${pearPackagingDir}/lib</outputDirectory>
+                  <includeScope>runtime</includeScope>
+                  <excludeTransitive>true</excludeTransitive>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              
+              <!-- add the contents of desc if it exists to the jar.  
+                   This puts the things like the WhitespaceTokenizer.xml file into the Jar
+                   and makes it easier for users to run this, without installing a pear. 
+                   The Tagger project uses this technique, for instance -->
+              <execution>
+                <id>copy desc so its contents can be found in Jar</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>process-resources</phase>  <!-- required -->
+                <configuration>
+                  <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>desc</directory>
+                      <includes><include>**</include></includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              
+              <!-- copy the License/notice/readme/release/keys notes files into the Pear at the top level -->
+              <execution>
+                <id>Copy Pear Lic/Not/Readme/Relnotes</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>process-resources</phase>
+                <configuration>
+                  <outputDirectory>${pearPackagingDir}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>.</directory>
+                      <includes>
+                        <include>LICENSE*</include>
+                        <include>NOTICE*</include>
+                        <include>README*</include>
+                        <include>readme*</include>
+                        <include>RELEASE_NOTES*</include>
+                        <include>ReleaseNotes*</include>
+                      </includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              
+              <!-- copy generated Jar to pearPackaging/lib spot -->
+              <execution>
+                <id>copy standard sandbox target jar to pearPackaging/lib</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>pre-integration-test</phase>  <!-- a phase after jar -->
+                <configuration>
+                  <outputDirectory>${pearPackagingDir}/lib</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}</directory>
+                      <includes><include>*.jar</include></includes>
+                      <excludes><exclude>*-sources.jar</exclude></excludes>     
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              
+              <!-- copy generated docbook artifacts to pearPackaging/doc folder -->        
+              <execution>
+                <id>copy generated docbook artifacts to pearPackaging/doc folder</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>pre-integration-test</phase>  <!-- a phase after docbkx (package) phase -->
+                <configuration>
+                  <outputDirectory>${pearPackagingDir}/doc</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/docbkx</directory>
+                      <excludes>
+                        <exclude>**/*.fo</exclude>
+                      </excludes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>          
+            </executions>
+          </plugin>
+          
+          <!-- build the PEAR -->
+          <plugin>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>PearPackagingMavenPlugin</artifactId>
+            <version>2.3.1-SNAPSHOT</version>
+            <extensions>true</extensions>        
+            <executions>
+              <execution>
+                <id>build uima annnotator Pear</id>
+                <goals><goal>package</goal></goals>
+                   <!-- needs to run after the jar is built
+                        after docbooks are packaged and copied to pearPackaging/doc folder -->
+                <phase>pre-integration-test</phase>
+                <configuration> 
+                  <datapath>$main_root/resources</datapath>
+                  <componentId>${project.artifactId}</componentId>
+                  <mainComponentDesc>${pearMainDescriptor}</mainComponentDesc>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>              
+     
+        </plugins>
+        
+      </build>
+    </profile>
+  </profiles>     
+       
+</project>

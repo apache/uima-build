@@ -1,0 +1,47 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.
+
+  ------
+  Introduction
+  ------
+
+UIMA Build Helper Plugin
+
+  The uima-build-helper plugin provides a set of goals that do helpful things
+  in Java for the UIMA builds.  
+
+* Goals Overview
+
+  The uima-build-helper plugin has one goal:
+
+  *{{{parse-date-time-mojo.html}uima-build-helper:parse-date-time}} 
+  captures the current date and time, and then takes a list of 
+  specifications defined in
+  the plugin configuration section and for each one sets
+  a specified property to a particular formatting of the current date and time.
+  
+    The format of the formatting string is the same as Java's 
+    {{{http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html}SimpleDateFormat}}.
+  []
+
+* Usage
+
+  General instructions on how to use the uima-build-helper Plugin can be found on the {{{usage.html}usage page}}. 
+
+
+
+

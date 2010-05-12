@@ -57,7 +57,7 @@
   <version>1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
-	<name>Apache UIMA Top Parent Pom</name>
+  <name>UIMA ${project.artifactId}</name>
 	<description>UIMA (Unstructured Information Management Architecture). 
     UIMA promotes community development and reuse of annotators 
     that extract metadata from unstructured information (text, audio, video, etc.); 
@@ -225,28 +225,11 @@
       <plugins>
         
         <!-- assembly plugin 
-             configuration to create bin and src distributions
-             from conventional places.
-             
              Disable running assembly:assembly with
              warning message to use install instead -->
         <plugin> 
           <artifactId>maven-assembly-plugin</artifactId>
           <executions>
-            <execution>
-              <id>uima-distr</id>
-              <goals><goal>single</goal></goals>
-              <phase>package</phase>
-              <configuration>
-                <descriptors>
-                  <descriptor>src/main/assembly/bin.xml</descriptor>
-                  <descriptor>src/main/assembly/src.xml</descriptor>
-                </descriptors>
-                <finalName>${assemblyFinalName}</finalName>
-                <tarLongFileMode>gnu</tarLongFileMode>
-                <attach>false</attach> <!-- assembly results not put into Maven repos -->
-              </configuration>              
-            </execution>
             <execution>
               <id>default-cli</id>
               <configuration>

@@ -17,7 +17,8 @@
    under the License.    
 -->
 
-<!-- this is the common parent pom for the uima java sdk -->
+<!-- this parent has common configuration for building official
+     release distributions -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0"
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -26,20 +27,20 @@
   
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom-docbook</artifactId>
+    <artifactId>parent-pom-top</artifactId>
     <version>1-SNAPSHOT</version>
     <relativePath/>
   </parent>
 
-  <artifactId>parent-pom-ibm-notice</artifactId>
+  <artifactId>parent-pom-distr</artifactId>
   <packaging>pom</packaging>
   <version>1-SNAPSHOT</version> 
 
   <name>UIMA ${project.artifactId}</name>
-  <description>Adds the IBM Copyright to the Notice file for selected source files</description>
+  <description>UIMA Parent Pom for Release distributions</description>
   <url>${uimaWebsiteUrl}</url>
-  
-  <!-- Special inheritance note
+ 
+   <!-- Special inheritance note
        even though the <scm> element that follows is exactly the 
        same as those in super poms, it cannot be inherited because 
        there is some special code that computes the connection elements
@@ -61,18 +62,66 @@
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>    
-    <postNoticeText>
-Portions of Apache UIMA were originally developed by
-International Business Machines Corporation and are
-licensed to the Apache Software Foundation under the
-"Software Grant License Agreement", informally known as the
-"IBM UIMA License Agreement".
-Copyright (c) 2003, 2006 IBM Corporation.         
-    </postNoticeText>
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
   </properties>
-    
-  <!--reporting-->  
+
+  <!-- build -->               
   
-  <!-- profiles -->    
+  <!--reporting-->  
+
+  <profiles>
+    <profile>
+      <id>apache-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>dependency</artifactId>
+            <executions>
+              <execution>
+                <phase>clean</phase>
+                <goals><goal>purge-local-repository</goal></goals>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <profile>
+      <id>build distribution</id>
+      <activation>
+        <file><missing>marker-file-identifying-parent-pom-distr</missing></file>
+      </activation>
+      <build>
+        <plugins>
+          
+        <!-- assembly plugin 
+             configuration to create bin and src distributions
+             from conventional places -->
+        <plugin> 
+          <artifactId>maven-assembly-plugin</artifactId>
+          <executions>
+            <execution>
+              <id>uima-distr</id>
+              <goals><goal>single</goal></goals>
+              <phase>package</phase>
+              <configuration>
+                <descriptors>
+                  <descriptor>src/main/assembly/bin.xml</descriptor>
+                  <descriptor>src/main/assembly/src.xml</descriptor>
+                </descriptors>
+                <finalName>${assemblyFinalName}</finalName>
+                <tarLongFileMode>gnu</tarLongFileMode>
+                <attach>false</attach> <!-- assembly results not put into Maven repos -->
+              </configuration>              
+            </execution>
+          </executions>
+        </plugin>
+        </plugins>                    
+      </build>
+    </profile>
+    
+  </profiles>
+       
 </project>

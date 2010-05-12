@@ -1,0 +1,111 @@
+~~ Licensed to the Apache Software Foundation (ASF) under one
+~~ or more contributor license agreements.  See the NOTICE file
+~~ distributed with this work for additional information
+~~ regarding copyright ownership.  The ASF licenses this file
+~~ to you under the Apache License, Version 2.0 (the
+~~ "License"); you may not use this file except in compliance
+~~ with the License.  You may obtain a copy of the License at
+~~
+~~ http://www.apache.org/licenses/LICENSE-2.0
+~~
+~~ Unless required by applicable law or agreed to in writing,
+~~ software distributed under the License is distributed on an
+~~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+~~ KIND, either express or implied.  See the License for the
+~~ specific language governing permissions and limitations
+~~ under the License.    
+ 
+  ------
+  Usage
+  ------
+
+Usage
+  
+* Generic Plugin configuration information
+
+  See the following links for information about including and configuring plugins in your project:
+  
+  *{{{http://maven.apache.org/guides/mini/guide-configuring-plugins.html}Configuring Plugins}}
+  
+  *{{{http://maven.apache.org/guides/plugin/guide-java-plugin-development.html}Plugin Development}}
+
+  *{{{http://maven.apache.org/guides/introduction/introduction-to-plugin-prefix-mapping.html}Plugin Prefix}}
+
+* The <<<uima-helper-plugin:parse-date-time>>> mojo
+
+   This goal is bound to the first default lifecycle phase (validate) by default.
+   Configure it in your
+   <<<pom.xml>>>. 
+
+     []
+
+   Configure the plugin something like this:
+
++---+
+<project>
+  [...]
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.uima</groupId>
+        <artifactId>uima-build-helper-maven-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>get month</id>
+            <goals>
+              <goal>parse-date-time</goal>
+            </goals>
+            <configuration>
+              <parseSpecs>
+                <parseSpec>
+                  <propName>[ name of property to set, e.g. my.property ]</propName>
+                  <format>[ format string - see below ]</format>
+                  <locale>[ optional - a Java locale string ]</locale>
+                </parseSpec>
+              </parseSpecs>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+  [...]
+</project>
+
++---+
+
+
+* Format of the parse strings  
+
+  The format string can contain arbitrary text, plus special patterns that must look something like
+
+    yyyy or MMMM
+  
+  The pattern is one of the patterns defined for
+  date or time in the 
+  {{{http://java.sun.com/j2se/1.5.0/docs/api/java/text/SimpleDateFormat.html}SimpleDateFormat}}
+  Java class.
+  
+  Spaces and new lines in the pattern are significant, and are copied into the result,
+  except that leading or trailing white-space in the pattern is stripped.
+  
+  This means you can write:
++----+
+    <format>
+      yyyy
+    </format>
++----+
+  to get just the 4 digit year formatted.
+  
+  Any letters [a-z] or [A-Z] which you want copied into the result must be 
+  surrounded by single quotes; otherwise they are interpreted as formatting specifications. 
+
+  Some simple examples:
+  
++---+
+    <format>yyyy</format>          - produces, for example: 2010
+    <format>MMMM</format>          - produces, for example, January
+    <format>MMM</format>           - produces, for example, Jan
+    <format>MMMM, yyyy</format>    - produces, for example, January, 2010
+    <format>YYYY</format>          - causes an error - capital "Y" is not a valid formatting character.  
++---+  

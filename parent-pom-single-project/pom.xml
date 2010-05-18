@@ -103,7 +103,7 @@
             <artifactId>maven-assembly-plugin</artifactId>
             <executions>
               <execution>
-                <id>binary-release</id>
+                <id>binary-release</id> <!-- is "classifier" - match maven convention -->
                 <goals><goal>single</goal></goals>
                 <phase>pre-integration-test</phase>  <!-- after package, after jar & docbkx built -->
                 <configuration>

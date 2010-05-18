@@ -28,7 +28,7 @@
        - Lic/Not/Readme/releaseNotes from root dir 
        - generated documentation in the docs/ dir
        - other folders per the PEAR spec at the top level
-         -- bin folders - we set execute permissions on .sh 
+         - bin folders - we set execute permissions on .sh 
      
      At release time the standard Apache parent builds the 
        - "source-release" artifact, and the

@@ -272,6 +272,61 @@
             <source>5</source> <!-- needed to do Enums -->
             <encoding>UTF-8</encoding>
           </configuration>
+          <executions>
+            <execution>
+              <id>attach-javadocs</id>          
+              <goals>
+                <goal>jar</goal>
+              </goals>
+              <configuration>
+                <quiet>true</quiet>
+                <!-- identify tags we use so we don't get warning messages for them -->
+                <tags>
+                  <tag>
+                    <name>generated</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>ordered</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>modifiable</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>model</name>
+                    <placement>X</placement>
+                  </tag>
+                </tags>                
+              </configuration>
+            </execution>
+            <execution>
+              <id>javadocs-distr</id>          
+              <configuration>
+                <quiet>true</quiet>
+                <!-- identify tags we use so we don't get warning messages for them -->
+                <tags>
+                  <tag>
+                    <name>generated</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>ordered</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>modifiable</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>model</name>
+                    <placement>X</placement>
+                  </tag>
+                </tags>                
+              </configuration>
+            </execution>            
+          </executions>          
         </plugin>
         
         <plugin>
@@ -363,7 +418,7 @@
               <phase>verify</phase>
             </execution>
           </executions>
-        </plugin>       
+        </plugin>
         
       </plugins>
     </pluginManagement>
@@ -436,5 +491,46 @@
         </plugins>                    
       </build>
     </profile>
+    
+    <!-- fix apache common pom --> 
+    <profile>
+      <id>apache-release</id>
+      
+      <properties>
+        <!-- to support multi-module source-release builds -->
+        <sourceReleaseAssemblyDescriptor>multimodule-source-release</sourceReleaseAssemblyDescriptor>
+      </properties>
+      <build>
+        <plugins>
+          <!-- to support multi-module source-release builds -->
+          <plugin>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <dependencies>            
+              <dependency>
+                <groupId>org.apache.uima</groupId>
+                <artifactId>uima-jar-resource-bundle</artifactId>
+                <version>1-SNAPSHOT</version>
+                </dependency>
+            </dependencies>
+          </plugin>
+          
+          <!-- to run source plugin without forking -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-source-plugin</artifactId>           
+            <executions>           
+              <execution>
+                <id>attach-sources-nf</id>           
+                <goals><goal>jar-no-fork</goal></goals>
+              </execution>
+              <execution>
+                <id>attach-sources</id>
+                <phase/>  <!-- turn off the plan jar one -->
+              </execution>             
+            </executions>        
+          </plugin>
+        </plugins>
+      </build>     
+    </profile>    
   </profiles>
 </project>

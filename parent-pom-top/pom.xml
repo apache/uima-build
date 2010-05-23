@@ -147,6 +147,14 @@
          https://repository.apache.org/service/local/staging/deploy/maven2
        and for snapshots:
          https://repository.apache.org/content/repositories/snapshots -->
+  <!-- for children POMs maven automatically adds their artifactId to the URL below -->
+  <distributionManagement>
+    <site>
+      <id>uima-website</id>
+      <name>UIMA Website</name>
+      <url>${uimaWebsiteDistributionUrl}</url> <!-- set this var in your settings.xml -->
+    </site>  
+  </distributionManagement>
   
   <properties>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>

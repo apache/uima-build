@@ -61,6 +61,15 @@
       http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </url>
   </scm>
+
+  <!-- for children POMs maven automatically adds their artifactId to the URL below -->
+  <distributionManagement>
+    <site>
+      <id>uima-website</id>
+      <name>UIMA Website</name>
+      <url>${uimaWebsiteDistributionUrl}</url> <!-- set this var in your settings.xml -->
+    </site>  
+  </distributionManagement>
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
@@ -291,6 +300,7 @@
             <version>2.0.10</version>
             <configuration>  <!-- general configuration for both html and pdf -->
               <sourceDirectory>${basedir}/src/docbook</sourceDirectory>
+              <targetDirectory>${project.build.directory}/site/d</targetDirectory>
               <includes>${bookNameRoot}.xml</includes>
               <highlightSource>1</highlightSource>
               <xincludeSupported>true</xincludeSupported>

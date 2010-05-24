@@ -29,27 +29,42 @@ under the License.
   <targetsetinfo>UIMA books olinks</targetsetinfo>
   
   <!-- Site map for generating relative paths between documents -->
+  <!--
+    base-url
+      artifactId
+        d
+          xxx.html
+          xxx.pdf  
+    -->
   <sitemap>
-    <dir name="target">
-      <dir name="overview_and_setup">
-        <document targetdoc="&uima_docs_overview;">
-          &otarget_overview;
-        </document>
+    <dir name="commonTop_ValueIgnored">
+      <dir name="uima-docbook-overview-and-setup">
+        <dir name="d">
+          <document targetdoc="&uima_docs_overview;">
+            &otarget_overview;
+          </document>
+        </dir>
       </dir>
-      <dir name="tutorials_and_users_guides">
-        <document targetdoc="&uima_docs_tutorial_guides;">
-          &otarget_tug;
-        </document>
+      <dir name="uima-docbook-tutorials-and-users-guides">
+        <dir name="d">
+          <document targetdoc="&uima_docs_tutorial_guides;">
+            &otarget_tug;
+          </document>
+        </dir>
       </dir>
-      <dir name="tools">
-        <document targetdoc="&uima_docs_tools;">
-          &otarget_tools;
-        </document>
+      <dir name="uima-docbook-tools">
+        <dir name="d">
+          <document targetdoc="&uima_docs_tools;">
+            &otarget_tools;
+          </document>
+        </dir>
       </dir>
-      <dir name="references">
-        <document targetdoc="&uima_docs_ref;">
-          &otarget_refs;
-        </document>
+      <dir name="uima-docbook-references">
+        <dir name="d">
+          <document targetdoc="&uima_docs_ref;">
+            &otarget_refs;
+          </document>
+        </dir>
       </dir> 
     </dir>   
   </sitemap>

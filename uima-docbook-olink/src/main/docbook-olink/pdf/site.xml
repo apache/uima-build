@@ -31,29 +31,37 @@ under the License.
   <!-- Site map for generating relative paths between documents -->
   <sitemap>
     <dir name="target">
-      <dir name="overview_and_setup">
-        <document targetdoc="&uima_docs_overview;"
-                  baseuri="overview_and_setup.pdf">
-          &otarget_overview;
-        </document>
+      <dir name="uima-docbook-overview-and-setup">
+        <dir name="d">
+          <document targetdoc="&uima_docs_overview;"
+                    baseuri="overview_and_setup.pdf">
+            &otarget_overview;
+          </document>
+        </dir>
       </dir>
-      <dir name="tutorials_and_users_guides">
-        <document targetdoc="&uima_docs_tutorial_guides;"
-                  baseuri="tutorials_and_users_guides.pdf">
-          &otarget_tug;
-        </document>
+      <dir name="uima-docbook-tutorials-and-users-guides">
+        <dir name="d">
+          <document targetdoc="&uima_docs_tutorial_guides;"
+                    baseuri="tutorials_and_users_guides.pdf">
+            &otarget_tug;
+          </document>
+        </dir>
       </dir>
-      <dir name="tools">
-        <document targetdoc="&uima_docs_tools;"
-                  baseuri="tools.pdf">
-          &otarget_tools;
-        </document>
+      <dir name="uima-docbook-tools">
+        <dir name="d">
+          <document targetdoc="&uima_docs_tools;"
+                    baseuri="tools.pdf">
+            &otarget_tools;
+          </document>
+        </dir>
       </dir>
-      <dir name="references">
-        <document targetdoc="&uima_docs_ref;"
-                  baseuri="references.pdf">
-          &otarget_refs;
-        </document>
+      <dir name="uima-docbook-references">
+        <dir name="d">
+          <document targetdoc="&uima_docs_ref;"
+                    baseuri="references.pdf">
+            &otarget_refs;
+          </document>
+        </dir>
       </dir>  
     </dir>  
   </sitemap>

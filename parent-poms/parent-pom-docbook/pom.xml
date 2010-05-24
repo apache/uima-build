@@ -300,7 +300,6 @@
             <version>2.0.10</version>
             <configuration>  <!-- general configuration for both html and pdf -->
               <sourceDirectory>${basedir}/src/docbook</sourceDirectory>
-              <targetDirectory>${project.build.directory}/site/d</targetDirectory>
               <includes>${bookNameRoot}.xml</includes>
               <highlightSource>1</highlightSource>
               <xincludeSupported>true</xincludeSupported>
@@ -315,6 +314,7 @@
                 </goals>
                 <phase>package</phase>
                 <configuration>
+                  <targetDirectory>${project.build.directory}/site/d</targetDirectory>
                   <htmlCustomization>${project.build.directory}/docbook-shared/top/html-single.xsl</htmlCustomization>
                   <!-- olink -->
                   <targetDatabaseDocument>file:///${dolUnzipped}/htmlsingle/site.xml</targetDatabaseDocument>              
@@ -326,6 +326,10 @@
                 <goals><goal>generate-pdf</goal></goals>
                 <phase>package</phase>
                 <configuration>
+                  <!-- pdf: generate first in docbkx, then move.  
+                       because pdf generates an extra temp file xxx.fo
+                       which we want to keep a bit in target in case of debug need -->
+                       
                   <foCustomization>${project.build.directory}/docbook-shared/top/pdf.xsl</foCustomization>
                   <!-- olink -->
                   <targetDatabaseDocument>file:///${dolUnzipped}/pdf/site.xml</targetDatabaseDocument>
@@ -427,7 +431,7 @@
                 <goals><goal>copy-resources</goal></goals>
                 <phase>package</phase>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/docbkx/html/images</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/d/images</outputDirectory>
                   <resources>
                     <resource><directory>src/docbook/images</directory></resource>
                   </resources>
@@ -439,13 +443,27 @@
                 <goals><goal>copy-resources</goal></goals>
                 <phase>package</phase>
                 <configuration>
-                  <outputDirectory>${project.build.directory}/docbkx/html/css</outputDirectory>
+                  <outputDirectory>${project.build.directory}/site/d/css</outputDirectory>
                   <resources>
                     <resource><directory>${project.build.directory}/docbook-shared/css</directory></resource>
                   </resources>
                 </configuration>
               </execution>
-              
+              <!-- move the pdf from the docbkx to the site/d/ -->  
+              <execution>
+                <id>docbook-move-pdf</id>
+                <goals><goal>copy-resources</goal></goals>  <!-- no "move" goal, use copy -->
+                <phase>package</phase>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/site/d</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/docbkx/pdf</directory>
+                      <excludes><exclude>**.fo</exclude></excludes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
             </executions>
           </plugin>           
         </plugins>                    

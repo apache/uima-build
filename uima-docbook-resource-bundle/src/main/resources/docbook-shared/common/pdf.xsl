@@ -42,7 +42,8 @@
   </xsl:param>
   <!--xsl:param name="draft.watermark.image" select="concat($docbook.xsl.root, '/images/draft.png')"/-->
   <!-- Fonts, default alignment -->
-  <xsl:param name="body.font.family" select="'Palatino'"/>
+  <xsl:param name="body.font.family" select="'Times Roman'"/> <!-- standard default pdf font -->
+  <!--xsl:param name="body.font.family" select="'Palatino'"/--> <!-- disable per UIMA-1051 -->
   <xsl:param name="body.font.master" select="'10.5'"/>
   <!--###################################################
                       0.93 fixups
@@ -266,7 +267,9 @@
     ################################################### -->
   <xsl:param name="hyphenate">false</xsl:param>
   <!-- Line height in body text -->
-  <xsl:param name="line-height">1.35</xsl:param>
+  <!--xsl:param name="line-height">1.35</xsl:param--> <!-- for palatino -->
+  <xsl:param name="line-height">1.15</xsl:param> <!-- for Times Roman -->
+  
   <!--###################################################
                    Tables
     ################################################### -->

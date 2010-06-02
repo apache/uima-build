@@ -373,7 +373,9 @@
                       <font-triplet name="ArialMT" style="normal" weight="bold"/>
                     </font>
                     -->
-                    <font>
+                    
+                    <!-- per UIMA-1051 - change to use standard Times Roman default PDF font -->
+                    <!--font>
                       <name>Palatino</name>
                       <style>normal</style>
                       <weight>normal</weight>
@@ -404,7 +406,7 @@
                       <kerning>yes</kerning>
                       <embedFile>c:/Windows/Fonts/palabi.TTF</embedFile>
                       <metricsFile>${project.build.directory}/docbook-shared/fonts/palatino-bold-italic.xml</metricsFile>
-                    </font>
+                    </font-->
                     
                   </fonts>
                   

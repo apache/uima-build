@@ -133,7 +133,10 @@
   
   <issueManagement>
     <system>Jira</system>
-    <url>http://issues.apache.org/jira/uima</url>
+    <!-- the form of the url is from http://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
+    <!--url>https://issues.apache.org/jira/BrowseProject.jspa?projectId=12310570</url-->
+    <url>https://issues.apache.org/jira/browse/UIMA</url>
+        
   </issueManagement>
   
   <!--ciManagement>

@@ -32,7 +32,7 @@
   
 	<artifactId>aggregate-parent-poms</artifactId>
 	<packaging>pom</packaging>
-	<version>2.3.1-SNAPSHOT</version>
+	<version>1-SNAPSHOT</version>
 	<name>UIMA Aggregate: ${project.artifactId}</name>
   <description>This aggregates all the parent poms for convenience</description>
   <url>${uimaWebsiteUrl}</url>

@@ -169,8 +169,8 @@
           </plugin-->
           <plugin>
             <groupId>org.apache.uima</groupId>
-            <artifactId>uima-build-helper</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <artifactId>uima-build-helper-maven-plugin</artifactId>
+            <version>1-SNAPSHOT</version>
             <executions>
               <execution>
                 <id>set buildYear and buildMonth</id>

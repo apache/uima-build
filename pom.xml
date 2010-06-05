@@ -80,7 +80,8 @@
   <!--reporting-->  
 
   <profiles>
-    <profile>
+    <!-- do the dependency purging manually -->
+    <!--profile> 
       <id>apache-release</id>
       <build>
         <plugins>
@@ -96,7 +97,7 @@
           </plugin>
         </plugins>
       </build>
-    </profile>
+    </profile-->
     
     <profile>
       <id>build distribution</id>

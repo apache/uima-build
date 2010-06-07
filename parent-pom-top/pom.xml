@@ -509,6 +509,11 @@
             <executions>
               <execution>
                 <id>default-cli</id>
+                <configuration>
+                  <excludes>
+                    <exclude>release.properties</exclude>
+                  </excludes>
+                </configuration>
               </execution>
             </executions>
           </plugin>

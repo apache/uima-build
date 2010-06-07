@@ -150,12 +150,13 @@
          https://repository.apache.org/service/local/staging/deploy/maven2
        and for snapshots:
          https://repository.apache.org/content/repositories/snapshots -->
-  <!-- for children POMs maven automatically adds their artifactId to the URL below -->
+  <!-- for children POMs maven automatically adds their artifactId to the URL below
+       unless overridden -->
   <distributionManagement>
     <site>
-      <id>uima-website</id>
+      <id>uima.apache.org</id> <!-- following maven convention -->
       <name>UIMA Website</name>
-      <url>${uimaWebsiteDistributionUrl}</url> <!-- set this var in your settings.xml -->
+      <url>${uimaWebsiteDistributionUrl}</url>  <!-- on people.apache.org: /www/uima.apache.org -->
     </site>  
   </distributionManagement>
   
@@ -163,16 +164,28 @@
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
+    <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
     <buildDateTime>${maven.build.timestamp}</buildDateTime>
     <!-- next two properties used by other poms -->
     <localRepoProjVer>
       ${settings.localRepository}/org/apache/uima/${project.artifactId}/${project.version}
     </localRepoProjVer>
-    <artifactVersion>
-      ${project.artifactId}-${project.version}
-    </artifactVersion>
-       
+    <artifactVersion>${project.artifactId}-${project.version}</artifactVersion>
+
+    <!-- these properties are for docbook processing.
+         They are defined here to avoid circular dependencies between
+           parent-pomdocbook   (which depends on uima-docbook-olink) and
+           uima-docbook-olink           
+     -->     
+    <!-- olink databases -->
+    <dolArtifactId>uima-docbook-olink</dolArtifactId>
+    <dolClassifier>olink</dolClassifier>
+    <dolRepo>${settings.localRepository}/org/apache/uima/${dolArtifactId}/${project.version}</dolRepo>
+    <dolZip>${dolArtifactId}-${project.version}-${dolClassifier}.zip</dolZip>
+    <dolUnzipped>${dolRepo}/docbook-olink</dolUnzipped>
+    <dolBuiltFile>${project.build.directory}/</dolBuiltFile>
+    <dolBuiltArtifactFile>${project.build.directory}/${dolZip}</dolBuiltArtifactFile>           
   </properties>
   
   <dependencyManagement>

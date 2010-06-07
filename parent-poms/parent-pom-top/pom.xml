@@ -43,19 +43,19 @@
   It contains one build step to set the build time stamp  
 -->
 
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd" xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 	
   <parent>
 		<artifactId>apache</artifactId>
 		<groupId>org.apache</groupId>
 		<version>7</version>
-    <relativePath/>
+    <relativePath />
 	</parent>
   
 	<groupId>org.apache.uima</groupId>
 	<artifactId>parent-pom-top</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
 	<packaging>pom</packaging>
 
   <name>UIMA ${project.artifactId}</name>
@@ -121,13 +121,13 @@
 
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-top-1
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-top-1
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-top-1
     </url>
   </scm>
   
@@ -141,8 +141,8 @@
   
   <!--ciManagement>
     <system>Hudson</system>
-    <url/>
-    <notifiers/>
+    <url />
+    <notifiers />
   </ciManagement-->
   
   <!-- distribution management - is inherited from Apache pom
@@ -279,7 +279,7 @@
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
-            <!--encoding>UTF-8</encoding   this inherited from apache pom 7 -->
+            <!--encoding>UTF-8</encoding this inherited from apache pom 7 -->
           </configuration>
         </plugin>
         
@@ -554,7 +554,7 @@
               </execution>
               <execution>
                 <id>attach-sources</id>
-                <phase/>  <!-- turn off the plan jar one -->
+                <phase />  <!-- turn off the plan jar one -->
               </execution>             
             </executions>        
           </plugin>

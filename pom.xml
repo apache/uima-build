@@ -63,7 +63,8 @@
   </properties>
     
   <modules>
-    <module>parent-pom-top</module>
+    <!-- can't build the top, because this pom depends on it as a parent -->
+    <!--module>parent-pom-top</module-->
       <module>parent-pom-docbook</module>
         <module>parent-pom-ibm-notice</module>
         <module>parent-pom-eclipse-plugins</module>

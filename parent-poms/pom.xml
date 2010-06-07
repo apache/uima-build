@@ -61,7 +61,7 @@
     <uimaScmRoot>uimaj</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
-  
+    
   <modules>
     <module>parent-pom-top</module>
       <module>parent-pom-docbook</module>
@@ -74,7 +74,7 @@
         <module>parent-pom-annotator</module>
         <module>parent-pom-single-project</module>
     <module>../uima-build-helper-maven-plugin</module>
-    <module>../uima-docbook-olink</module>
+    <!--module>../uima-docbook-olink</module--> <!-- not released -->
     <module>../uima-docbook-resource-bundle</module>
     <module>../uima-jar-resource-bundle</module>
   </modules>  

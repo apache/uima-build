@@ -73,17 +73,7 @@
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
-    
-    <!-- docbook property settings -->
-    <!-- olink databases -->
-    <dolArtifactId>uima-docbook-olink</dolArtifactId>
-    <dolClassifier>olink</dolClassifier>
-    <dolRepo>${settings.localRepository}/org/apache/uima/${dolArtifactId}/1-SNAPSHOT</dolRepo>
-    <dolZip>${dolArtifactId}-1-SNAPSHOT-${dolClassifier}.zip</dolZip>
-    <dolUnzipped>${dolRepo}/docbook-olink</dolUnzipped>
-    <dolBuiltFile>${project.build.directory}/</dolBuiltFile>
-    <dolBuiltArtifactFile>${project.build.directory}/${dolZip}</dolBuiltArtifactFile>
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>   
   </properties>
 
   <!-- build -->               
@@ -98,8 +88,9 @@
       <activation>
         <file><exists>src/docbook</exists></file>
       </activation>
-      
-      <dependencies>
+     
+      <!-- having a dependency specified on 1-SNAPSHOT blocks release --> 
+      <!--dependencies>  
         <dependency>
           <groupId>org.apache.uima</groupId>
           <artifactId>${dolArtifactId}</artifactId>
@@ -107,7 +98,7 @@
           <classifier>${dolClassifier}</classifier>
           <version>1-SNAPSHOT</version>
         </dependency>
-      </dependencies>
+      </dependencies-->
       
       <build>
         <plugins>
@@ -137,36 +128,6 @@
              </executions>
           </plugin-->
           
-          <!--plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-enforcer-plugin</artifactId>
-            <version>1.0-beta-1</version>
-            <executions>
-              <execution>
-                <id>set buildYear and buildMonth</id>
-                <goals>
-                  <goal>enforce</goal>
-                </goals>
-                <configuration>
-                  <rules>
-                    <evaluateBeanshell>
-                      <condition>
-                        import java.text.MessageFormat;
-                        import org.apache.maven.project.MavenProject;
-                        Date[] date = new Date[] {new Date()};
-                        
-               // doesn't work - project needs to be set by dependency injection, not being set
-                        project.getProperties().setProperty("buildYear", MessageFormat.format("{0,date,yyyy}", date));
-                        project.getProperties().setProperty("buildMonth", MessageFormat.format("{0,date,MMMM}", date));
-                        1==1;
-                      </condition>
-                    </evaluateBeanshell>
-                  </rules>
-                  <fail>true</fail>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin-->
           <plugin>
             <groupId>org.apache.uima</groupId>
             <artifactId>uima-build-helper-maven-plugin</artifactId>

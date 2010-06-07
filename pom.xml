@@ -73,6 +73,7 @@
         <!-- build single projects -->
         <module>parent-pom-annotator</module>
         <module>parent-pom-single-project</module>
+    <module>../uima-assembly-single-project</module>
     <module>../uima-build-helper-maven-plugin</module>
     <!--module>../uima-docbook-olink</module--> <!-- not released -->
     <module>../uima-docbook-resource-bundle</module>

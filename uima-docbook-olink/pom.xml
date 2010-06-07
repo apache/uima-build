@@ -20,7 +20,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>parent-pom-docbook</artifactId>
+    <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
     <version>1-SNAPSHOT</version>
     <relativePath/>
@@ -78,9 +78,17 @@
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
+    <!-- olink databases are defined in a common superpom of this and the parent-pom-docbook
+         to avoid circular references -->         
   </properties>
   
   <build>
+    <!-- FLOW:
+      
+         The build step builds the new olink in the local repo, and 
+         at the very end, zips the result into the target, where
+         it is attached 
+    -->
     <plugins>
       <!-- Copy the site.xml files from
            src/main/resources -->
@@ -110,8 +118,9 @@
            to update any repo-newer items without overwriting
            existing unzipped-newer items -->
            
-      <!-- this next just downloads if needed the olink-dbs
+      <!-- this next just downloads (if not already there) the olink-dbs
            zip file from a remote repo into the local one -->
+      <!-- downloads all versions (but we should only have 1-SNAPSHOT) -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
@@ -177,7 +186,7 @@
             <phase>package</phase>
             <configuration>
               <tasks>
-                <zip destfile="${dolRepo}/${dolZip}"
+                <zip destfile="${project.build.directory}/${dolZip}"
                      basedir="${dolUnzipped}"/>
               </tasks>
             </configuration>
@@ -197,7 +206,7 @@
             <configuration>
               <artifacts>
                 <artifact>
-                  <file>${dolRepo}/${dolZip}</file>
+                  <file>${project.build.directory}/${dolZip}</file>
                   <type>zip</type>
                   <classifier>${dolClassifier}</classifier>
                 </artifact>

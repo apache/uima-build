@@ -55,7 +55,7 @@
   
 	<groupId>org.apache.uima</groupId>
 	<artifactId>parent-pom-top</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
   <name>UIMA ${project.artifactId}</name>
@@ -167,11 +167,6 @@
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
     <buildDateTime>${maven.build.timestamp}</buildDateTime>
-    <!-- next two properties used by other poms -->
-    <localRepoProjVer>
-      ${settings.localRepository}/org/apache/uima/${project.artifactId}/${project.version}
-    </localRepoProjVer>
-    <artifactVersion>${project.artifactId}-${project.version}</artifactVersion>
 
     <!-- these properties are for docbook processing.
          They are defined here to avoid circular dependencies between
@@ -181,8 +176,8 @@
     <!-- olink databases -->
     <dolArtifactId>uima-docbook-olink</dolArtifactId>
     <dolClassifier>olink</dolClassifier>
-    <dolRepo>${settings.localRepository}/org/apache/uima/${dolArtifactId}/${project.version}</dolRepo>
-    <dolZip>${dolArtifactId}-${project.version}-${dolClassifier}.zip</dolZip>
+    <dolRepo>${settings.localRepository}/org/apache/uima/${dolArtifactId}/1-SNAPSHOT</dolRepo>
+    <dolZip>${dolArtifactId}-1-SNAPSHOT-${dolClassifier}.zip</dolZip>
     <dolUnzipped>${dolRepo}/docbook-olink</dolUnzipped>
     <dolBuiltFile>${project.build.directory}/</dolBuiltFile>
     <dolBuiltArtifactFile>${project.build.directory}/${dolZip}</dolBuiltArtifactFile>           

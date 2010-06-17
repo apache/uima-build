@@ -69,15 +69,16 @@
         <module>../parent-poms/parent-pom-ibm-notice</module>
         <module>../parent-poms/parent-pom-eclipse-plugins</module>
           <module>../parent-poms/parent-pom-eclipse-plugins-ibm-notice</module>
-        <module>../parent-poms/parent-pom-distr</module>
 
         <!-- build single projects -->
         <module>../parent-poms/parent-pom-annotator</module>
         <module>../parent-poms/parent-pom-single-project</module>
-    <module>../uima-assembly-single-project</module>
-    <module>../uima-build-helper-maven-plugin</module>
-    <!--module>../uima-docbook-olink</module--> <!-- not released -->
-    <module>../uima-docbook-resource-bundle</module>
-    <module>../uima-jar-resource-bundle</module>
+      <module>../parent-poms/parent-pom-distr</module>
+      
+      <module>../uima-assembly-single-project</module>
+      <module>../uima-build-helper-maven-plugin</module>
+      <!--module>../uima-docbook-olink</module--> <!-- not released -->
+      <module>../uima-docbook-resource-bundle</module>
+      <module>../uima-jar-resource-bundle</module>
   </modules>  
 </project>

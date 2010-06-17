@@ -53,8 +53,8 @@
 
   <parent>
     <groupId>org.apache.uima</groupId>
-    <artifactId>parent-pom-docbook</artifactId>
-    <version>1-SNAPSHOT</version>
+    <artifactId>parent-pom-top</artifactId>
+    <version>1</version>
     <relativePath/>
   </parent>
 

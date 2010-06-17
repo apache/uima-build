@@ -29,7 +29,7 @@
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-eclipse-plugins</artifactId>
     <version>1-SNAPSHOT</version>
-    <relativePath/>
+    <relativePath>../parent-pom-eclipse-plugins</relativePath>
   </parent>
 
   <artifactId>parent-pom-eclipse-plugins-ibm-notice</artifactId>

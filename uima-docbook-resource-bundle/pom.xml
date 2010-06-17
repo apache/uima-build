@@ -23,11 +23,11 @@
     <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
     <version>1</version>
-    <relativePath/>
+    <relativePath />
   </parent>
   
   <artifactId>uima-docbook-resource-bundle</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <name>UIMA Docbooks shared resources</name>
   <description>An archive which contains various shared resources used by
     docbook processing</description>
@@ -43,13 +43,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      http://svn.apache.org/viewvc/uima/build/tags/aggregate-parent-poms-1
     </url>
   </scm>
   
@@ -136,8 +136,8 @@
             <configuration>
               <tasks>
                 <copy todir="src/main/resources/docbook-shared/titlepage">
-                  <fileset dir="${project.build.directory}/generated-resources/xml/xslt"/>
-                  <globmapper from="*.xml" to="*.xsl"/>
+                  <fileset dir="${project.build.directory}/generated-resources/xml/xslt" />
+                  <globmapper from="*.xml" to="*.xsl" />
                 </copy>
               </tasks>
             </configuration>

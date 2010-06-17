@@ -46,20 +46,18 @@
            bin - sets execution flags
   -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
     <version>1</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <artifactId>uima-assembly-single-project</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <name>UIMA ${project.artifactId}</name>
   <description>assembly descriptor for single-project</description>
   <url>${uimaWebsiteUrl}</url>
@@ -74,13 +72,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+      http://svn.apache.org/viewvc/uima/build/tags/aggregate-parent-poms-1
     </url>
   </scm>
   

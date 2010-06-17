@@ -32,7 +32,7 @@
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-docbook</artifactId>
     <version>1-SNAPSHOT</version>
-    <relativePath/>
+    <relativePath>../parent-pom-docbook</relativePath>
   </parent>
 
   <artifactId>parent-pom-eclipse-plugins</artifactId>

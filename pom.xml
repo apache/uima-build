@@ -22,19 +22,21 @@
      for docbook processing 
      (if the leaf POM has src/docbook) -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
     <version>1</version>
-    <relativePath />
+    <relativePath/>
   </parent>
 
   <artifactId>parent-pom-docbook</artifactId>
   <packaging>pom</packaging>
-  <version>2-SNAPSHOT</version> 
+  <version>1-SNAPSHOT</version> 
 
   <name>UIMA ${project.artifactId}</name>
   <description>UIMA Parent Pom for Docbook documentation.</description>
@@ -50,13 +52,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-docbook
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-docbook
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-docbook
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </url>
   </scm>
 
@@ -244,7 +246,9 @@
                 <phase>prepare-package</phase>
                 <configuration>
                   <tasks>
-                    <unzip src="${dolRepo}/${dolZip}" dest="${dolRepo}/docbook-olink" overwrite="false" />
+                    <unzip src="${dolRepo}/${dolZip}" 
+                           dest="${dolRepo}/docbook-olink" 
+                           overwrite="false"/>
                   </tasks>
                 </configuration>
               </execution>
@@ -307,7 +311,7 @@
                         Arial-normal-normal font
                     </fo:inline>
                     for the font triplet specified by:
-                    <font-triplet name="Arial" style="normal" weight="bold" />
+                    <font-triplet name="Arial" style="normal" weight="bold"/>
             
                     If you do not want to embed the font in the pdf document
                     then do not include the "embed-url" attribute.
@@ -322,12 +326,12 @@
             
                     <!--
                     <font metrics-url="arial.xml" kerning="yes" embed-url="arial.ttf">
-                      <font-triplet name="Arial" style="normal" weight="normal" />
-                      <font-triplet name="ArialMT" style="normal" weight="normal" />
+                      <font-triplet name="Arial" style="normal" weight="normal"/>
+                      <font-triplet name="ArialMT" style="normal" weight="normal"/>
                     </font>
                     <font metrics-url="arialb.xml" kerning="yes" embed-url="arialb.ttf">
-                      <font-triplet name="Arial" style="normal" weight="bold" />
-                      <font-triplet name="ArialMT" style="normal" weight="bold" />
+                      <font-triplet name="Arial" style="normal" weight="bold"/>
+                      <font-triplet name="ArialMT" style="normal" weight="bold"/>
                     </font>
                     -->
                     

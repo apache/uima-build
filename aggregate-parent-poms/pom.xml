@@ -30,7 +30,7 @@
   
 	<artifactId>aggregate-parent-poms</artifactId>
 	<packaging>pom</packaging>
-	<version>1</version>
+	<version>2-SNAPSHOT</version>
 	<name>UIMA Aggregate: ${project.artifactId}</name>
   <description>This aggregates all the parent poms for convenience</description>
   <url>${uimaWebsiteUrl}</url>
@@ -45,13 +45,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/aggregate-parent-poms
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/aggregate-parent-poms
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/aggregate-parent-poms-1
+      http://svn.apache.org/viewvc/uima/build/trunk/aggregate-parent-poms
     </url>
   </scm>
   

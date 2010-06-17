@@ -23,11 +23,11 @@
     <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
     <version>1</version>
-    <relativePath />
+    <relativePath/>
   </parent>
   
   <artifactId>uima-jar-resource-bundle</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   <name>UIMA Jar shared resources</name>
   <description>An archive which contains templates for generating 
     the necessary license files and notices for all Apache releases.
@@ -45,13 +45,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-jar-resource-bundle
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/uima-jar-resource-bundle
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
     </url>
   </scm>
   

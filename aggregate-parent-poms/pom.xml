@@ -58,7 +58,7 @@
   </scm>
   
   <properties>
-    <uimaScmRoot>uimaj</uimaScmRoot>
+    <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
     

@@ -26,8 +26,8 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
-    <version>1</version>
-    <relativePath/>
+    <version>2-SNAPSHOT</version>
+    <relativePath>../parent-pom-top</relativePath>
   </parent>
   
 	<artifactId>aggregate-parent-poms</artifactId>
@@ -64,7 +64,7 @@
     
   <modules>
     <!-- can't build the top, because this pom depends on it as a parent -->
-    <!--module>../parent-poms/parent-pom-top</module-->
+    <module>../parent-poms/parent-pom-top</module>
       <module>../parent-poms/parent-pom-docbook</module>
         <module>../parent-poms/parent-pom-ibm-notice</module>
         <module>../parent-poms/parent-pom-eclipse-plugins</module>

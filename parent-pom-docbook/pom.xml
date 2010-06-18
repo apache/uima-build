@@ -30,8 +30,8 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
-    <version>1</version>
-    <relativePath/>
+    <version>2-SNAPSHOT</version>
+    <relativePath>../parent-pom-top</relativePath>
   </parent>
 
   <artifactId>parent-pom-docbook</artifactId>

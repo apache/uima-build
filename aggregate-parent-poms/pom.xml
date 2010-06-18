@@ -64,7 +64,7 @@
     
   <modules>
     <!-- can't build the top, because this pom depends on it as a parent -->
-    <module>../parent-poms/parent-pom-top</module>
+    <!--module>../parent-poms/parent-pom-top</module-->
       <module>../parent-poms/parent-pom-docbook</module>
         <module>../parent-poms/parent-pom-ibm-notice</module>
         <module>../parent-poms/parent-pom-eclipse-plugins</module>

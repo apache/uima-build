@@ -22,8 +22,8 @@
   <parent>
     <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
-    <version>1</version>
-    <relativePath/>
+    <version>2-SNAPSHOT</version>
+    <relativePath>../parent-pom-top</relativePath>
   </parent>
   
   <artifactId>uima-jar-resource-bundle</artifactId>

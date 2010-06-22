@@ -24,7 +24,7 @@
   <parent>
     <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
-    <version>1</version>
+    <version>2</version>
   </parent>
   
   <artifactId>uima-build-helper-maven-plugin</artifactId>

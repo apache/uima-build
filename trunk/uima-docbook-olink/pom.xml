@@ -1,0 +1,237 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>parent-pom-top</artifactId>
+    <groupId>org.apache.uima</groupId>
+    <version>2</version>
+    <relativePath/>
+  </parent>
+  
+  <artifactId>uima-docbook-olink</artifactId>
+  <version>1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>UIMA Docbooks olink databases</name>
+  <description>This project creates and updates the 1-SNAPSHOT version
+  of the docbook olink database collection.
+  
+  Docbook processing needs this data to resolve olinks.
+  See http://www.sagehill.net/docbookxsl/Olinking.html#LinkBetweenDocs
+  
+  Docbook processing keeps one continuously updated set of olink
+  databases for all uima books that cross reference each other,
+  as an attached artifact of this project.  When needed, it gets 
+  possibly updated values for the databases from the shared build
+  repository.  Docbook processing updates the corresponding olink
+  data in this set.
+  
+  Committers, after updating a docbook, can choose to share that
+  update by deploying this project (as 1-SNAPSHOT).  This snapshot
+  version is continuously updated as new docs are created and/or updated.
+  
+  The deploy goal will first copy any "newer" versions from the snapshot repo, 
+  and then make and deploy a new snapshot.
+  
+  Update the uima-bookshelf by updating the "site.xml" files
+  contained under src/main/resources.
+  </description>
+  <url>${uimaWebsiteUrl}</url>
+  
+  <!-- Special inheritance note
+       even though the <scm> element that follows is exactly the 
+       same as those in super poms, it cannot be inherited because 
+       there is some special code that computes the connection elements
+       from the chain of parent poms, if this is omitted. 
+       
+       Keeping this a bit factored allows cutting/pasting the <scm>
+       element, and just changing the following two properties -->  
+  <scm>
+    <connection>
+      scm:svn:http://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </connection>
+    <developerConnection>
+      scm:svn:https://svn.apache.org/repos/asf/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </developerConnection>
+    <url>
+      http://svn.apache.org/viewvc/uima/${uimaScmRoot}/trunk/${uimaScmProject}
+    </url>
+  </scm>
+  
+  <properties>
+    <uimaScmRoot>build</uimaScmRoot>
+    <uimaScmProject>${project.artifactId}</uimaScmProject>
+    <!-- olink databases are defined in a common superpom of this and the parent-pom-docbook
+         to avoid circular references -->         
+  </properties>
+  
+  <build>
+    <!-- FLOW:
+      
+         The build step builds the new olink in the local repo, and 
+         at the very end, zips the result into the target, where
+         it is attached 
+    -->
+    <plugins>
+      <!-- Copy the site.xml files from
+           src/main/resources -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-resources-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>update site-info from src/main/resources</id>
+            <phase>package</phase>
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${dolUnzipped}</outputDirectory>
+              <resources>          
+                <resource><directory>src/main/docbook-olink</directory></resource>
+                <!-- next puts in the standard license notice files into the zip -->
+                <resource><directory>${project.build.directory}/maven-shared-archive-resources</directory></resource>
+              </resources>              
+            </configuration>            
+          </execution>
+        </executions>       
+      </plugin>
+      
+      <!-- use dependency:resolve plus antrun unzip
+           to update any repo-newer items without overwriting
+           existing unzipped-newer items -->
+           
+      <!-- this next just downloads (if not already there) the olink-dbs
+           zip file from a remote repo into the local one -->
+      <!-- downloads all versions (but we should only have 1-SNAPSHOT) -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>getOlinkDbsIntoLocalRepo</id>
+            <phase>prepare-package</phase>
+            <goals><goal>resolve</goal></goals>
+            <configuration>
+              <includeGroupIds>org.apache.uima</includeGroupIds>
+              <includeArtifactIds>${dolArtifactId}</includeArtifactIds>
+              <includeTypes>zip</includeTypes>
+              <classifier>${dolClassifier}</classifier>
+              <type>zip</type>
+            </configuration>
+          </execution>           
+        </executions>
+      </plugin>        
+                
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <!-- unzip and overwrite olink dbs only if newer in the archive -->
+          <execution>
+            <id>unzipOlinkDbs</id>
+            <goals><goal>run</goal></goals>
+            <phase>prepare-package</phase>
+            <configuration>
+              <tasks>
+                <unzip src="${dolRepo}/${dolZip}" 
+                       dest="${dolRepo}/docbook-olink" 
+                       overwrite="false"/>
+              </tasks>
+            </configuration>
+          </execution>
+          
+          <!-- clean out previous time-stamped snapshots -->
+          <execution>
+            <id>clean-out-old-snapshots</id>
+            <goals><goal>run</goal></goals>
+            <phase>install</phase> <!-- before deploy -->
+            <configuration>
+              <tasks>
+                <delete>
+                  <fileset dir="${dolRepo}"
+                           includes="${project.artifactId}*.pom ${project.artifactId}*.zip"
+                           excludes="${project.artifactId}-1-SNAPSHOT.pom ${project.artifactId}-1-SNAPSHOT-${dolClassifier}.zip">
+                    <!-- next line doesn't work with ant 1.7.1 -->
+                    <!--filename regex="[0-9]{8}\.[0-9]{6}-[0-9]+"/-->
+                  </fileset>
+                </delete>
+              </tasks>
+            </configuration>
+          </execution>
+                
+          <!-- zip up dolUnzipped 
+               assembly doesn't work here - won't substitute settings properties in the descriptor file
+               so we use antrun -->    
+          <execution>
+            <id>zip-docbook-olink-dbs</id>
+            <goals><goal>run</goal></goals>
+            <phase>package</phase>
+            <configuration>
+              <tasks>
+                <zip destfile="${project.build.directory}/${dolZip}"
+                     basedir="${dolUnzipped}"/>
+              </tasks>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+      
+      <!-- tell maven this new artifact is "attached" -->
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>build-helper-maven-plugin</artifactId>
+        <version>1.5</version>
+        <executions>
+          <execution>
+            <goals><goal>attach-artifact</goal></goals>
+            <phase>package</phase>
+            <configuration>
+              <artifacts>
+                <artifact>
+                  <file>${project.build.directory}/${dolZip}</file>
+                  <type>zip</type>
+                  <classifier>${dolClassifier}</classifier>
+                </artifact>
+              </artifacts>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <configuration>
+              <excludes>
+                <exclude>src/main/docbook-olink/**/*.db</exclude> <!-- generated data -->
+              </excludes>              
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>   
+                       
+    </plugins>
+  </build>
+  
+</project>

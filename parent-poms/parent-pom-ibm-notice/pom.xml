@@ -26,13 +26,13 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-docbook</artifactId>
-    <version>1</version>
+    <version>2-SNAPSHOT</version>
     <relativePath>../parent-pom-docbook</relativePath>
   </parent>
 
   <artifactId>parent-pom-ibm-notice</artifactId>
   <packaging>pom</packaging>
-  <version>1</version> 
+  <version>2-SNAPSHOT</version> 
 
   <name>UIMA ${project.artifactId}</name>
   <description>Adds the IBM Copyright to the Notice file for selected source files</description>
@@ -48,13 +48,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1/parent-poms/parent-pom-ibm-notice
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-ibm-notice
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1/parent-poms/parent-pom-ibm-notice
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-ibm-notice
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/aggregate-parent-poms-1/parent-poms/parent-pom-ibm-notice
+      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-ibm-notice
     </url>
   </scm>
 

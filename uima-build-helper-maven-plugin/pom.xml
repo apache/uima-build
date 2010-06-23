@@ -27,7 +27,7 @@
   </parent>
   
   <artifactId>uima-build-helper-maven-plugin</artifactId>
-  <version>1</version>
+  <version>2-SNAPSHOT</version>
   <packaging>maven-plugin</packaging>
 
   <inceptionYear>2010</inceptionYear>
@@ -46,13 +46,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1/uima-build-helper-maven-plugin
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/uima-build-helper-maven-plugin
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/aggregate-parent-poms-1/uima-build-helper-maven-plugin
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-build-helper-maven-plugin
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/aggregate-parent-poms-1/uima-build-helper-maven-plugin
+      http://svn.apache.org/viewvc/uima/build/trunk/uima-build-helper-maven-plugin
     </url>
   </scm>
   

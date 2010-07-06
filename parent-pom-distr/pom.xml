@@ -27,7 +27,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
-    <version>2</version>
+    <version>4-SNAPSHOT</version>
     <relativePath>../parent-pom-top</relativePath>
   </parent>
 

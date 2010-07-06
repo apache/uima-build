@@ -21,9 +21,10 @@
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
-    <artifactId>parent-pom-top</artifactId>
     <groupId>org.apache.uima</groupId>
-    <version>2</version>
+    <artifactId>parent-pom-top</artifactId>
+    <version>4-SNAPSHOT</version>
+    <relativePath>../parent-poms/parent-pom-top</relativePath>
   </parent>
   
   <artifactId>uima-build-helper-maven-plugin</artifactId>

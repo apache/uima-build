@@ -24,8 +24,8 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
-    <version>2</version>
-    <relativePath>../parent-pom-top</relativePath>
+    <version>4-SNAPSHOT</version>
+    <relativePath>../parent-poms/parent-pom-top</relativePath>
   </parent>
   
 	<artifactId>aggregate-parent-poms</artifactId>
@@ -79,4 +79,45 @@
       <module>../uima-docbook-resource-bundle</module>
       <module>../uima-jar-resource-bundle</module>
   </modules>  
+  
+  <!-- Override the default assembly for source-release to build with the 
+       extra parent-poms directory -->
+  <build>
+    <plugins>
+       <plugin>
+         <artifactId>maven-assembly-plugin</artifactId>
+         <version>2.2-beta-5</version>
+         <executions>
+           <execution>
+             <id>source-release-assembly</id>
+             <phase>package</phase>
+             <goals>
+               <goal>single</goal>
+             </goals>
+             <configuration>
+               <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
+               <tarLongFileFormat>gnu</tarLongFileFormat>
+               <descriptors>
+                 <descriptor>src/main/assembly/multimodule-source-release.xml</descriptor>              
+               </descriptors>
+             </configuration>
+           </execution>
+         </executions>
+         <dependencies>
+           <dependency>
+             <groupId>org.apache.uima</groupId>
+             <artifactId>uima-jar-resource-bundle</artifactId>
+             <version>2</version>
+             <scope>compile</scope>
+           </dependency>
+           <dependency>
+             <groupId>org.apache.apache.resources</groupId>
+             <artifactId>apache-source-release-assembly-descriptor</artifactId>
+             <version>1.0.2</version>
+             <scope>compile</scope>
+           </dependency>
+         </dependencies>
+       </plugin>
+    </plugins>
+  </build>
 </project>

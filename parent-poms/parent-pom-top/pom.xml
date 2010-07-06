@@ -116,7 +116,8 @@
 
   <prerequisites>
     <!-- 2.2.0 is broken when deploying - checksums invalid -->
-    <maven>2.2.1</maven>
+    <!-- 2.2.1 doesn't work -->
+    <maven>3.0-beta-1</maven>
   </prerequisites>
 
   <scm>
@@ -238,7 +239,23 @@
     </repository>
 
   </repositories>
-  <!--pluginRepositories-->
+  
+  <pluginRepositories>
+    <pluginRepository>
+      <id>apache.snapshots.plugins</id>
+      <name>Apache Snapshot Repository - Maven plugins</name>
+      <url>http://repository.apache.org/snapshots</url>
+      <layout>default</layout>
+      <releases>
+        <enabled>false</enabled>
+      </releases>
+      <snapshots>
+        <enabled>true</enabled>
+        <checksumPolicy>fail</checksumPolicy>
+        <updatePolicy>never</updatePolicy>        
+      </snapshots>
+    </pluginRepository>
+  </pluginRepositories>
   
   <build>
     <pluginManagement>

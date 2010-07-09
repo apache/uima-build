@@ -57,7 +57,7 @@
   </parent>
 
   <artifactId>uima-assembly-single-project</artifactId>
-  <version>2</version>
+  <version>3-SNAPSHOT</version>
   <name>UIMA ${project.artifactId}</name>
   <description>assembly descriptor for single-project</description>
   <url>${uimaWebsiteUrl}</url>
@@ -72,13 +72,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/uima-assembly-single-project-2
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/uima-assembly-single-project
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/uima-assembly-single-project-2
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-assembly-single-project
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/uima-assembly-single-project-2
+      http://svn.apache.org/viewvc/uima/build/trunk/uima-assembly-single-project
     </url>
   </scm>
   

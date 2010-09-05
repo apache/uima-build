@@ -41,7 +41,7 @@
   </parent>
 
   <artifactId>parent-pom-annotator</artifactId>
-  <version>3</version>
+  <version>4-SNAPSHOT</version>
   <packaging>pom</packaging> 
   <name>UIMA ${project.artifactId}</name>
   <description>Holds common, factored out settings for annotators</description>
@@ -57,13 +57,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-annotator-3
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-annotator
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-annotator-3
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-annotator
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-annotator-3
+      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-annotator
     </url>
   </scm>
   

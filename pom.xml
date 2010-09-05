@@ -34,7 +34,7 @@
 
   <artifactId>parent-pom-docbook</artifactId>
   <packaging>pom</packaging>
-  <version>3</version> 
+  <version>4-SNAPSHOT</version> 
 
   <name>UIMA ${project.artifactId}</name>
   <description>UIMA Parent Pom for Docbook documentation.</description>
@@ -50,13 +50,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-docbook-3
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-docbook
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-docbook-3
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-docbook
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-docbook-3
+      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-docbook
     </url>
   </scm>
 

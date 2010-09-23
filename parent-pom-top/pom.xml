@@ -334,6 +334,10 @@
                     <name>model</name>
                     <placement>X</placement>
                   </tag>
+                  <tag>
+                    <name>pre</name>
+                    <placement>X</placement>
+                  </tag>
                 </tags>                
               </configuration>
             </execution>
@@ -357,6 +361,10 @@
                   </tag>
                   <tag>
                     <name>model</name>
+                    <placement>X</placement>
+                  </tag>
+                  <tag>
+                    <name>pre</name>
                     <placement>X</placement>
                   </tag>
                 </tags>                

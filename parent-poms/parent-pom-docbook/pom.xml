@@ -226,7 +226,7 @@
                       <version>1-SNAPSHOT</version>
                       <type>zip</type>
                       <classifier>${dolClassifier}</classifier>
-                      <outputDirectory>${dolRepo}</outputDirectory>
+                      <outputDirectory>${dolUnzipped}</outputDirectory>
                     </artifactItem>
                   </artifactItems>
                 </configuration>

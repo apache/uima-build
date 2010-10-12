@@ -71,7 +71,8 @@
   
   <properties>
     <uimaScmRoot>build</uimaScmRoot>
-    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>   
+    <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>  
+    <pdfPaperType>USletter</pdfPaperType> 
   </properties>
 
   <!-- build -->               
@@ -366,7 +367,7 @@
                     </font-->
                     
                   </fonts>
-                  
+                  <paperType>${pdfPaperType}</paperType>                 
                 </configuration>
               </execution>          
             </executions>

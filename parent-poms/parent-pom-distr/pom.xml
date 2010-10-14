@@ -27,13 +27,13 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom-top</artifactId>
-    <version>6-SNAPSHOT</version>
+    <version>6</version>
     <relativePath>../parent-pom-top</relativePath>
   </parent>
 
   <artifactId>parent-pom-distr</artifactId>
   <packaging>pom</packaging>
-  <version>4-SNAPSHOT</version> 
+  <version>4</version> 
 
   <name>UIMA ${project.artifactId}</name>
   <description>UIMA Parent Pom for Release distributions</description>
@@ -49,13 +49,13 @@
        element, and just changing the following two properties -->  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-distr
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-top-6/parent-pom-distr
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-poms/parent-pom-distr
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-top-6/parent-pom-distr
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-poms/parent-pom-distr
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-top-6/parent-pom-distr
     </url>
   </scm>
 

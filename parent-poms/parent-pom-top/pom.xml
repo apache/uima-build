@@ -603,6 +603,9 @@
                 <configuration>
                   <excludes>
                     <exclude>release.properties</exclude>
+                    <exclude>README*</exclude>
+                    <exclude>RELEASE_NOTES*</exclude>
+                    <exclude>issuesFixed/**</exclude>
                   </excludes>
                 </configuration>
               </execution>

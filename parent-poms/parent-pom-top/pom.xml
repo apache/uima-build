@@ -56,7 +56,7 @@
 	<groupId>org.apache.uima</groupId>
 	<artifactId>parent-pom-top</artifactId>
   <version>7-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<packaging>pom</packaging> <!-- cannot be jar because contains <modules> -->
 
   <name>UIMA ${project.artifactId}</name>
 	<description>UIMA (Unstructured Information Management Architecture). 
@@ -117,13 +117,14 @@
   <prerequisites>
     <!-- 2.2.0 is broken when deploying - checksums invalid -->
     <!-- 2.2.1 doesn't work -->
-    <maven>3.0-beta-1</maven>
+    <maven>3.0</maven>
   </prerequisites>
 
   <!--  direct descendants, only -->
   <modules>
     <module>../parent-pom-docbook</module>
     <module>../parent-pom-distr</module>
+    <module>../../uima-jar-resource-bundle</module>
   </modules>
 
   <scm>
@@ -168,6 +169,11 @@
   </distributionManagement>
   
   <properties>
+    <!--  this property is overridden in child projects that are released, to correspond to the 
+          Jira release category(ies) 
+          We specify something here, because if accidentally left blank, it 
+          generates a giant request for all changes -->
+    <jiraReportForVersion>12315429</jiraReportForVersion>  <!-- for parent-pom-top-7 -->
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>parent-poms/${project.artifactId}</uimaScmProject>
@@ -282,6 +288,10 @@
                 </descriptors>
               </configuration>
             </execution>
+            <!-- these next insure version 2.2 is used for these executions -->
+            <execution><id>source-release-assembly</id></execution>
+            <execution><id>uima-distr</id></execution>
+            <execution><id>binary-release</id></execution>
           </executions>
         </plugin>
         
@@ -497,7 +507,33 @@
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>2.1.2</version>  
-        </plugin>              
+        </plugin>
+        
+        <!-- generate the issuesFixed report of Jiras fixed in this release -->
+        <!-- uses the property "jiraVersion" to select the version -->
+        <!-- run using mvn changes:jira-report -N -DjiraVersion=xxxxxx  where
+             xxxxxx is the jira internal version number which you can get 
+             from the Jira url (see parameter fixforversion=xxxxxx) 
+             by going to https://issues.apache.org/jira/browse/UIMA 
+             and selecting "Releases" and then going to the 
+             particular version and looking in the url for
+             that version. -->        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-changes-plugin</artifactId>
+          <version>2.3</version>
+          
+          <configuration>
+            <fixVersionIds>${jiraVersion}</fixVersionIds>
+            <columnNames>Type,Key,Summary</columnNames>
+            <resolutionIds>Fixed</resolutionIds>
+            <statusIds>Closed</statusIds>
+            <sortColumnNames>Type, Key</sortColumnNames>
+            <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
+            <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
+          </configuration>
+        </plugin>      
+                     
       </plugins>
     </pluginManagement>
     
@@ -514,7 +550,7 @@
             <goals><goal>process</goal></goals>
             <configuration>
               <resourceBundles>
-                <resourceBundle>org.apache.uima:uima-jar-resource-bundle:2</resourceBundle>
+                <resourceBundle>org.apache.uima:uima-jar-resource-bundle:4-SNAPSHOT</resourceBundle>
               </resourceBundles>
             </configuration>
           </execution>
@@ -542,8 +578,9 @@
           </execution>
         </executions>
       </plugin>
-        
-    </plugins>
+     
+    </plugins>     
+    
   </build>
   
   <!--reporting-->
@@ -592,7 +629,7 @@
               <dependency>
                 <groupId>org.apache.uima</groupId>
                 <artifactId>uima-jar-resource-bundle</artifactId>
-                <version>3</version>
+                <version>4-SNAPSHOT</version>
                 </dependency>
             </dependencies>
           </plugin>
@@ -612,8 +649,10 @@
               </execution>             
             </executions>        
           </plugin>
+          
         </plugins>
       </build>     
-    </profile>    
+    </profile>
+    
   </profiles>
 </project>

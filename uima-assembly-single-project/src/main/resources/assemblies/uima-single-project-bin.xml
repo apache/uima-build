@@ -87,6 +87,7 @@ under the License.
         <include>data/**</include>
         <include>resources/**</include>
         <include>conf/**</include>
+        <include>issuesFixed/**</include>   
       </includes>        
     </fileSet>
 

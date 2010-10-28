@@ -120,9 +120,9 @@
     <maven>3.0</maven>
   </prerequisites>
   
-  <modules>
+  <!-- modules>
     <module>../uima-build-resources</module>
-  </modules>
+  </modules -->
        
   <scm>
     <connection>
@@ -171,6 +171,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraReportForVersion>12315429</jiraReportForVersion>  <!-- for parent-pom-top-7 -->
+    <uimaBuildResourcesVersion>1-SNAPSHOT</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
@@ -217,7 +218,15 @@ Copyright (c) 2003, 2006 IBM Corporation.
     </dependencies>
   </dependencyManagement>
   
-  <!-- dependencies-->
+  <!-- can't put this dependency at the top level - 
+       causes them to be included in children -->
+  <!--dependencies>
+    <dependency>
+      <groupId>org.apache.uima</groupId>
+      <artifactId>uima-build-resources</artifactId>
+      <version>1-SNAPSHOT</version>
+    </dependency>
+  </dependencies-->
   
   <repositories>
     <!-- note: inheritance does *NOT* merge subparts,
@@ -495,7 +504,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </executions>
         </plugin>
         
-        <!-- set release-plugin version to 2.0,
+        <!-- set release-plugin version to > than 2.0,
              needed for "flat" hierarchy support -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -543,6 +552,24 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
           </configuration>
         </plugin>      
+
+        <!-- this overrides the apache:7 pom to 
+             use this resource bundle which
+             allows additional text after the NOTICE file -->
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-remote-resources-plugin</artifactId>
+          <executions>      
+            <execution>
+              <goals><goal>process</goal></goals>
+              <configuration>
+                <resourceBundles>
+                  <resourceBundle>org.apache.uima:uima-build-resources:${uimaBuildResourcesVersion}</resourceBundle>
+                </resourceBundles>
+              </configuration>
+            </execution>
+          </executions>
+        </plugin>
                      
       </plugins>
     </pluginManagement>
@@ -598,42 +625,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
   <!--reporting-->
   
   <profiles>
-
-    <!-- ********************************** -->
-    <!-- * Custom Remote Resources        * -->
-    <!-- ********************************** -->
-    <!-- This is in a profile because it can't be used for the parent pom itself
-         (causes circular reference in the build) -->
-    <profile>
-      <id>custom remote resources</id>
-      <activation>
-        <file>
-          <missing>marker-file-identifying-parent-pom</missing>
-        </file>
-      </activation>
-      <build>
-        <plugins>
-            <!-- this overrides the apache:7 pom to 
-                 use this resource bundle which
-                 allows additional text after the NOTICE file -->
-		      <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
-		        <artifactId>maven-remote-resources-plugin</artifactId>
-		        <executions>      
-		          <execution>
-		            <goals><goal>process</goal></goals>
-		            <configuration>
-		              <resourceBundles>
-		                <resourceBundle>org.apache.uima:uima-jar-resource-bundle:4-SNAPSHOT</resourceBundle>
-		              </resourceBundles>
-		            </configuration>
-		          </execution>
-		        </executions>
-		      </plugin>
-        </plugins>
-      </build>
-      
-    </profile>
     
     <!-- ********************************** -->
     <!-- * apache-release                 * -->
@@ -652,7 +643,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <dependency>
                 <groupId>org.apache.uima</groupId>
                 <artifactId>uima-build-resources</artifactId>
-                <version>1-SNAPSHOT</version>
+                <version>${uimaBuildResourcesVersion}</version>
                 </dependency>
             </dependencies>
           </plugin>
@@ -692,11 +683,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </activation>
      
       <dependencies>
-        <dependency>
+        <!-- can't have a dependency in the parent pom - unless you want it
+             inherited by all child poms -->
+        <!-- dependency>
           <groupId>org.apache.uima</groupId>
           <artifactId>uima-build-resources</artifactId>
           <version>1-SNAPSHOT</version>
-        </dependency>
+        </dependency -->
         
         <!-- having a dependency specified on 1-SNAPSHOT blocks release --> 
         <!--dependency>
@@ -784,12 +777,18 @@ Copyright (c) 2003, 2006 IBM Corporation.
                      relative references -->
                 <id>copyDocbookInfo</id>
                 <phase>prepare-package</phase>
-                <goals><goal>unpack-dependencies</goal></goals>
+                <goals><goal>unpack</goal></goals>
                 <configuration>
                   <overWriteIfNewer>true</overWriteIfNewer>
-                  <includeArtifactIds>uima-build-resources</includeArtifactIds>
-                  <excludes>META-INF/**</excludes>
-                  <outputDirectory>${project.build.directory}</outputDirectory>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.apache.uima</groupId>
+                      <artifactId>uima-build-resources</artifactId>
+                      <version>1-SNAPSHOT</version>
+                      <excludes>META-INF/**</excludes>
+                      <outputDirectory>${project.build.directory}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
                 </configuration>
               </execution>
 
@@ -800,13 +799,19 @@ Copyright (c) 2003, 2006 IBM Corporation.
                      get at the uima entities -->
                 <id>copyDocbookInfoNextToOlink</id>
                 <phase>prepare-package</phase>
-                <goals><goal>unpack-dependencies</goal></goals>
+                <goals><goal>unpack</goal></goals>
                 <configuration>
                   <overWriteIfNewer>true</overWriteIfNewer>
                   <markersDirectory>${dolRepo}/dependency-maven-plugin-markers</markersDirectory>
-                  <includeArtifactIds>uima-build-resources</includeArtifactIds>
-                  <excludes>META-INF/**</excludes>
-                  <outputDirectory>${dolRepo}</outputDirectory>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.apache.uima</groupId>
+                      <artifactId>uima-build-resources</artifactId>
+                      <version>1-SNAPSHOT</version>
+                      <excludes>META-INF/**</excludes>
+                      <outputDirectory>${dolRepo}</outputDirectory>
+                    </artifactItem>
+                  </artifactItems>
                 </configuration>
               </execution>
 
@@ -1376,7 +1381,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <dependency>
                 <groupId>org.apache.uima</groupId>
                 <artifactId>uima-build-resources</artifactId>
-                <version>1-SNAPSHOT</version>
+                <version>${uimaBuildResourcesVersion}</version>
               </dependency>
             </dependencies>
           </plugin>    

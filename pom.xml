@@ -349,10 +349,14 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <executions>
             <execution>
               <id>attach-javadocs</id>          
-              <goals>
-                <goal>jar</goal>
-              </goals>
+              <goals><goal>jar</goal></goals>
+              <!-- turn off javadoc build for each module by default 
+                   override in individual cases to turn back on if wanted --> 
+              <phase></phase>            
               <configuration>
+                <!-- if next is omitted, causes all projects in reactor that don't
+                     already have full javadocs built, to have them built -->
+                <detectOfflineLinks>false</detectOfflineLinks>
                 <quiet>true</quiet>
                 <!-- identify tags we use so we don't get warning messages for them -->
                 <tags>
@@ -383,6 +387,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <id>javadocs-distr</id>          
               <configuration>
                 <quiet>true</quiet>
+                <!-- if next is omitted, causes all projects in reactor that don't
+                     already have full javadocs built, to have them built -->
+                <detectOfflineLinks>false</detectOfflineLinks>
                 <!-- identify tags we use so we don't get warning messages for them -->
                 <tags>
                   <tag>
@@ -1159,6 +1166,17 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </executions>
           </plugin>
           
+          <plugin>
+	          <artifactId>maven-javadoc-plugin</artifactId>
+	          <executions>
+	            <execution>
+	              <id>attach-javadocs</id>          
+	              <!-- turn on javadoc build for each module --> 
+	              <phase>package</phase> 
+	            </execution>
+	          </executions>           
+          </plugin>
+          
           <!-- build the PEAR -->
           <plugin>
             <groupId>org.apache.uima</groupId>
@@ -1220,6 +1238,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	            </execution>
 	          </executions>
 	        </plugin>
+	        
         </plugins>                    
       </build>
     </profile>
@@ -1359,7 +1378,18 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </file>
       </activation>
       <build>        
-        <plugins>  
+        <plugins>
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>          
+                <!-- turn on javadoc build for each module --> 
+                <phase>package</phase> 
+              </execution>
+            </executions>           
+          </plugin>
+            
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>

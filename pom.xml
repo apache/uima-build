@@ -31,7 +31,7 @@
   <artifactId>uima-build-resources</artifactId>
   <version>1-SNAPSHOT</version>
   
-  <name>UIMA shared build resources</name>
+  <name>UIMA ${project.artifactId}</name>
   <description>This Jar contains resources
     referred to by maven coordinates,
     needed during building

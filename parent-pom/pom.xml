@@ -177,11 +177,7 @@
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
     <buildDateTime>${maven.build.timestamp}</buildDateTime>
 
-    <!-- these properties are for docbook processing.
-         They are defined here to avoid circular dependencies between
-           parent-pomdocbook   (which depends on uima-docbook-olink) and
-           uima-docbook-olink           
-     -->     
+    <!-- these properties are for docbook processing. -->     
     <!-- olink databases -->
     <dolArtifactId>uima-docbook-olink</dolArtifactId>
     <dolClassifier>olink</dolClassifier>

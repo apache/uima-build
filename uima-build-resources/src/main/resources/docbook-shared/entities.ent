@@ -28,6 +28,7 @@
 <!ENTITY uima_docs_tutorial_guides "tutorials_and_users_guides">
 <!ENTITY uima_docs_tools "tools">
 <!ENTITY uima_docs_ref "references">
+<!ENTITY uima_docs_as  "uima_async_scaleout">
 
 <!-- special symbols forced to switch to symbol font
      because FOP 0.20.5 doesn't do this correctly -->

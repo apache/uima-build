@@ -49,12 +49,12 @@
     <artifactId>apache</artifactId>
     <groupId>org.apache</groupId>
     <version>7</version>
-    <relativePath/>
+    <relativePath />
   </parent>
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   <packaging>pom</packaging>
   
   <name>UIMA ${project.artifactId}</name>
@@ -126,13 +126,13 @@
        
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-1
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-1
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-pom
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-1
     </url>
   </scm>
   
@@ -348,7 +348,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <goals><goal>jar</goal></goals>
               <!-- turn off javadoc build for each module by default 
                    override in individual cases to turn back on if wanted --> 
-              <phase></phase>            
+              <phase />            
               <configuration>
                 <!-- if next is omitted, causes all projects in reactor that don't
                      already have full javadocs built, to have them built -->

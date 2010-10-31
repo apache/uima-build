@@ -20,9 +20,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>parent-pom-top</artifactId>
+    <artifactId>parent-pom</artifactId>
     <groupId>org.apache.uima</groupId>
-    <version>4</version>
+    <version>1-SNAPSHOT</version>
     <relativePath/>
   </parent>
   
@@ -150,11 +150,11 @@
             <goals><goal>run</goal></goals>
             <phase>prepare-package</phase>
             <configuration>
-              <tasks>
+              <target>
                 <unzip src="${dolRepo}/${dolZip}" 
                        dest="${dolRepo}/docbook-olink" 
                        overwrite="false"/>
-              </tasks>
+              </target>
             </configuration>
           </execution>
           
@@ -164,7 +164,7 @@
             <goals><goal>run</goal></goals>
             <phase>install</phase> <!-- before deploy -->
             <configuration>
-              <tasks>
+              <target>
                 <delete>
                   <fileset dir="${dolRepo}"
                            includes="${project.artifactId}*.pom ${project.artifactId}*.zip"
@@ -173,7 +173,7 @@
                     <!--filename regex="[0-9]{8}\.[0-9]{6}-[0-9]+"/-->
                   </fileset>
                 </delete>
-              </tasks>
+              </target>
             </configuration>
           </execution>
                 
@@ -185,10 +185,10 @@
             <goals><goal>run</goal></goals>
             <phase>package</phase>
             <configuration>
-              <tasks>
+              <target>
                 <zip destfile="${project.build.directory}/${dolZip}"
                      basedir="${dolUnzipped}"/>
-              </tasks>
+              </target>
             </configuration>
           </execution>
         </executions>

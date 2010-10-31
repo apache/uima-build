@@ -6,6 +6,7 @@
 <!ENTITY otarget_tug      SYSTEM "tutorials_and_users_guides.db">
 <!ENTITY otarget_refs     SYSTEM "references.db">
 <!ENTITY otarget_tools    SYSTEM "tools.db">
+<!ENTITY otarget_as       SYSTEM "uima_asynch_scaleout.db">
 ]>
 <!--
 Licensed to the Apache Software Foundation (ASF) under one
@@ -41,38 +42,42 @@ under the License.
     -->
   <sitemap>
     <dir name="commonTop_ValueIgnored">
-      <dir name="uima-docbook-overview-and-setup">
-        <dir name="d">
-          <document targetdoc="&uima_docs_overview;"
-                    baseuri="overview_and_setup.html">
-            &otarget_overview;
-          </document>
-        </dir>
+
+      <dir name="d">
+        <document targetdoc="&uima_docs_overview;"
+                  baseuri="overview_and_setup.html">
+          &otarget_overview;
+        </document>
       </dir>
-      <dir name="uima-docbook-tutorials-and-users-guides">
-        <dir name="d">
-          <document targetdoc="&uima_docs_tutorial_guides;"
-                    baseuri="tutorials_and_users_guides.html">
-            &otarget_tug;
-          </document>
-        </dir>
+      
+      <dir name="d">
+        <document targetdoc="&uima_docs_tutorial_guides;"
+                  baseuri="tutorials_and_users_guides.html">
+          &otarget_tug;
+        </document>
       </dir>
-      <dir name="uima-docbook-tools">
-        <dir name="d">
-          <document targetdoc="&uima_docs_tools;"
-                    baseuri="tools.html">
-            &otarget_tools;
-          </document>
-        </dir>
+      
+      <dir name="d">
+        <document targetdoc="&uima_docs_tools;"
+                  baseuri="tools.html">
+          &otarget_tools;
+        </document>
       </dir>
-      <dir name="uima-docbook-references">
-        <dir name="d">
-          <document targetdoc="&uima_docs_ref;"
-                    baseuri="references.html">
-            &otarget_refs;
-          </document>
-        </dir>
-      </dir>  
+      
+      <dir name="d">
+        <document targetdoc="&uima_docs_ref;"
+                  baseuri="references.html">
+          &otarget_refs;
+        </document>
+      </dir>
+      
+      <dir name="d">
+        <document targetdoc="&uima_docs_as;"
+                  baseuri="uima_async_scaleout.pdf">
+          &otarget_refs;
+        </document>
+      </dir>
+      
     </dir>  
   </sitemap>
 </targetset>

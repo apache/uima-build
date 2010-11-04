@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>UIMA ${project.artifactId}</name>
@@ -609,12 +609,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <id>default-cli</id>
             <configuration>
               <excludes>
-                <exclude>release.properties</exclude>
+                <exclude>release.properties</exclude> <!-- generated file -->
                 <exclude>README*</exclude>
                 <exclude>RELEASE_NOTES*</exclude>
-                <exclude>issuesFixed/**</exclude>
+                <exclude>issuesFixed/**</exclude> <!-- generated file -->
                 <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
-                <exclude>marker-file-identifying-*</exclude>
+                <exclude>marker-file-identifying-*</exclude> <!-- empty file -->
+                <exclude>DEPENDENCIES</exclude>  <!-- generated file -->
               </excludes>
             </configuration>
           </execution>
@@ -668,8 +669,49 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </executions>        
           </plugin>
           
+          <!-- Run jira report -->
+          <!-- depends on having -DjiraVersion set -->
+          <plugin>
+            <artifactId>maven-changes-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jiraReport</id>
+                <goals><goal>jira-report</goal></goals>
+                <phase>generate-sources</phase>
+              </execution>
+            </executions>  
+          </plugin>
+          
         </plugins>
       </build>     
+    </profile>
+    
+    <!-- **************************************** -->
+    <!-- * Override - don't produce Jira report * -->
+    <!-- **************************************** -->
+    
+    <profile>
+      <id>mavenJirareportSkip</id>
+      <activation>
+        <property>
+          <name>maven.jiraReport.skip</name>
+        </property>
+      </activation>
+      <build>
+        <plugins>
+          <!-- Skip jira report -->
+          <plugin>
+            <artifactId>maven-changes-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>jiraReport</id> 
+                <phase/>
+              </execution>
+            </executions>  
+          </plugin>
+        </plugins>
+      </build>
+
     </profile>
 
 

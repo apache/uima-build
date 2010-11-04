@@ -29,7 +29,7 @@
   
   <groupId>org.apache.uima</groupId>
   <artifactId>uima-build-resources</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   
   <name>UIMA ${project.artifactId}</name>
   <description>This Jar contains resources
@@ -259,6 +259,22 @@
           </execution>
         </executions>
       </plugin>
+    
+      <plugin>  
+        <groupId>org.apache.rat</groupId>
+        <artifactId>apache-rat-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>default-cli</id>
+            <configuration>
+              <excludes>
+                <exclude>release.properties</exclude> <!-- release generated artifact -->
+                <exclude>DEPENDENCIES</exclude> <!-- generated artifact -->
+              </excludes>              
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>       
       
     </plugins>     
     

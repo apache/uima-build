@@ -254,28 +254,14 @@
                 <exclude>issuesFixed/**</exclude>
                 <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
                 <exclude>marker-file-identifying-*</exclude>
+                <exclude>release.properties</exclude> <!-- release generated artifact -->
+                <exclude>DEPENDENCIES</exclude> <!-- generated artifact -->
               </excludes>
             </configuration>
           </execution>
         </executions>
       </plugin>
-    
-      <plugin>  
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <configuration>
-              <excludes>
-                <exclude>release.properties</exclude> <!-- release generated artifact -->
-                <exclude>DEPENDENCIES</exclude> <!-- generated artifact -->
-              </excludes>              
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>       
-      
+          
     </plugins>     
     
   </build>

@@ -630,9 +630,16 @@ Copyright (c) 2003, 2006 IBM Corporation.
   
   <profiles>
     
-    <!-- ********************************** -->
-    <!-- * apache-release                 * -->
-    <!-- ********************************** -->
+    <!-- ************************************************** -->
+    <!-- * apache-release                                 * -->
+    <!-- *   NOTE: This profile is activated while        * --> 
+    <!-- *    running the Maven build pipeline, usually   * -->
+    <!-- *      clean verify (for mvn release:prepare) or * -->
+    <!-- *      deploy (for mvn release;perform),         * -->
+    <!-- *    but is not activated for the                * -->
+    <!-- *    outer execution for mvn release...          * -->
+    <!-- *    on the pom being released                   * -->
+    <!-- ************************************************** -->
     <!-- fix apache common pom --> 
     <profile>
       <id>apache-release</id>
@@ -681,7 +688,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               </execution>
             </executions>  
           </plugin>
-          
+                    
         </plugins>
       </build>     
     </profile>
@@ -713,8 +720,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </build>
 
     </profile>
-
-
+    
     <!-- ********************************** -->
     <!-- *   Docbook Processing           * -->
     <!-- ********************************** -->
@@ -1077,8 +1083,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </plugin>           
         </plugins>                    
       </build>
-    </profile>
-    
+    </profile>    
     <!-- ********************************** -->
     <!-- *   Build Standard PEAR          * -->
     <!-- ********************************** -->
@@ -1271,7 +1276,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	                </descriptors>
 	                <finalName>${assemblyFinalName}</finalName>
 	                <tarLongFileMode>gnu</tarLongFileMode>
-	                <attach>false</attach> <!-- assembly results not put into Maven repos -->
 	              </configuration>              
 	            </execution>
 	          </executions>
@@ -1381,7 +1385,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </pluginManagement>    
       </build>
     </profile>
-    
+
     <!-- **************************************** -->
     <!-- * Build Simple Project Binary Assembly * -->
     <!-- **************************************** -->
@@ -1456,7 +1460,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </plugins>       
       </build>
     </profile>
-    
+        
   </profiles>
        
 </project>

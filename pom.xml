@@ -546,22 +546,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <version>2.3</version>
           <executions>
             <execution>
-              <id>jiraReport</id>
-              <goals><goal>jira-report</goal></goals>
-              <phase>generate-sources</phase>        
-              <configuration>
-                <columnNames>Type,Key,Summary</columnNames>
-                <resolutionIds>Fixed</resolutionIds>
-                <statusIds>Closed</statusIds>
-                <sortColumnNames>Type, Key</sortColumnNames>
-                <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
-                <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
-              </configuration>
-            </execution>
-            <execution>
               <id>default-cli</id>
               <goals><goal>jira-report</goal></goals>
-              <phase>generate-sources</phase>        
+              <!-- don't use generate-sources - because javadoc plugin re-exec's that -->
+              <phase>generate-resources</phase>        
               <configuration>
                 <fixVersionIds>${jiraVersion}</fixVersionIds>
                 <columnNames>Type,Key,Summary</columnNames>
@@ -700,8 +688,51 @@ Copyright (c) 2003, 2006 IBM Corporation.
     </profile>
     
     <!-- **************************************** -->
+    <!-- *   Produce Jira report                * -->
+    <!-- **************************************** -->
+
+    <profile>
+      <id>mavenJirareport</id>
+      <activation>
+        <!-- NOTE: if you try to make this work more generally, by 
+             using a marker file in all top-level release projects,
+             this approach fails because for other top-level
+             release projects, it substitutes the value of
+             the jiraVersion property from the top level pom, not
+             the pom being released.  So other release projects include
+             this kind of profile within themselves, in a profile
+             for "apache-release" triggered by name. -->
+             
+        <!-- It would be nice to have this only run when releasing, 
+             but the activation clauses are currently only
+             "ored" together, not "anded". -->
+             
+        <file><exists>marker-file-identifying-parent-pom</exists></file>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-changes-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-cli</id>
+                <configuration>
+                  <fixVersionIds>${jiraVersion}</fixVersionIds>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
+    <!-- **************************************** -->
     <!-- * Override - don't produce Jira report * -->
     <!-- **************************************** -->
+    
+    <!-- NOTE: if you use this, you MUST check in
+         the generated Jira report into SVN, otherwise
+         it won't appear in the release assemblies. -->
     
     <profile>
       <id>mavenJirareportSkip</id>
@@ -717,7 +748,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <artifactId>maven-changes-plugin</artifactId>
             <executions>
               <execution>
-                <id>jiraReport</id> 
+                <id>default-cli</id> 
                 <phase />
               </execution>
             </executions>  

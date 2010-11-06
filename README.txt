@@ -7,5 +7,5 @@ Go into the parent-pom-top directory, and issue the maven command:
 
    mvn clean install
    
-A list of issues fixed is in issuesFixed/jira-remote.html.
+A list of issues fixed is in issuesFixed/jira-report.html.
    

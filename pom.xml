@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>UIMA ${project.artifactId}</name>
@@ -681,20 +681,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </executions>        
           </plugin>
           
-          <!-- Run jira report -->
-          <!-- depends on having -DjiraVersion set -->
-          <plugin>
-            <artifactId>maven-changes-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>jiraReport</id>
-                <configuration>
-                  <fixVersionIds>${jiraVersion}</fixVersionIds>
-                </configuration>
-              </execution>
-            </executions>  
-          </plugin>
-                    
         </plugins>
       </build>     
     </profile>

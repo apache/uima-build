@@ -558,6 +558,20 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
               </configuration>
             </execution>
+            <execution>
+              <id>default-cli</id>
+              <goals><goal>jira-report</goal></goals>
+              <phase>generate-sources</phase>        
+              <configuration>
+                <fixVersionIds>${jiraVersion}</fixVersionIds>
+                <columnNames>Type,Key,Summary</columnNames>
+                <resolutionIds>Fixed</resolutionIds>
+                <statusIds>Closed</statusIds>
+                <sortColumnNames>Type, Key</sortColumnNames>
+                <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
+                <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
+              </configuration>
+            </execution>
           </executions>
         </plugin>      
 
@@ -681,20 +695,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </executions>        
           </plugin>
           
-          <!-- Run jira report -->
-          <!-- depends on having -DjiraVersion set -->
-          <plugin>
-            <artifactId>maven-changes-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>jiraReport</id>
-                <configuration>
-                  <fixVersionIds>${jiraVersion}</fixVersionIds>
-                </configuration>
-              </execution>
-            </executions>  
-          </plugin>
-                    
         </plugins>
       </build>     
     </profile>

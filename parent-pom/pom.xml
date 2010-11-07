@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>UIMA ${project.artifactId}</name>
@@ -873,7 +873,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-build-resources</artifactId>
                       <version>1-SNAPSHOT</version>
-                      <excludes>META-INF/**</excludes>
+                      <includes>docbook-shared/**</includes>
                       <outputDirectory>${project.build.directory}</outputDirectory>
                     </artifactItem>
                   </artifactItems>
@@ -896,7 +896,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-build-resources</artifactId>
                       <version>1-SNAPSHOT</version>
-                      <excludes>META-INF/**</excludes>
+                      <includes>docbook-shared/**</includes>
                       <outputDirectory>${dolRepo}</outputDirectory>
                     </artifactItem>
                   </artifactItems>

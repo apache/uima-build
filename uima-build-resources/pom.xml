@@ -29,7 +29,7 @@
   
   <groupId>org.apache.uima</groupId>
   <artifactId>uima-build-resources</artifactId>
-  <version>2-SNAPSHOT</version>
+  <version>1-SNAPSHOT</version>
   
   <name>UIMA ${project.artifactId}</name>
   <description>This Jar contains resources
@@ -239,6 +239,16 @@
     </pluginManagement>
     
     <plugins>
+                
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <executions>      
+          <execution>
+            <goals><goal>bundle</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
                   
       <plugin>
         <groupId>org.apache.rat</groupId>

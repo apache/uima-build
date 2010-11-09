@@ -568,24 +568,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </execution>
           </executions>
         </plugin>      
-
-        <!-- this overrides the apache:7 pom to 
-             use this resource bundle which
-             allows additional text after the NOTICE file -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-remote-resources-plugin</artifactId>
-          <executions>      
-            <execution>
-              <goals><goal>process</goal></goals>
-              <configuration>
-                <resourceBundles>
-                  <resourceBundle>org.apache.uima:uima-build-resources:${uimaBuildResourcesVersion}</resourceBundle>
-                </resourceBundles>
-              </configuration>
-            </execution>
-          </executions>
-        </plugin>
                      
       </plugins>
     </pluginManagement>
@@ -637,7 +619,29 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </execution>
         </executions>
       </plugin>     
-      
+
+      <!-- this overrides the apache:7 pom to 
+           use this resource bundle which
+           allows additional text after the NOTICE file
+           
+           Note: putting this in the pluginManagement section
+           fails to override the configuration from the
+           Apache common parent pom -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <executions>      
+          <execution>
+            <goals><goal>process</goal></goals>
+            <configuration>
+              <resourceBundles>
+                <resourceBundle>org.apache.uima:uima-build-resources:${uimaBuildResourcesVersion}</resourceBundle>
+              </resourceBundles>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+              
       <plugin>
         <groupId>org.apache.rat</groupId>
         <artifactId>apache-rat-plugin</artifactId>

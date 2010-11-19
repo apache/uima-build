@@ -29,7 +29,7 @@
   
   <groupId>org.apache.uima</groupId>
   <artifactId>uima-build-resources</artifactId>
-  <version>1-SNAPSHOT</version>
+  <version>1</version>
   
   <name>UIMA ${project.artifactId}</name>
   <description>This Jar contains resources
@@ -39,13 +39,13 @@
  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/uima-build-resources
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/uima-build-resources-1-rc4
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-build-resources
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/uima-build-resources-1-rc4
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/uima-build-resources
+      http://svn.apache.org/viewvc/uima/build/tags/uima-build-resources-1-rc4
     </url>
   </scm>
       

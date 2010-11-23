@@ -539,7 +539,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
         <!-- generate the issuesFixed report of Jiras fixed in this release -->
         <!-- uses the property "jiraVersion" to select the version -->
-        <!-- run using mvn changes:jira-report -N -DjiraVersion=xxxxxx  where
+        <!-- Runs automatically during release.
+             Can also be run manually using 
+             mvn changes:jira-report -N -DjiraVersion=xxxxxx  where
              xxxxxx is the jira internal version number which you can get 
              from the Jira url (see parameter fixforversion=xxxxxx) 
              by going to https://issues.apache.org/jira/browse/UIMA 
@@ -882,7 +884,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <artifactItem>
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-build-resources</artifactId>
-                      <version>1-SNAPSHOT</version>
+                      <version>1</version>
                       <includes>docbook-shared/**</includes>
                       <outputDirectory>${project.build.directory}</outputDirectory>
                     </artifactItem>
@@ -905,7 +907,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <artifactItem>
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-build-resources</artifactId>
-                      <version>1-SNAPSHOT</version>
+                      <version>1</version>
                       <includes>docbook-shared/**</includes>
                       <outputDirectory>${dolRepo}</outputDirectory>
                     </artifactItem>

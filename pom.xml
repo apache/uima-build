@@ -39,13 +39,13 @@
  
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/uima-build-resources-1
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/uima-build-resources-1-rc4
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/uima-build-resources-1
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/uima-build-resources-1-rc4
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/uima-build-resources-1
+      http://svn.apache.org/viewvc/uima/build/tags/uima-build-resources-1-rc4
     </url>
   </scm>
       
@@ -239,6 +239,16 @@
     </pluginManagement>
     
     <plugins>
+                
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-remote-resources-plugin</artifactId>
+        <executions>      
+          <execution>
+            <goals><goal>bundle</goal></goals>
+          </execution>
+        </executions>
+      </plugin>
                   
       <plugin>
         <groupId>org.apache.rat</groupId>
@@ -254,12 +264,14 @@
                 <exclude>issuesFixed/**</exclude>
                 <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
                 <exclude>marker-file-identifying-*</exclude>
+                <exclude>release.properties</exclude> <!-- release generated artifact -->
+                <exclude>DEPENDENCIES</exclude> <!-- generated artifact -->
               </excludes>
             </configuration>
           </execution>
         </executions>
       </plugin>
-      
+          
     </plugins>     
     
   </build>

@@ -388,6 +388,14 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <execution>
               <id>javadocs-distr</id>          
               <configuration>
+                <!-- fix java api links because Oracle bought Sun -->
+                <javaApiLinks>
+                  <property>
+                    <name>api_1.5</name>
+                    <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
+                  </property>
+                </javaApiLinks>
+              
                 <quiet>true</quiet>
                 <!-- if next is omitted, causes all projects in reactor that don't
                      already have full javadocs built, to have them built -->

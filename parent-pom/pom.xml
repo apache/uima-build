@@ -1362,7 +1362,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <directory>.</directory>
             <includes>
               <include>plugin.xml</include>
-              <include>icons/*.*</include>
+              <!-- include subdir of icons too, [UIMA-1958] -->
+              <include>icons/**/*.*</include>
             </includes>
           </resource>
           <!-- need the following, is not "merged" from the overall maven superPom -->

@@ -1443,6 +1443,58 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </pluginManagement>    
       </build>
     </profile>
+    
+    <!-- ************************************ -->
+    <!-- *   Build Eclipse Feature          * -->
+    <!-- ************************************ -->
+    <profile>
+      <id>build eclipse features</id>
+      <activation>
+        <file>
+          <exists>marker-file-identifying-eclipse-feature</exists>
+        </file>
+      </activation>
+      <build>
+        <finalName>${project.artifactId}_${parsedVersion.osgiVersion}</finalName>
+        <!-- turn on filtering for these resources -->         
+        <resources>
+          <resource>
+            <directory>${basedir}</directory>
+            <includes>
+              <include>feature.properties</include>
+              <include>feature.xml</include>
+            </includes>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
+
+        <plugins>
+          <!-- filter the feature.xml to have the right version info 
+               for Eclipse at the top level-->
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>filter feature.xml</id>
+                <!-- run before process-resources, which uses this result -->
+                <phase>generate-resources</phase>
+                <goals><goal>copy-resources</goal></goals>
+                <configuration>
+                  <outputDirectory>${basedir}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>src/main/resources</directory>
+                      <includes><include>feature.xml</include></includes>
+                      <filtering>true</filtering>
+                    </resource>
+                  </resources> 
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>    
 
     <!-- **************************************** -->
     <!-- * Build Simple Project Binary Assembly * -->
@@ -1518,6 +1570,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </plugins>       
       </build>
     </profile>
+        
         
   </profiles>
        

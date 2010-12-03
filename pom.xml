@@ -568,17 +568,16 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <phase>generate-resources</phase>        
               <configuration>
                 <fixVersionIds>${jiraVersion}</fixVersionIds>
-                <columnNames>Type,Key,Summary</columnNames>
+                <columnNames>Type,Key,Status,Summary</columnNames>
                 <resolutionIds>Fixed</resolutionIds>
-                <statusIds>Closed</statusIds>
-                <sortColumnNames>Type, Key</sortColumnNames>
+                <statusIds>Closed,Resolved</statusIds>
+                <sortColumnNames>Type,Key,Status</sortColumnNames>
                 <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
                 <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
               </configuration>
             </execution>
           </executions>
-        </plugin>      
-                     
+        </plugin>                      
       </plugins>
     </pluginManagement>
     

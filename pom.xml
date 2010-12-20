@@ -517,6 +517,18 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <id>default-cli</id>
               <goals><goal>check</goal></goals>
               <phase>verify</phase>
+              <!-- default configuration -->
+              <configuration>
+                <excludes>
+                  <exclude>release.properties</exclude> <!-- generated file -->
+                  <exclude>README*</exclude>
+                  <exclude>RELEASE_NOTES*</exclude>
+                  <exclude>issuesFixed/**</exclude> <!-- generated file -->
+                  <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
+                  <exclude>marker-file-identifying-*</exclude> <!-- empty file -->
+                  <exclude>DEPENDENCIES</exclude>  <!-- generated file -->
+                </excludes>
+              </configuration>
             </execution>
           </executions>
         </plugin>
@@ -650,27 +662,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </execution>
         </executions>
       </plugin>
-              
-      <plugin>
-        <groupId>org.apache.rat</groupId>
-        <artifactId>apache-rat-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>default-cli</id>
-            <configuration>
-              <excludes>
-                <exclude>release.properties</exclude> <!-- generated file -->
-                <exclude>README*</exclude>
-                <exclude>RELEASE_NOTES*</exclude>
-                <exclude>issuesFixed/**</exclude> <!-- generated file -->
-                <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
-                <exclude>marker-file-identifying-*</exclude> <!-- empty file -->
-                <exclude>DEPENDENCIES</exclude>  <!-- generated file -->
-              </excludes>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
       
     </plugins>     
     
@@ -725,6 +716,16 @@ Copyright (c) 2003, 2006 IBM Corporation.
               </execution>             
             </executions>        
           </plugin>
+          
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-cli</id>
+              </execution>
+            </executions>
+          </plugin>          
           
         </plugins>
       </build>     

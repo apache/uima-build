@@ -170,7 +170,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>12315481</jiraVersion>  <!-- for parent-pom-1, override from the command line -->
+    <jiraVersion>12315582</jiraVersion>  <!-- for parent-pom-1, override from the command line -->
     <uimaBuildResourcesVersion>1</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>

@@ -22,7 +22,7 @@
   <parent>
     <artifactId>parent-pom</artifactId>
     <groupId>org.apache.uima</groupId>
-    <version>1-SNAPSHOT</version>
+    <version>2</version>
     <relativePath/>
   </parent>
   

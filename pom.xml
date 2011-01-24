@@ -347,6 +347,40 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <configuration>
             <source>5</source> <!-- needed to do Enums -->
             <encoding>UTF-8</encoding>
+            <!-- if next is omitted, causes all projects in reactor that don't
+                     already have full javadocs built, to have them built -->
+            <detectOfflineLinks>false</detectOfflineLinks>
+            <quiet>true</quiet>            
+            <!-- fix java api links because Oracle bought Sun -->
+            <javaApiLinks>
+              <property>
+                <name>api_1.5</name>
+                <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
+              </property>
+            </javaApiLinks>
+            <!-- identify tags we use so we don't get warning messages for them -->
+            <tags>
+              <tag>
+                <name>generated</name>
+                <placement>X</placement>
+              </tag>
+              <tag>
+                <name>ordered</name>
+                <placement>X</placement>
+              </tag>
+              <tag>
+                <name>modifiable</name>
+                <placement>X</placement>
+              </tag>
+              <tag>
+                <name>model</name>
+                <placement>X</placement>
+              </tag>
+              <tag>
+                <name>pre</name>
+                <placement>X</placement>
+              </tag>
+            </tags>                          
           </configuration>
           <executions>
             <execution>
@@ -355,76 +389,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <!-- turn off javadoc build for each module by default 
                    override in individual cases to turn back on if wanted --> 
               <phase />            
-              <configuration>
-                <!-- if next is omitted, causes all projects in reactor that don't
-                     already have full javadocs built, to have them built -->
-                <detectOfflineLinks>false</detectOfflineLinks>
-                <quiet>true</quiet>
-                <!-- identify tags we use so we don't get warning messages for them -->
-                <tags>
-                  <tag>
-                    <name>generated</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>ordered</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>modifiable</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>model</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>pre</name>
-                    <placement>X</placement>
-                  </tag>
-                </tags>                
-              </configuration>
             </execution>
-            <execution>
-              <id>javadocs-distr</id>          
-              <configuration>
-                <!-- fix java api links because Oracle bought Sun -->
-                <javaApiLinks>
-                  <property>
-                    <name>api_1.5</name>
-                    <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
-                  </property>
-                </javaApiLinks>
-              
-                <quiet>true</quiet>
-                <!-- if next is omitted, causes all projects in reactor that don't
-                     already have full javadocs built, to have them built -->
-                <detectOfflineLinks>false</detectOfflineLinks>
-                <!-- identify tags we use so we don't get warning messages for them -->
-                <tags>
-                  <tag>
-                    <name>generated</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>ordered</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>modifiable</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>model</name>
-                    <placement>X</placement>
-                  </tag>
-                  <tag>
-                    <name>pre</name>
-                    <placement>X</placement>
-                  </tag>
-                </tags>                
-              </configuration>
-            </execution>            
           </executions>          
         </plugin>
         
@@ -1337,6 +1302,42 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	            </execution>
 	          </executions>
 	        </plugin>
+
+          <!-- https://issues.apache.org/jira/browse/UIMA-2008 -->
+          <!-- no maven deployment of this project's artifacts -->
+          <!-- binary build artifact deployed from apache mirror system after release -->
+          <plugin>
+            <artifactId>maven-deploy-plugin</artifactId>      
+            <configuration>
+              <skip>true</skip>
+            </configuration>
+          </plugin>
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>generate checksums for binary artifacts</id>
+                <goals><goal>run</goal></goals>
+                <phase>verify</phase>
+                <configuration>
+                  <target>
+                    <checksum algorithm="sha1" format="MD5SUM">
+                      <fileset dir="${project.build.directory}">
+                        <include name="*.zip" />
+                        <include name="*.gz" />
+                      </fileset>
+                    </checksum>
+                    <checksum algorithm="md5" format="MD5SUM">
+                      <fileset dir="${project.build.directory}">
+                        <include name="*.zip" />
+                        <include name="*.gz" />
+                      </fileset>
+                    </checksum>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
 	        
         </plugins>                    
       </build>

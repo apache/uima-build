@@ -548,7 +548,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <columnNames>Type,Key,Status,Summary</columnNames>
                 <resolutionIds>Fixed</resolutionIds>
                 <statusIds>Closed,Resolved</statusIds>
-                <sortColumnNames>Type,Key,Status</sortColumnNames>
+                <sortColumnNames>Status, Key, Type</sortColumnNames>
                 <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
                 <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
               </configuration>

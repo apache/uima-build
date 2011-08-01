@@ -38,7 +38,6 @@ under the License.
       <useProjectArtifact>false</useProjectArtifact>
       <fileMode>644</fileMode>
       <directoryMode>755</directoryMode>
-      <excludes><exclude>org.apache.uima:uima-docbook-olink:zip:olink</exclude></excludes>
       <useTransitiveDependencies>false</useTransitiveDependencies>
     </dependencySet>
   </dependencySets>
@@ -93,9 +92,8 @@ under the License.
 
     <!-- docbooks -->
     <fileSet>
-      <directory>target/docbkx</directory>
+      <directory>target/site/d</directory>
       <outputDirectory>docs</outputDirectory>
-      <excludes><exclude>pdf/*.fo</exclude></excludes>
       <fileMode>644</fileMode>
       <directoryMode>755</directoryMode>        
     </fileSet>

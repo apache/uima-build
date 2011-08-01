@@ -50,11 +50,7 @@
   </scm>
       
   <properties>
-    <!--  this property is overridden in child projects that are released, to correspond to the 
-          Jira release category(ies) 
-          We specify something here, because if accidentally left blank, it 
-          generates a giant request for all changes -->
-    <jiraReportForVersion>12315429</jiraReportForVersion>  <!-- for parent-pom-top-7 -->
+    <jiraReportForVersion>12317440</jiraReportForVersion>  
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>

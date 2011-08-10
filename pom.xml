@@ -117,9 +117,14 @@
   <profiles>
     <profile>
       <id>apache-release</id>
-
+ 
+      <properties>
+        <sourceReleaseAssemblyDescriptor>source-release</sourceReleaseAssemblyDescriptor>
+      </properties>
       <build>
         <plugins>
+        
+          <!-- use "standard" source-release assembly -->         
 	        <plugin>
 	          <artifactId>maven-changes-plugin</artifactId>
 	          <executions>

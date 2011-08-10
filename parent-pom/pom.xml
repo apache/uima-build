@@ -48,7 +48,7 @@
   <parent>
     <artifactId>apache</artifactId>
     <groupId>org.apache</groupId>
-    <version>7</version>
+    <version>10</version>
     <relativePath />
   </parent>
 
@@ -119,11 +119,7 @@
     <!-- 2.2.1 doesn't work -->
     <maven>3.0</maven>
   </prerequisites>
-  
-  <!-- modules>
-    <module>../uima-build-resources</module>
-  </modules -->
-       
+        
   <scm>
     <connection>
       scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
@@ -140,15 +136,15 @@
     <system>Jira</system>
     <!-- the form of the url is from http://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
     <!--url>https://issues.apache.org/jira/BrowseProject.jspa?projectId=12310570</url-->
-    <url>https://issues.apache.org/jira/browse/UIMA</url>
+    <url>https://issues.apache.org/jira/browse/UIMA?projectId=12310570</url>
         
   </issueManagement>
   
-  <!--ciManagement>
-    <system>Hudson</system>
-    <url />
+  <ciManagement>
+    <system>Jenkins</system>
+    <url>https://builds.apache.org/</url>
     <notifiers />
-  </ciManagement-->
+  </ciManagement>
   
   <!-- distribution management - is inherited from Apache pom
        and specifies 
@@ -171,7 +167,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>12315582</jiraVersion>  <!-- for parent-pom-1, override from the command line -->
-    <uimaBuildResourcesVersion>1</uimaBuildResourcesVersion>
+    <uimaBuildResourcesVersion>2</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
@@ -189,6 +185,7 @@
     
     <pdfPaperType>USletter</pdfPaperType>
     
+    <!-- This next dir *must match* the one the PearPackagingMavenPlugin uses -->
     <pearPackagingDir>${project.build.directory}/pearPackaging</pearPackagingDir>    
   
     <!-- poms wanting this need to set the postNoticeText to this value -->          
@@ -293,7 +290,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
              warning message to use install instead -->
         <plugin> 
           <artifactId>maven-assembly-plugin</artifactId>
-          <version>2.2</version>
           <executions>
             <execution>
               <id>default-cli</id>
@@ -303,10 +299,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 </descriptors>
               </configuration>
             </execution>
-            <!-- these next insure version 2.2 is used for these executions -->
-            <!-- execution><id>source-release-assembly</id></execution>
-            <execution><id>uima-distr</id></execution>
-            <execution><id>binary-release</id></execution-->
           </executions>
         </plugin>
         
@@ -320,7 +312,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>2.3.1</version>
           <configuration>
             <source>1.5</source>
             <target>1.5</target>
@@ -331,19 +322,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.1</version>
+          <version>2.3</version>
         </plugin>
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-gpg-plugin</artifactId>
-          <version>1.1</version>
-        </plugin>
-      
+             
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>2.7</version>
           <configuration>
             <source>5</source> <!-- needed to do Enums -->
             <encoding>UTF-8</encoding>
@@ -351,13 +335,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
                      already have full javadocs built, to have them built -->
             <detectOfflineLinks>false</detectOfflineLinks>
             <quiet>true</quiet>            
-            <!-- fix java api links because Oracle bought Sun -->
-            <javaApiLinks>
-              <property>
-                <name>api_1.5</name>
-                <value>http://download.oracle.com/javase/1.5.0/docs/api/</value>
-              </property>
-            </javaApiLinks>
             <!-- identify tags we use so we don't get warning messages for them -->
             <tags>
               <tag>
@@ -392,11 +369,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </execution>
           </executions>          
         </plugin>
-        
+                
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.3.1</version>
           <configuration>
             <archive>
               <manifestEntries>
@@ -420,7 +396,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.6</version>
           <dependencies>
             <dependency>
               <groupId>org.apache.ant</groupId>
@@ -462,7 +437,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <groupId>org.apache.felix</groupId>
           <artifactId>maven-bundle-plugin</artifactId>
           <!-- version 2.0.0 fails -->
-          <version>2.1.0</version>
+          <!-- version 2.3.4 eliminates spurious warning messages -->
+          <!-- version 2.5 has accidental dependency on Java 6 -->
+          <version>2.3.4</version>
           <extensions>true</extensions>
           <executions>
             <execution>
@@ -476,7 +453,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
-          <version>0.6</version>
           <executions>
             <execution>
               <id>default-cli</id>
@@ -498,30 +474,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </executions>
         </plugin>
         
-        <!-- set release-plugin version to > than 2.0,
-             needed for "flat" hierarchy support -->
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-release-plugin</artifactId>
-          <version>2.1</version>         
-          <configuration>
-            <useReleaseProfile>false</useReleaseProfile>
-            <goals>deploy</goals>
-            <arguments>-Papache-release</arguments>
-          </configuration>
-        </plugin>
-        
-        <plugin>
-          <artifactId>maven-resources-plugin</artifactId>
-          <version>2.4.3</version>
-        </plugin>
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-source-plugin</artifactId>
-          <version>2.1.2</version>  
-        </plugin>
-        
         <!-- generate the issuesFixed report of Jiras fixed in this release -->
         <!-- uses the property "jiraVersion" to select the version -->
         <!-- Runs automatically during release.
@@ -536,7 +488,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
-          <version>2.3</version>
+          <version>2.6</version>
           <executions>
             <execution>
               <id>default-cli</id>
@@ -606,7 +558,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </executions>
       </plugin>     
 
-      <!-- this overrides the apache:7 pom to 
+      <!-- this overrides the apache pom to 
            use this resource bundle which
            allows additional text after the NOTICE file
            
@@ -910,24 +862,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 </configuration>
               </execution>                         
             </executions>
-          </plugin> 
-          
-          <!--plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-antrun-plugin</artifactId>
-            <executions>
-              <execution>
-                <id>unzipOlinkDbs</id>
-                <goals><goal>run</goal></goals>
-                <phase>prepare-package</phase>
-                <configuration>
-                  <tasks>
-                    <unzip src="${dolRepo}/${dolZip}" dest="${dolRepo}/docbook-olink" overwrite="false" />
-                  </tasks>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin-->         
+          </plugin>        
           
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
@@ -1105,169 +1040,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </plugin>           
         </plugins>                    
       </build>
-    </profile>    
-    <!-- ********************************** -->
-    <!-- *   Build Standard PEAR          * -->
-    <!-- ********************************** -->
-    <profile>
-      <id>build standard PEAR</id>
-      <activation>
-        <file>
-          <exists>marker-file-identifying-standard-pear</exists>
-        </file>
-      </activation>
-      <build>  
-        
-        <plugins>  
-           <!-- populate the lib dir with all needed dependencies
-             that will be distributed with this component
-             
-             NOTE: TRANSITIVE DEPENDENIES ARE NOT INCLUDED
-                   ANYTHING YOU WANT INCLUDED IN THE JAR 
-                   PLEASE LIST EXPLICITLY AND MODIFY THE LICENSE/NOTICE
-                   APPROPRIATELY
-              
-             Runs during process-resources -->
-                     
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-dependency-plugin</artifactId>
-            <executions>
-              <!-- Copy the dependencies to the target/assembly-bin folder for the PEAR to copy -->
-              <execution>
-                <id>copy dependencies to lib</id>
-                <goals><goal>copy-dependencies</goal></goals>
-                <phase>process-resources</phase>
-                <configuration>
-                  <outputDirectory>${pearPackagingDir}/lib</outputDirectory>
-                  <includeScope>runtime</includeScope>
-                  <excludeTransitive>true</excludeTransitive>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-          
-          <plugin>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-resources-plugin</artifactId>
-            <executions>
-              
-              <!-- add the contents of desc if it exists to the jar.  
-                   This puts the things like the WhitespaceTokenizer.xml file into the Jar
-                   and makes it easier for users to run this, without installing a pear. 
-                   The Tagger project uses this technique, for instance -->
-              <execution>
-                <id>copy desc so its contents can be found in Jar</id>
-                <goals><goal>copy-resources</goal></goals>
-                <phase>process-resources</phase>  <!-- required -->
-                <configuration>
-                  <outputDirectory>${project.build.outputDirectory}</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>desc</directory>
-                      <includes><include>**</include></includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-              
-              <!-- copy the License/notice/readme/release notes files into the Pear at the top level -->
-              <execution>
-                <id>Copy Pear Lic/Not/Readme/Relnotes</id>
-                <goals><goal>copy-resources</goal></goals>
-                <phase>process-resources</phase>
-                <configuration>
-                  <outputDirectory>${pearPackagingDir}</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>.</directory>
-                      <includes>
-                        <include>LICENSE*</include>
-                        <include>NOTICE*</include>
-                        <include>README*</include>
-                        <include>readme*</include>
-                        <include>RELEASE_NOTES*</include>
-                        <include>ReleaseNotes*</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-              
-              <!-- copy generated Jar to pearPackaging/lib spot -->
-              <execution>
-                <id>copy standard sandbox target jar to pearPackaging/lib</id>
-                <goals><goal>copy-resources</goal></goals>
-                <phase>pre-integration-test</phase>  <!-- a phase after jar -->
-                <configuration>
-                  <outputDirectory>${pearPackagingDir}/lib</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${project.build.directory}</directory>
-                      <includes><include>*.jar</include></includes>
-                      <excludes><exclude>*-sources.jar</exclude></excludes>     
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>
-              
-              <!-- copy generated docbook artifacts to pearPackaging/doc folder -->        
-              <execution>
-                <id>copy generated docbook artifacts to pearPackaging/doc folder</id>
-                <goals><goal>copy-resources</goal></goals>
-                <phase>pre-integration-test</phase>  <!-- a phase after docbkx (package) phase -->
-                <configuration>
-                  <outputDirectory>${pearPackagingDir}/doc</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${project.build.directory}/docbkx</directory>
-                      <excludes>
-                        <exclude>**/*.fo</exclude>
-                      </excludes>
-                    </resource>
-                  </resources>
-                </configuration>
-              </execution>          
-            </executions>
-          </plugin>
-          
-          <plugin>
-	          <artifactId>maven-javadoc-plugin</artifactId>
-	          <executions>
-	            <execution>
-	              <id>attach-javadocs</id>          
-	              <!-- turn on javadoc build for each module --> 
-	              <phase>package</phase> 
-	            </execution>
-	          </executions>           
-          </plugin>
-          
-          <!-- build the PEAR -->
-          <plugin>
-            <groupId>org.apache.uima</groupId>
-            <artifactId>PearPackagingMavenPlugin</artifactId>
-            <version>2.3.1</version>
-            <extensions>true</extensions>        
-            <executions>
-              <execution>
-                <id>build uima annnotator Pear</id>
-                <goals><goal>package</goal></goals>
-                   <!-- needs to run after the jar is built
-                        after docbooks are packaged and copied to pearPackaging/doc folder -->
-                <phase>pre-integration-test</phase>
-                <configuration> 
-                  <datapath>$main_root/resources</datapath>
-                  <componentId>${project.artifactId}</componentId>
-                  <mainComponentDesc>${pearMainDescriptor}</mainComponentDesc>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>              
-     
-        </plugins>
-        
-      </build>
-    </profile>
+    </profile> 
+       
     
     <!-- ************************************ -->
     <!-- * Build Custom Binary Distribution * -->
@@ -1289,7 +1063,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	            <execution>
 	              <id>uima-distr</id>
 	              <goals><goal>single</goal></goals>
-	              <phase>package</phase>
+	              <phase>integration-test</phase> <!-- after first copies from jar/docbk pkg -->
 	              <configuration>
 	                <descriptors>
 	                  <descriptor>src/main/assembly/bin.xml</descriptor>
@@ -1532,6 +1306,31 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </activation>
       <build>        
         <plugins>
+
+          <!-- ********************************************* -->
+          <!-- * Common Build                                -->
+          <!-- *   *** FOR addons only ***                   -->
+          <!-- ********************************************* -->
+          <!-- *   Base Jar is built,                        --> 
+          <!-- *     has no dependencies included            -->
+          <!-- *     has basic LICENSE/NOTICE files          -->
+          <!-- *   Base augmented dir built                  -->
+          <!-- *     has Base Jar in lib/                    -->
+          <!-- *     has dependencies in lib/                -->
+          <!-- *     has other things that go into PEAR      -->
+          <!-- *       except the pear install.xml           -->
+          <!-- *     has augmented LICENSE/NOTICE files      -->
+          <!-- *                                             -->
+          <!-- *     This base is reused to make packages:   -->
+          <!-- *       PEAR - adds the install.xml           -->
+          <!-- *            - actually, the PEAR builder     -->
+          <!-- *              will redo the copies, itself   -->
+          <!-- *       OSGi - adds the OSGi manifest         -->
+          <!-- *            - removes the doc, javadocs      -->
+          <!-- *       individual zip/tar                    -->
+          <!-- *       addons aggregate binary zip/tar       -->
+          <!-- ********************************************* -->
+
           <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <executions>
@@ -1542,7 +1341,113 @@ Copyright (c) 2003, 2006 IBM Corporation.
               </execution>
             </executions>           
           </plugin>
-            
+              
+          <!-- Build  base -->
+            <!-- populate the lib dir with all needed dependencies
+                 that will be distributed with this component
+                 
+                 NOTE: TRANSITIVE DEPENDENIES ARE NOT INCLUDED
+                       ANYTHING YOU WANT INCLUDED IN THE JAR 
+                       PLEASE LIST EXPLICITLY AND MODIFY THE LICENSE/NOTICE
+                       APPROPRIATELY
+                  
+                 Runs during process-resources -->
+                         
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <!-- Copy the dependencies to the target/base-bin/lib folder -->
+              <execution>
+                <id>copy dependencies to base-bin/lib</id>
+                <goals><goal>copy-dependencies</goal></goals>
+                <phase>process-resources</phase>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/base-bin/lib</outputDirectory>
+                  <includeScope>runtime</includeScope>
+                  <excludeTransitive>true</excludeTransitive>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              
+              <!-- add directories if they exist -->
+              <execution>
+                <id>copy standard dirs and files to base-bin</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>process-resources</phase>  <!-- required -->
+                <configuration>
+                  <outputDirectory>${project.build.directory}/base-bin</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>.</directory>
+                      <includes>
+                        <include>desc/**</include>
+                        <include>conf/**</include>
+                        <include>data/**</include>
+                        <include>doc/**</include>
+                        <include>docs/**</include>
+                        <include>resources/**</include>
+                        <include>bin/**</include>
+                        <include>LICENSE*</include>
+                        <include>NOTICE*</include>
+                        <include>README*</include>
+                        <include>readme*</include>
+                        <include>RELEASE_NOTES*</include>
+                        <include>ReleaseNotes*</include>
+                        <include>issuesFixed/**</include> 
+                      </includes>
+                    </resource>
+                    <resource>
+                      <directory>src/main/readme</directory>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              
+              
+              <!-- copy generated Jar to base-bin/lib spot -->
+              <execution>
+                <id>copy standard target jar to base-bin/lib</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>pre-integration-test</phase>  <!-- a phase after jar -->
+                <configuration>
+                  <outputDirectory>${project.build.directory}/base-bin/lib</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}</directory>
+                      <includes><include>*.jar</include></includes>
+                      <excludes>
+                        <exclude>*-sources.jar</exclude>
+                        <exclude>*-osgi.jar</exclude>
+                      </excludes>     
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+              
+              <!-- copy generated docbook artifacts -->        
+              <execution>
+                <id>copy generated docbook artifacts to base-bin/doc folder</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>pre-integration-test</phase>  <!-- a phase after docbkx (package) phase -->
+                <configuration>
+                  <outputDirectory>${project.build.directory}/base-bin/doc</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/site/d</directory>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>          
+            </executions>
+          </plugin>
+                  
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-assembly-plugin</artifactId>
@@ -1550,11 +1455,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <execution>
                 <id>binary-release</id> <!-- is "classifier" - match maven convention -->
                 <goals><goal>single</goal></goals>
-                <phase>pre-integration-test</phase>  <!-- after package, after jar & docbkx built -->
+                <phase>integration-test</phase>  <!-- after first copies from jar/docbk pkg -->
                 <configuration>
+                  <runOnlyAtExecutionRoot>true</runOnlyAtExecutionRoot>
                   <descriptorRefs>
                     <descriptorRef>
-                      uima-single-project-bin
+                      uima-single-project-bin2
                     </descriptorRef>
                   </descriptorRefs>
                 </configuration>
@@ -1572,7 +1478,253 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </build>
     </profile>
         
+    <!-- ********************************** -->
+    <!-- *   Build OSGi bundle            * -->
+    <!-- ********************************** -->     
+    <profile>
+      <id>build OSGi bundle for annotator</id>
+      <activation>
+        <file>
+          <exists>marker-file-identifying-osgi-project</exists>
+        </file>
+      </activation>
+           
+      <build>  
         
+        <plugins> 
+        
+          <plugin>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+                            
+              <!-- copy the base-bin dir to the osgi dir -->
+              <execution>
+                <id>Copy base-bin to osgi</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>integration-test</phase>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/osgi</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/base-bin</directory>
+                      <includes><include>**</include></includes>
+                      <excludes>
+                        <exclude>doc/**</exclude>
+                        <exclude>docs/**</exclude>
+                        <exclude>**/*-javadoc.jar</exclude>
+                        <exclude>issuesFixed/**</exclude>
+                      </excludes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <!-- copy any uima dependencies needed to osgi/lib
+               beyond what is done for the common build.
+               NOTE: can't just add dependencies, because
+                 a) local projects override scope to "provided" and
+                 b) this would result in the jars being copied for
+                    the common build -->
+         
+          <plugin>
+            <artifactId>maven-dependency-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Copy uima dependencies to osgi/lib</id>
+                <goals><goal>copy</goal></goals>
+                <phase>process-resources</phase>
+                <configuration>
+                  <outputDirectory>${project.build.directory}/osgi/lib</outputDirectory>
+                  <artifactItems>
+                    <artifactItem>
+                      <groupId>org.apache.uima</groupId>
+                      <artifactId>uimaj-core</artifactId>
+                      <version>${uimaDependencyVersion}</version>
+                    </artifactItem>
+                  </artifactItems>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin> 
+          
+          <plugin>
+            <groupId>org.apache.felix</groupId>
+            <artifactId>maven-bundle-plugin</artifactId>
+            <!-- 2.3.5 accidentally required Java 6 -->
+            <version>2.3.4</version>
+            <executions>
+              <execution>
+                <id>uima-bundle</id>
+                <phase>integration-test</phase>
+                <goals><goal>manifest</goal></goals>
+                <configuration>
+                  <buildDirectory>${project.build.directory}/osgi</buildDirectory>
+                  <manifestLocation>${project.build.directory}/osgi/META-INF</manifestLocation>
+                  <instructions>
+                    <Import-Package>org.apache.log.*;resolution:=optional</Import-Package>
+                    <Embed-Dependency>*;scope=compile;</Embed-Dependency>
+                    <Embed-Directory>lib</Embed-Directory>
+                    <Bundle-RequiredExecutionEnvironment>J2SE-1.5</Bundle-RequiredExecutionEnvironment>
+                    <Eclipse-ExtensibleAPI>true</Eclipse-ExtensibleAPI>
+                    <Bundle-ClassPath>.,lib/${project.build.finalName}.jar,{maven-dependencies},lib/uimaj-core-${uimaDependencyVersion}.jar</Bundle-ClassPath>
+                    <Include-Resource>
+                      {maven-resources}, {maven-dependencies},
+                      lib/uimaj-core-${uimaDependencyVersion}.jar=${settings.localRepository}/org/apache/uima/uimaj-core/${uimaDependencyVersion}/uimaj-core-${uimaDependencyVersion}.jar
+                    </Include-Resource>
+                    <Bundle-Version>${parsedVersion.osgiVersion}</Bundle-Version>
+                    <Bundle-SymbolicName>${project.groupId}.${project.artifactId};singleton:=true</Bundle-SymbolicName>
+                  </instructions>
+                </configuration>
+              </execution>
+            </executions>
+
+          </plugin>
+
+          <!-- Run JAR to create OSGi Jar -->          
+          <plugin>
+            <artifactId>maven-jar-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>Create OSGi Jar</id>
+                <goals><goal>jar</goal></goals>
+                <phase>integration-test</phase> <!-- after above build step -->
+                <configuration>
+                  <finalName>${project.groupId}.${project.artifactId}_${parsedVersion.osgiVersion}</finalName>
+                  <classifier>osgi</classifier>
+                  <classesDirectory>${project.build.directory}/osgi</classesDirectory>
+                  <archive>
+                    <manifestFile>${project.build.directory}/osgi/META-INF/MANIFEST.MF</manifestFile>
+                  </archive>
+                </configuration>                
+              </execution>
+            </executions>
+          </plugin>
+                             
+        </plugins>
+      </build>             
+    </profile>
+ 
+    <!-- ********************************** -->
+    <!-- *   Build Standard PEAR          * -->
+    <!-- ********************************** -->
+    <profile>
+      <id>build standard PEAR</id>
+      <activation>
+        <file>
+          <exists>marker-file-identifying-standard-pear</exists>
+        </file>
+      </activation>
+      <build>  
+        
+        <plugins>  
+                     
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-resources-plugin</artifactId>
+            <executions>
+              
+              <!-- add the contents of desc if it exists to the jar.  
+                   This puts the things like the WhitespaceTokenizer.xml file into the Jar
+                   and makes it easier for users to run this, without installing a pear. 
+                   The Tagger project uses this technique, for instance -->
+              <execution>
+                <id>copy desc so its contents can be found in Jar</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>process-resources</phase>  <!-- required -->
+                <configuration>
+                  <outputDirectory>${project.build.outputDirectory}</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>desc</directory>
+                      <includes><include>**</include></includes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+                   
+              <!-- copy the base-bin dir to the pearPackaging dir -->
+              <execution>
+                <id>Copy base-bin to pearPackaging</id>
+                <goals><goal>copy-resources</goal></goals>
+                <phase>integration-test</phase> <!-- after first copies from jar/docbk pkg -->
+                <configuration>
+                  <outputDirectory>${project.build.directory}/pearPackaging</outputDirectory>
+                  <resources>
+                    <resource>
+                      <directory>${project.build.directory}/base-bin</directory>
+                      <includes><include>**</include></includes>
+                      <excludes>
+                        <exclude>**/*-javadoc.jar</exclude>
+                      </excludes>
+                    </resource>
+                  </resources>
+                </configuration>
+              </execution>
+                                      
+            </executions>
+          </plugin>
+          
+          <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-javadocs</id>          
+                <!-- turn on javadoc build for each module --> 
+                <phase>package</phase> 
+              </execution>
+            </executions>           
+          </plugin>
+          
+          <!-- build the PEAR -->
+          <plugin>
+            <groupId>org.apache.uima</groupId>
+            <artifactId>PearPackagingMavenPlugin</artifactId>
+            <version>2.3.1</version>
+            <extensions>true</extensions>        
+            <executions>
+              <execution>
+                <id>build uima annnotator Pear</id>
+                <goals><goal>package</goal></goals>
+                   <!-- needs to run after the jar is built
+                        after docbooks are packaged and copied to pearPackaging/doc folder -->
+                <phase>integration-test</phase>  <!-- after first copies from jar/docbk pkg -->
+                <configuration> 
+                  <datapath>$main_root/resources</datapath>
+                  <componentId>${project.artifactId}</componentId>
+                  <mainComponentDesc>${pearMainDescriptor}</mainComponentDesc>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>              
+
+          <!-- Attach PEAR artifact after PEAR is built -->
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-pear-artifact</id>
+                <phase>post-integration-test</phase>  
+                <goals><goal>attach-artifact</goal></goals>
+                <configuration>
+                  <artifacts>
+                    <artifact>
+                      <file>${project.build.directory}/${project.artifactId}.pear</file>
+                      <type>pear</type>
+                    </artifact>
+                  </artifacts>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+     
+        </plugins>
+        
+      </build>
+    </profile>
+       
   </profiles>
        
 </project>

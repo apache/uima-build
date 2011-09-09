@@ -197,7 +197,9 @@ licensed to the Apache Software Foundation under the
 "IBM UIMA License Agreement".
 Copyright (c) 2003, 2006 IBM Corporation.         
     </ibmNoticeText> 
-    <sourceReleaseAssemblyDescriptor>multimodule-source-release</sourceReleaseAssemblyDescriptor>  
+    <!-- next line commented out - to let standard source-release assembly descriptor as specified
+         in standard Apache parent pom be used -->
+    <!-- SourceReleaseAssemblyDescriptor>multimodule-source-release</sourceReleaseAssemblyDescriptor-->  
   </properties>
  
   <dependencyManagement>
@@ -613,7 +615,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <groupId>org.apache.uima</groupId>
                 <artifactId>uima-build-resources</artifactId>
                 <version>${uimaBuildResourcesVersion}</version>
-                </dependency>
+              </dependency>
             </dependencies>
           </plugin>
 

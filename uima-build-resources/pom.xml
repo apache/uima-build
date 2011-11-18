@@ -52,7 +52,7 @@
   </scm>
       
   <properties>
-    <jiraVersion>12317440</jiraVersion>  
+    <jiraVersion>12317590</jiraVersion>  
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
   </properties>

@@ -439,6 +439,51 @@
       <xsl:call-template name="inline.charseq"/>
     </fo:inline>
   </xsl:template>
+  
+  <!-- workaround to get rid of intermittent duplicate ids
+       which always seem to be around the external graphics element 
+       This template is identical to the original except for:
+       calling out "d:" namespace and 
+       changing the wrapping fo:block to ***NOT*** have a generated ID
+       because the generate-id() method seems to sometimes generate 
+       duplicate IDs (it's very intermittant, on a Windows machine with
+       4 cores )  -->
+       
+  <xsl:template match="d:mediaobject[d:imageobject[@role='fo']]">
+  
+    <xsl:variable name="olist" select="d:imageobject|d:imageobjectco
+                       |d:videoobject|d:audioobject
+                       |d:textobject"/>
+  
+    <xsl:variable name="object.index">
+      <xsl:call-template name="select.mediaobject.index">
+        <xsl:with-param name="olist" select="$olist"/>
+        <xsl:with-param name="count" select="1"/>
+      </xsl:call-template>
+    </xsl:variable>
+  
+    <xsl:variable name="object" select="$olist[position() = $object.index]"/>
+  
+    <xsl:variable name="align">
+      <xsl:value-of select="$object/descendant::d:imagedata[@align][1]/@align"/>
+    </xsl:variable>
+  
+    <xsl:variable name="id">
+      <xsl:call-template name="object.id"/>
+    </xsl:variable>
+  
+    <fo:block> 
+      <xsl:if test="$align != '' ">
+        <xsl:attribute name="text-align">
+          <xsl:value-of select="$align"/>
+        </xsl:attribute>
+      </xsl:if>
+  
+      <xsl:apply-templates select="$object"/>
+      <xsl:apply-templates select="d:caption"/>
+    </fo:block>
+  </xsl:template>
+
   <!-- bold-italic formatting -->
   <xsl:template match="d:emphasis[@role='bold-italic']">
     <fo:inline font-weight="bold" font-style="italic">

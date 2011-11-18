@@ -167,7 +167,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>12315582</jiraVersion>  <!-- for parent-pom-1, override from the command line -->
-    <uimaBuildResourcesVersion>2</uimaBuildResourcesVersion>
+    <uimaBuildResourcesVersion>3-SNAPSHOT</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
@@ -889,7 +889,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <artifactItem>
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-build-resources</artifactId>
-                      <version>1</version>
+                      <version>${uimaBuildResourcesVersion}</version>
                       <includes>docbook-shared/**</includes>
                       <outputDirectory>${project.build.directory}</outputDirectory>
                     </artifactItem>
@@ -947,7 +947,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <plugin>
             <groupId>com.agilejava.docbkx</groupId>
             <artifactId>docbkx-maven-plugin</artifactId>
-            <version>2.0.11</version>
+            <version>2.0.13</version>
             <configuration>  <!-- general configuration for both html and pdf -->
               <sourceDirectory>${basedir}/src/docbook</sourceDirectory>
               <includes>${bookNameRoot}.xml</includes>

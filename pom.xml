@@ -57,7 +57,7 @@
   <version>3-SNAPSHOT</version>
   <packaging>pom</packaging>
   
-  <name>UIMA ${project.artifactId}</name>
+  <name>Apache UIMA ${project.artifactId}</name>
   <description>UIMA (Unstructured Information Management Architecture).
     UIMA promotes community development and reuse of annotators
     that extract metadata from unstructured information (text, audio, video, etc.);
@@ -70,7 +70,7 @@
  
   <mailingLists>
     <mailingList>
-      <name>UIMA Development List</name>
+      <name>Apache UIMA Development List</name>
       <subscribe>dev-subscribe@uima.apache.org</subscribe>
       <unsubscribe>dev-unsubscribe@uima.apache.org</unsubscribe>
       <post>mailto:dev@uima.apache.org</post>
@@ -87,7 +87,7 @@
       </otherArchives>
     </mailingList>
     <mailingList>
-      <name>UIMA Users List</name>
+      <name>Apache UIMA Users List</name>
       <subscribe>user-subscribe@uima.apache.org</subscribe>
       <unsubscribe>user-unsubscribe@uima.apache.org</unsubscribe>
       <post>mailto:user@uima.apache.org</post>
@@ -104,7 +104,7 @@
       </otherArchives>
     </mailingList>
     <mailingList>
-      <name>UIMA Commits List</name>
+      <name>Apache UIMA Commits List</name>
       <subscribe>commits-subscribe@uima.apache.org</subscribe>
       <unsubscribe>commits-unsubscribe@uima.apache.org</unsubscribe>
       <post>mailto:commits@uima.apache.org</post>
@@ -156,7 +156,7 @@
   <distributionManagement>
     <site>
       <id>uima.apache.org</id> <!-- following maven convention -->
-      <name>UIMA Website</name>
+      <name>Apache UIMA Website</name>
       <url>${uimaWebsiteDistributionUrl}</url>  <!-- on people.apache.org: /www/uima.apache.org -->
     </site>  
   </distributionManagement>
@@ -166,7 +166,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>12315582</jiraVersion>  <!-- for parent-pom-1, override from the command line -->
+    <jiraVersion>12316057</jiraVersion>  <!-- for parent-pom-3 change for each release -->
     <uimaBuildResourcesVersion>3-SNAPSHOT</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>

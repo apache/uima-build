@@ -29,7 +29,7 @@
   <artifactId>uima-docbook-olink</artifactId>
   <version>1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>UIMA Docbooks olink databases</name>
+  <name>Apache UIMA Docbooks olink databases</name>
   <description>This project creates and updates the 1-SNAPSHOT version
   of the docbook olink database collection.
   

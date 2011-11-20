@@ -32,7 +32,7 @@
   <packaging>maven-plugin</packaging>
 
   <inceptionYear>2010</inceptionYear>
-  <name>UIMA ${project.artifactId}</name>
+  <name>Apache UIMA ${project.artifactId}</name>
   <description>UIMA build helper maven plugin</description>
   
   <url>${uimaWebsiteUrl}</url>

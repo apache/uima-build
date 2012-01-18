@@ -167,7 +167,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>12316057</jiraVersion>  <!-- for parent-pom-3 change for each release -->
-    <uimaBuildResourcesVersion>3</uimaBuildResourcesVersion>
+    <uimaBuildResourcesVersion>4-SNAPSHOT</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>

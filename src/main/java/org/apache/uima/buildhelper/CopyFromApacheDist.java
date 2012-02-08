@@ -130,6 +130,7 @@ public class CopyFromApacheDist extends AbstractMojo {
 
     FileOutputStream os = null;
     try {
+      targetFile.getParentFile().mkdirs();
       os = new FileOutputStream(targetFile);
     } catch (FileNotFoundException e) {
       throw new MojoExecutionException("While creating local file in location " + targetFile.getAbsolutePath(), e);    
@@ -138,21 +139,33 @@ public class CopyFromApacheDist extends AbstractMojo {
     System.out.format("copy-from-apache-dist file %s to %s%n", remoteLocation, targetInLocalFileSystem);
     
     byte[] buf = new byte[1024*1024];  // buffer size
-    while(true) {
-      int bytesRead;
-      try {
-        bytesRead = is.read(buf);
-      } catch (IOException e) {
-        throw new MojoExecutionException("While reading remote file in location " + remoteLocation, e);    
+    // still getting partial transfers.  
+    // trying: when receive a negative for bytes read, retry 3 times with a .5 second delay
+    for (int retries = 0; retries < 3; retries ++) {
+      while(true) {
+        int bytesRead;
+        try {
+          bytesRead = is.read(buf);
+        } catch (IOException e) {
+          throw new MojoExecutionException("While reading remote file in location " + remoteLocation, e);    
+        }
+        if (bytesRead < 0) {
+          try {
+            Thread.sleep(500); //wait 1/2 a second
+          } catch (InterruptedException e) {
+          }  
+          break;
+        }
+        if (retries > 0) {
+          System.out.format("retrying read successful after %d retries%n", retries);
+        }
+        retries = 0; // reset the retry counter... 
+        try {
+          os.write(buf, 0, bytesRead);
+        } catch (IOException e) {
+          throw new MojoExecutionException("While writing target file in location " + targetFile.getAbsolutePath(), e);    
+       }
       }
-      if (bytesRead < 0) {
-        break;
-      }
-      try {
-        os.write(buf, 0, bytesRead);
-      } catch (IOException e) {
-        throw new MojoExecutionException("While writing target file in location " + targetFile.getAbsolutePath(), e);    
-     }
     }
     try {
       os.close();

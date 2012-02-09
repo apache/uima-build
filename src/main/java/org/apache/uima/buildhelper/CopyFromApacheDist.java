@@ -40,7 +40,8 @@ import org.apache.maven.plugin.MojoExecutionException;
  *
  */
 public class CopyFromApacheDist extends AbstractMojo {
-  
+  private static final int MAXRETRIES = 6;
+  private static final int MINTOTALSIZE = 100;
   /**
    * Group Id
    * @parameter default-value="${project.groupId}"
@@ -99,7 +100,9 @@ public class CopyFromApacheDist extends AbstractMojo {
       return;
     }
      // http://archive.apache.org/dist/uima/  artifactId - version / artifactId  - version - classifier . type
-    String remoteLocation = String.format("http://archive.apache.org/dist/uima/%s-%s/%s-%s%s.%s",
+    String remoteLocation = String.format("http://%s.apache.org/dist/uima/%s-%s/%s-%s%s.%s",
+        "archive",
+//        "www",
         artifactId,
         version,
         artifactId,
@@ -114,20 +117,7 @@ public class CopyFromApacheDist extends AbstractMojo {
     } catch (MalformedURLException e) {
       throw new MojoExecutionException("Bad URL internally: " + remoteLocation, e);
     }
-    
-    HttpURLConnection remoteConnection = null;
-    InputStream is = null;
-    try {
-      remoteConnection = (HttpURLConnection) remoteURL.openConnection();
-      // discovered by trial and error - 
-      // without setUseCaches(false), the read/write loop seems to terminate early
-      //   and only copy a portion of the file  (running on IBM Java 6)
-      remoteConnection.setUseCaches(false);  // insure get original file
-      is =  remoteConnection.getInputStream();
-    } catch (IOException e) {
-      throw new MojoExecutionException("While reading remote location " + remoteLocation, e);
-    }
-
+  
     FileOutputStream os = null;
     try {
       targetFile.getParentFile().mkdirs();
@@ -135,13 +125,48 @@ public class CopyFromApacheDist extends AbstractMojo {
     } catch (FileNotFoundException e) {
       throw new MojoExecutionException("While creating local file in location " + targetFile.getAbsolutePath(), e);    
     }
-
-    System.out.format("copy-from-apache-dist file %s to %s%n", remoteLocation, targetInLocalFileSystem);
     
-    byte[] buf = new byte[1024*1024];  // buffer size
-    // still getting partial transfers.  
-    // trying: when receive a negative for bytes read, retry 3 times with a .5 second delay
-    for (int retries = 0; retries < 3; retries ++) {
+    int totalSize = 0;
+    int readSoFar = 0;
+
+  retryLoop:
+    for (int retry = 0; retry < MAXRETRIES; retry ++) {
+    
+      HttpURLConnection remoteConnection = null;
+      InputStream is = null;
+      
+      try {
+        remoteConnection = (HttpURLConnection) remoteURL.openConnection();
+        if (readSoFar > 0) {
+          String rangespec = String.format("bytes=%d-", readSoFar);
+          System.out.format("Requesting range: %s%n", rangespec);
+          remoteConnection.setRequestProperty("Range", rangespec);
+        }
+        if (totalSize == 0) { 
+          totalSize = remoteConnection.getContentLength();
+          if (totalSize < MINTOTALSIZE) {
+            throw new MojoExecutionException(String.format("File size %d too small for %s%n", totalSize, remoteLocation));
+          }
+        }
+
+        is =  remoteConnection.getInputStream();
+//        if (readSoFar > 0) {
+//          System.out.format("Skipping over %,d bytes read so far; this may take some time%n", readSoFar);
+//          long skipped = is.skip(readSoFar);
+//          if (skipped != readSoFar) {
+//            System.out.format("Skipping only skipped %,d out of %,d; retrying", skipped, readSoFar);
+//            continue retryLoop;
+//          }
+//        }
+      } catch (IOException e) {
+        throw new MojoExecutionException("While reading remote location " + remoteLocation, e);
+      }
+  
+  
+      System.out.format("copy-from-apache-dist file %s to %s%n", remoteLocation, targetInLocalFileSystem);
+      System.out.format("%,12d of %,12d\r", readSoFar, totalSize);
+      
+      byte[] buf = new byte[1024*1024];  // buffer size
       while(true) {
         int bytesRead;
         try {
@@ -149,34 +174,45 @@ public class CopyFromApacheDist extends AbstractMojo {
         } catch (IOException e) {
           throw new MojoExecutionException("While reading remote file in location " + remoteLocation, e);    
         }
-        if (bytesRead < 0) {
+        if (bytesRead < 0 ) {
+          if (readSoFar == totalSize) {
+            break;
+          }
+          System.out.format("%n *** Premature EOF, %,12d read out of %,12d   Retry %d%n", readSoFar, totalSize, retry);
           try {
-            Thread.sleep(500); //wait 1/2 a second
-          } catch (InterruptedException e) {
-          }  
-          break;
+            is.close();
+          } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+          }
+          if (retry == (MAXRETRIES - 1)) {
+            throw new MojoExecutionException("CopyFromApacheDist retry limit exceeded ");   
+          }
+          continue retryLoop;
         }
-        if (retries > 0) {
-          System.out.format("retrying read successful after %d retries%n", retries);
-        }
-        retries = 0; // reset the retry counter... 
+        retry = 0;  // reset retry count because we read some good bytes
         try {
           os.write(buf, 0, bytesRead);
         } catch (IOException e) {
           throw new MojoExecutionException("While writing target file in location " + targetFile.getAbsolutePath(), e);    
-       }
+        }
+        readSoFar = readSoFar + bytesRead;
+        System.out.format("%,12d of %,12d\r", readSoFar, totalSize);
       }
+
+      try {
+        os.close();
+      } catch (IOException e) {
+        throw new MojoExecutionException("While closing target file in location " + targetFile.getAbsolutePath(), e);    
+      }
+      try {
+        is.close();
+      } catch (IOException e) {
+        throw new MojoExecutionException("While closing remote file in location " + remoteLocation, e);    
+      }
+      break;  // out of retry loop
     }
-    try {
-      os.close();
-    } catch (IOException e) {
-      throw new MojoExecutionException("While closing target file in location " + targetFile.getAbsolutePath(), e);    
-    }
-    try {
-      is.close();
-    } catch (IOException e) {
-      throw new MojoExecutionException("While closing remote file in location " + remoteLocation, e);    
-    }
+    System.out.println("");
   }
   
 //  public static void main(String[] args) throws IOException {

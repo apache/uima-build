@@ -167,6 +167,7 @@ public class CopyFromApacheDist extends AbstractMojo {
       System.out.format("%,12d of %,12d\r", readSoFar, totalSize);
       
       byte[] buf = new byte[1024*1024];  // buffer size
+      long timeToLog = System.currentTimeMillis();
       while(true) {
         int bytesRead;
         try {
@@ -176,6 +177,7 @@ public class CopyFromApacheDist extends AbstractMojo {
         }
         if (bytesRead < 0 ) {
           if (readSoFar == totalSize) {
+            System.out.format("%nFinished%n");
             break;
           }
           System.out.format("%n *** Premature EOF, %,12d read out of %,12d   Retry %d%n", readSoFar, totalSize, retry);
@@ -197,7 +199,10 @@ public class CopyFromApacheDist extends AbstractMojo {
           throw new MojoExecutionException("While writing target file in location " + targetFile.getAbsolutePath(), e);    
         }
         readSoFar = readSoFar + bytesRead;
-        System.out.format("%,12d of %,12d\r", readSoFar, totalSize);
+        if (System.currentTimeMillis() - timeToLog > 1000) {
+          timeToLog = System.currentTimeMillis();
+          System.out.format("%,12d of %,12d\r", readSoFar, totalSize);          
+        }
       }
 
       try {
@@ -212,7 +217,6 @@ public class CopyFromApacheDist extends AbstractMojo {
       }
       break;  // out of retry loop
     }
-    System.out.println("");
   }
   
 //  public static void main(String[] args) throws IOException {

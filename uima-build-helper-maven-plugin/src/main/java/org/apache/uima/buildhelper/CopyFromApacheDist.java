@@ -177,7 +177,7 @@ public class CopyFromApacheDist extends AbstractMojo {
         }
         if (bytesRead < 0 ) {
           if (readSoFar == totalSize) {
-            System.out.format("%nFinished%n");
+            System.out.format("%,12d of %,12d%nFinished%n", readSoFar, totalSize);          
             break;
           }
           System.out.format("%n *** Premature EOF, %,12d read out of %,12d   Retry %d%n", readSoFar, totalSize, retry);

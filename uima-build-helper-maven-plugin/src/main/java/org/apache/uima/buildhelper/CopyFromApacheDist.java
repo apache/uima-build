@@ -119,8 +119,12 @@ public class CopyFromApacheDist extends AbstractMojo {
     }
   
     FileOutputStream os = null;
-    try {
-      targetFile.getParentFile().mkdirs();
+    targetFile.getParentFile().mkdirs();
+    if (targetFile.exists()) {
+      System.out.format(" *** Surprise, file %s exists on 2nd check%n", targetInLocalFileSystem);
+      return;
+    }
+    try {      
       os = new FileOutputStream(targetFile);
     } catch (FileNotFoundException e) {
       throw new MojoExecutionException("While creating local file in location " + targetFile.getAbsolutePath(), e);    

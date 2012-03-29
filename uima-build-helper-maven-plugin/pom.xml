@@ -58,6 +58,7 @@
   </scm>
   
   <properties>
+    <jiraVersion>12319859</jiraVersion>
     <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>
@@ -109,4 +110,27 @@
       </plugin>
     </plugins>
   </build>
+ 
+  <profiles>
+    <profile>
+      <id>apache-release</id>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-changes-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-cli</id>
+                <configuration>
+                  <fixVersionIds>${jiraVersion}</fixVersionIds>
+                  <sortColumnNames>Status, Key, Type</sortColumnNames>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>     
+        </plugins>
+      </build>
+    </profile>    
+  </profiles>
+  
 </project>

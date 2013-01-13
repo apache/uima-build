@@ -298,7 +298,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
       
         <!--This plugin's configuration is used to store Eclipse m2e settings 
             only. It has no influence on the Maven build itself. -->
-	      <!--plugin>
+	      <plugin>
 	        <groupId>org.eclipse.m2e</groupId>
 	        <artifactId>lifecycle-mapping</artifactId>
 	        <version>1.0.0</version>
@@ -337,6 +337,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	                </action>
 	              </pluginExecution>
 	              <pluginExecution>
+	                <!-- dependency plugin expects JARs, does not work with m2e workspace resolution
+	                 -->
 	                <pluginExecutionFilter>
 	                  <groupId>org.apache.maven.plugins</groupId>
 	                  <artifactId>maven-dependency-plugin</artifactId>
@@ -348,13 +350,14 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	                  </goals>
 	                </pluginExecutionFilter>
 	                <action>
-	                  <execute />
+                      <ignore />
+	                  <!-- execute / -->
 	                </action>
 	              </pluginExecution>
 	            </pluginExecutions>
 	          </lifecycleMappingMetadata>
 	        </configuration>
-	      </plugin-->
+	      </plugin>
       
         
         <!-- assembly plugin 
@@ -511,7 +514,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!-- version 2.0.0 fails -->
           <!-- version 2.3.4 eliminates spurious warning messages -->
           <!-- version 2.5 has accidental dependency on Java 6 -->
-          <version>2.3.4</version>
+          <!-- version 2.3.6 has better support for m2e (FELIX-3061) -->
+          <version>2.3.7</version>
           <extensions>true</extensions>
           <executions>
             <execution>

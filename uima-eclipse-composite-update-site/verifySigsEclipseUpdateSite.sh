@@ -21,8 +21,14 @@
 # Bourne shell syntax, this should hopefully run on pretty much anything.
 
 usage() {
-  echo "Usage: cd to eclipseUpdateSite, then verifySigsEclipseUpdateSite.sh )"
+  echo "Usage: cd to this project's project directory, then verifySigsEclipseUpdateSite.sh )"
 }
+
+if [ "$1" = "-help" ]
+then
+  usage
+  exit 1
+fi
 
 # Verify PGP signatures
 for i in target/eclipse-update-site/*.jar; do gpg --verify $i.asc; done

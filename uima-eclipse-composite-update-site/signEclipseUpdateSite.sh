@@ -20,7 +20,7 @@
 # Bourne shell syntax, this should hopefully run on pretty much anything.
 
 usage() {
-  echo "Usage: cd to the uimaj-eclipse-update-site project, then ./signEclipseUpdateSite.sh"
+  echo "Usage: cd to this project's project directory, then ./signEclipseUpdateSite.sh"
 }
 
 if [ "$1" = "-help" ]

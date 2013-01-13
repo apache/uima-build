@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="buildCompositeRepository" basedir="." default="buildCompositeRepository">
+	<target name="buildCompositeRepository">
+		<echo>starting ${basedir}</echo>		
+		<p2.composite.repository>
+			<repository location="target/eclipse-update-site" name="UIMA Composite Repository" />
+			<add>
+				<repository location="uimaj"/>
+				<repository location="uima-as"/>
+			</add>
+		</p2.composite.repository>
+		<echo>done</echo>
+	</target>
+</project>

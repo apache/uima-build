@@ -30,12 +30,11 @@ then
   exit 1
 fi
 
-# Verify PGP signatures
-for i in target/eclipse-update-site/*.jar; do gpg --verify $i.asc; done
-
-# Verify MD5 checksums
-for i in target/eclipse-update-site/*.jar; do md5sum --check $i.md5; done
-
-# Verify SHA1 checksums
-for i in target/eclipse-update-site/*.jar; do sha1sum --check $i.sha1; done
+# Verify PGP signatures, MD5 and SHA1 checksums
+for i in ./target/eclipse-update-site/*.jar
+  do 
+    gpg --verify $i.asc
+    md5sum --check $i.md5
+    sha1sum --check $i.sha1
+  done
 

@@ -23,7 +23,7 @@
   This is the common UIMA parent pom.
   It contains the project-wide defaults:
   
-    Parent is the official common Apache POM
+    The parent of this POM is the official common Apache POM
     
     Defines repositories for
       Snapshots - at Apache - used during development, and for docbook olinks 
@@ -402,6 +402,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <artifactId>maven-javadoc-plugin</artifactId>
           <configuration>
             <source>5</source> <!-- needed to do Enums -->
+            <notimestamp>true</notimestamp>
             <encoding>UTF-8</encoding>
             <!-- if next is omitted, causes all projects in reactor that don't
                      already have full javadocs built, to have them built -->

@@ -354,6 +354,19 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	                  <!-- execute / -->
 	                </action>
 	              </pluginExecution>
+	     <pluginExecution>
+	     	<pluginExecutionFilter>
+	     		<groupId>org.apache.maven.plugins</groupId>
+	     		<artifactId>maven-remote-resources-plugin</artifactId>
+	     		<versionRange>[1.2.1,)</versionRange>
+	     		<goals>
+	     			<goal>bundle</goal>
+	     		</goals>
+	     	</pluginExecutionFilter>
+	     	<action>
+	     		<ignore></ignore>
+	     	</action>
+	     </pluginExecution>
 	            </pluginExecutions>
 	          </lifecycleMappingMetadata>
 	        </configuration>

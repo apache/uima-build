@@ -22,8 +22,8 @@
   <parent>
     <artifactId>parent-pom</artifactId>
     <groupId>org.apache.uima</groupId>
-    <version>2</version>
-    <relativePath/>
+    <version>5-SNAPSHOT</version>
+    <relativePath>../parent-pom</relativePath>
   </parent>
   
   <artifactId>uima-docbook-olink</artifactId>

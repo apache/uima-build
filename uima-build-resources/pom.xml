@@ -23,11 +23,10 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>3</version>
-    <relativePath />
+    <version>5-SNAPSHOT</version>
+    <relativePath>../parent-pom</relativePath>
   </parent>
   
-  <groupId>org.apache.uima</groupId>
   <artifactId>uima-build-resources</artifactId>
   <version>5-SNAPSHOT</version>
   
@@ -92,8 +91,8 @@
             </execution>
           </executions>
           
-        </plugin>      
-                     
+        </plugin>
+
       </plugins>
     </pluginManagement>
     

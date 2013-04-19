@@ -298,16 +298,20 @@ Copyright (c) 2003, 2006 IBM Corporation.
       
         <!--This plugin's configuration is used to store Eclipse m2e settings 
             only. It has no influence on the Maven build itself. -->
-	      <!--plugin>
+	      <plugin>
 	        <groupId>org.eclipse.m2e</groupId>
 	        <artifactId>lifecycle-mapping</artifactId>
 	        <version>1.0.0</version>
 	        <configuration>
 	          <lifecycleMappingMetadata>
 	            <pluginExecutions>
+	            
+                <!-- ***************************** -->
+                <!-- IGNORE remote resources       -->
+                <!-- ***************************** -->
                 <pluginExecution>
                   <pluginExecutionFilter>
-                    <groupId>org.apache.uima</groupId>
+                    <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>
                       maven-remote-resources-plugin
                     </artifactId>
@@ -321,6 +325,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <ignore />
                   </action>
                 </pluginExecution>
+                
+                <!-- ***************************** -->
+                <!-- EXECUTE parse-date-time       -->
+                <!-- ***************************** -->
 	              <pluginExecution>
 	                <pluginExecutionFilter>
 	                  <groupId>org.apache.uima</groupId>
@@ -336,8 +344,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	                  <execute />
 	                </action>
 	              </pluginExecution>
-	              <pluginExecution>
-	                <pluginExecutionFilter>
+	              
+                <!-- ******************************* -->
+                <!-- IGNORE dependency copy / unpack -->
+                <!-- ******************************* -->
+                <pluginExecution>
+                  <pluginExecutionFilter>
 	                  <groupId>org.apache.maven.plugins</groupId>
 	                  <artifactId>maven-dependency-plugin</artifactId>
 	                  <versionRange>[2,)</versionRange>
@@ -348,15 +360,15 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	                  </goals>
 	                </pluginExecutionFilter>
 	                <action>
-	                  <execute />
+                    <ignore />
 	                </action>
 	              </pluginExecution>
+						    
 	            </pluginExecutions>
 	          </lifecycleMappingMetadata>
 	        </configuration>
-	      </plugin-->
+	      </plugin>
       
-        
         <!-- assembly plugin 
              Disable running assembly:assembly with
              warning message to use install instead -->
@@ -512,7 +524,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!-- version 2.0.0 fails -->
           <!-- version 2.3.4 eliminates spurious warning messages -->
           <!-- version 2.5 has accidental dependency on Java 6 -->
-          <version>2.3.4</version>
+          <version>2.3.7</version>
           <extensions>true</extensions>
           <executions>
             <execution>
@@ -591,7 +603,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <groupId>org.apache.uima</groupId>
           <artifactId>uima-build-helper-maven-plugin</artifactId>
           <version>4</version>
-        </plugin>                      
+        </plugin>
       </plugins>
     </pluginManagement>
     
@@ -1644,8 +1656,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <plugin>
             <groupId>org.apache.felix</groupId>
             <artifactId>maven-bundle-plugin</artifactId>
-            <!-- 2.3.5 accidentally required Java 6 -->
-            <version>2.3.4</version>
             <executions>
               <execution>
                 <id>uima-bundle</id>

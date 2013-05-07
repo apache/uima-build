@@ -27,6 +27,9 @@
 				<repository location="uima-as"/>
 				<repository location="ruta-2.0.1"/>
 			</add>
+			<remove>
+				<repository location="textmarker-2.0.0"/>
+			</remove>
 		</p2.composite.repository>
 		<echo>done</echo>
 	</target>

@@ -25,6 +25,7 @@
 			<add>
 				<repository location="uimaj"/>
 				<repository location="uima-as"/>
+				<repository location="ruta-2.0.1"/>
 			</add>
 		</p2.composite.repository>
 		<echo>done</echo>

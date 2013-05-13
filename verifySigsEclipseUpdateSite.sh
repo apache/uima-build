@@ -21,7 +21,7 @@
 # Bourne shell syntax, this should hopefully run on pretty much anything.
 
 usage() {
-  echo "Usage: cd to this project's project directory, then verifySigsEclipseUpdateSite.sh )"
+  echo "Usage: cd to this project's project directory, then ./verifySigsEclipseUpdateSite.sh"
 }
 
 if [ "$1" = "-help" ]
@@ -30,11 +30,18 @@ then
   exit 1
 fi
 
-# Verify PGP signatures, MD5 and SHA1 checksums
-for i in ./target/eclipse-update-site/*.jar
+# Verify PGP signatures, MD5 and SHA1 checksums on all jars
+for i in $(find ./target/eclipse-update-site -name '*.jar') 
   do 
     gpg --verify $i.asc
     md5sum --check $i.md5
     sha1sum --check $i.sha1
   done
 
+# Verify PGP signatures, MD5 and SHA1 checksums on all gz files
+for i in $(find ./target/eclipse-update-site -name '*.gz') 
+  do 
+    gpg --verify $i.asc
+    md5sum --check $i.md5
+    sha1sum --check $i.sha1
+  done

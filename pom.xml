@@ -553,6 +553,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                   <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
                   <exclude>marker-file-identifying-*</exclude> <!-- empty file -->
                   <exclude>DEPENDENCIES</exclude>  <!-- generated file -->
+				  <exclude>**/*/MANIFEST.MF</exclude> <!-- MANIFEST.MF files cannot have comments -->
                 </excludes>
               </configuration>
             </execution>

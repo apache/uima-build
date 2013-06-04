@@ -454,7 +454,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </execution>
           </executions>          
         </plugin>
-                
+
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
@@ -687,13 +687,30 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
       </plugin>
       
+      <plugin> <!-- https://issues.apache.org/jira/browse/UIMA-2966  -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>dup-meta-jar-cleanup</id>
+            <goals><goal>run</goal></goals>
+            <phase>prepare-package</phase>  <!--  before Jar plugin -->
+            <configuration>
+              <target>
+                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true"/>
+                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true"/>
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>     
     
   </build>
   
   <!--reporting-->
   
-  <profiles>
+  <profiles>   
     
     <!-- ************************************************** -->
     <!-- * apache-release                                 * -->

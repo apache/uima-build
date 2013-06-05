@@ -1339,7 +1339,27 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </plugin>
                   
           </plugins>
-        </pluginManagement>    
+        </pluginManagement> 
+        
+        <plugins>
+          <!-- https://issues.apache.org/jira/browse/UIMA-2967  -->
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-antrun-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>clear-META-INF</id>
+		            <goals><goal>run</goal></goals>
+		            <phase>compile</phase>  <!--  before maven-bundle-plugin plugin -->
+		            <configuration>
+		              <target>
+		                <delete file="META-INF/MANIFEST.MF" quiet="true"/>
+		              </target>
+		            </configuration>
+		          </execution>
+		        </executions>
+          </plugin>
+        </plugins>   
       </build>
     </profile>
     

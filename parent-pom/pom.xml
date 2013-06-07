@@ -725,6 +725,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
     <!-- fix apache common pom --> 
     <profile>
       <id>apache-release</id>
+      <properties>
+        <isApacheRelease>true</isApacheRelease>
+      </properties>
       
       <build>
         <plugins>
@@ -1415,6 +1418,304 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </plugins>
       </build>
     </profile>    
+
+    <!-- ************************************ -->
+    <!-- *   Build Eclipse Update Subsite   * -->
+    <!-- ************************************ -->
+    <profile>
+      <id>build-eclipse-update-subsite</id>
+      <activation>
+        <file>
+          <exists>marker-file-identifying-eclipse-update-site</exists>
+        </file>
+      </activation>
+      <properties>
+        <eusWork>${project.build.directory}/eus-work</eusWork>          
+        <toBePacked>${project.build.directory}/toBePacked</toBePacked>
+<!--     <distsvnroot>https://dist.apache.org/</distsvnroot> -->
+        <distsvnroot>file:///svn/t/</distsvnroot>   
+      </properties>
+      <build>
+          <plugins>
+
+		      <!-- ============================================================================ --> 
+		      <!--           U s e   o f   d i s t . a p a c h e . o r g    S V N               -->
+		      <!--                                                                              --> 
+		      <!--  Goals: avoid copying to /release/, use svn commit to do                     --> 
+		      <!--           just the changed files                                             --> 
+		      <!--         for safety, work in the /dev/ area                                   --> 
+          <!--         For vote, user can do commit to /dev/ area                           --> 
+          <!--         After vote, user does svn switch to /release/ area and commits       --> 
+		      <!--                                                                              --> 
+		      <!--  svn (release) -> svn (dev) -> checkout +                                    --> 
+		      <!--  srcs -> toBePacked -> eus-work - - - - +-> subsite -> (manual) commit       --> 
+		      <!--                                    SC         SC                             --> 
+		      <!--                                                                              --> 
+		      <!--    SC = sign & checksum                                                      --> 
+		      <!--         the 2nd SC is for the updated artifacts and contents of the subsite  --> 
+		      <!-- ============================================================================ --> 
+		       
+		      <!-- ============================================================================ --> 
+		      <!--                   O v e r a l l    F l o w                                   -->
+		      <!--                                                                              --> 
+		      <!--  PROCESS-SOURCES                                                             --> 
+		      <!--     New plugins to be compressed -> target/toBePacked                        --> 
+		      <!--                                                                              --> 
+		      <!--     New features to be included -> target/eus-work                           --> 
+		      <!--         (eus = Eclipse Update Site)                                          --> 
+          <!--                                                                              --> 
+          <!--     filter category.xml to pick up version #                                 --> 
+          <!--                                                                              --> 
+		      <!--  PACKAGE                                                                     --> 
+		      <!--     Pack step goes from target/toBePacked -> target/eus-work                 --> 
+		      <!--                                                                              --> 
+          <!--     svn del in .../dev/... the eclipse-update-site/[componnt]                --> 
+          <!--     svn copy from .../release/ to dev the [component]                        --> 
+		      <!--     Dev SVN checkout -> target/eclipse-update-site/[component]               -->
+		      <!--           (This is the current site - to be updated)                         --> 
+		      <!--                                                                              --> 
+		      <!--     Publish metadata goes from target/eus-work -> eclipse-update-site/[comp] -->
+		      <!--         (publish run in "append" mode)                                       --> 
+		      <!--                                                                              --> 
+		      <!--     Category update goes from target/eus-work -> eclipse-update-site/[comp]  --> 
+		      <!--                                                                              -->
+		      <!--     (if apache-release:                                                      -->
+          <!--        do checksums and sign in target/eus-work                              --> 
+		      <!--        delete prev checksums and signature for artifacts/content.jar         -->
+		      <!--        add new checksum/sign for these two jars                              -->
+		      <!--        copy all checksums/signatures from eus-work                           -->
+		      <!--     )                                                                        -->
+		      <!--                                                                              -->
+		      <!-- ============================================================================ --> 
+		
+		      <!-- filter the category.xml to have the right version info 
+		           for Eclipse at the top level-->
+		      <plugin>
+		        <artifactId>maven-resources-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>filter-category.xml</id>
+		            <!-- run before package, which uses this result -->
+		            <phase>process-sources</phase>
+		            <goals><goal>copy-resources</goal></goals>
+		            <configuration>
+		              <outputDirectory>${basedir}</outputDirectory>
+		              <resources>
+		                <resource>
+		                  <directory>src/main/resources</directory>
+		                  <includes><include>category.xml</include></includes>
+		                  <filtering>true</filtering>
+		                </resource>
+		              </resources> 
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>		      
+		      
+		      <plugin>
+		        <artifactId>maven-antrun-plugin</artifactId>
+		        <executions>
+		        
+		          <execution>
+		            <id>BuildUpdateSite-clearWorkAreas</id>
+		            <phase>initialize</phase>
+		            <goals><goal>run</goal></goals>
+		            <configuration>
+		              <target>
+		                <delete dir="${toBePacked}" quiet="true"/>
+		                <delete dir="${eusWork}"/>
+		              </target>
+		            </configuration>
+		          </execution>
+		          
+		          <execution>
+		            <id>BuildUpdateSite-pack-svnget-buildMetadata-commit-to-dev</id>
+		            <phase>package</phase>  
+		            <goals><goal>run</goal></goals>
+		            <configuration>
+		              <target>
+		              <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask"/>
+		                
+		                <!-- =================================== -->
+		                <!--   Check we can access build tools   -->
+		                <!-- =================================== -->
+		                <!-- if the property uima-maven-build-eclipse-home is set, use it, otherwise don't -->
+		                <condition property="eclipse.home" value="${uima-maven-build-eclipse-home}">
+		                  <not>
+		                    <equals arg1="${uima-maven-build-eclipse-home}" arg2="$${uima-maven-build-eclipse-home}" />
+		                  </not>
+		                </condition>
+		
+		                <property environment="envVar" />
+		                <condition property="eclipse.home" value="${envVar.ECLIPSE_HOME}">
+		                  <isset property="envVar.ECLIPSE_HOME" />
+		                </condition>
+		
+		                <fail unless="eclipse.home"
+		                  message="********** Please set up and use an ant property eclipse.home set to an Eclipse installation at level 3.3 or later, e.g. c:/eclipses/3.3/eclipse" />
+		
+		                <fail unless="uima-eclipse-jar-processor"
+		                  message="********** Please add to your settings.xml file the property uima-eclipse-jar-processor, point to this within an Eclipse installation at level 4.2 or later, e.g. \$\{uima-maven-build-eclipse-home\}/plugins/org.eclipse.equinox.p2.jarprocessor_1.0.200.v20110808-1657.jar" />
+		
+		                <!-- =================================== -->
+		                <!-- SVN remote copy from release to dev -->
+		                <!--   and checkout to subsite           -->
+		                <!-- =================================== -->
+		                <echo>copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
+		                <exec executable="svn">
+		                  <arg value="delete" />
+		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                  <arg value="--force"/> 
+		                  <arg value="-m"/>
+		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}"/>
+		                </exec> 
+		
+		                <exec executable="svn">
+		                  <arg value="copy" />
+		                  <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/" />
+		                  <arg value="-m"/>
+		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}"/>
+		                </exec> 
+		
+                    <echo>checking out eclipse update subsite ${eclipseUpdateSiteComponent} from dist ...dev...</echo>
+		                <delete dir="${eclipseUpdateSubSite}"/>
+		                <exec executable="svn">
+		                  <arg value="checkout" />
+		                  <arg value="--quiet" />
+		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                  <arg value="${eclipseUpdateSubSite}"/>
+		                </exec> 
+		                  
+		                <echo>Compress plugin Jars using pack200 - this may take a minute or 2</echo>
+		                <java jar="${uima-eclipse-jar-processor}" fork="true" failonerror="true" maxmemory="256m">
+		                  <arg line="-processAll"/>
+		                  <arg line="-repack"/>
+		                  <arg line="-pack"/>
+		                  <arg line="-verbose"/>
+		                       <!--  only pack the plugins.  The publisher won't copy packed "features", 
+		                             they are tiny anyways --> 
+		                  <arg line="-outputDir ${eusWork}/plugins"/>
+		                  <arg line="${toBePacked}"/>
+		                </java>
+		 
+		                <!-- copy also the original unpacked jars to the subsite in the plugins dir -->               
+		                <copy todir="${eusWork}/plugins">
+		                  <fileset dir="${toBePacked}"/>
+		                </copy>
+		                
+		                <echo>Generate p2 metadata</echo>
+		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true"
+		                  maxmemory="256m">
+		                  <arg line="-application org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" />
+		                  <arg line="-metadataRepository file:///${eclipseUpdateSubSite}" />
+		                  <arg line="-artifactRepository file:///${eclipseUpdateSubSite}" />
+		                  <arg line="-source ${eusWork}" />
+		                  <arg line="-configs ANY.ANY.ANY" />
+		                  <arg line="-publishArtifacts" />
+		                  <arg line="-reusePack200Files"/>
+		                  <arg line="-compress"/>
+		                  <arg line="-append"/>
+		                </java>
+		                
+		                <echo>Generate category information</echo>
+		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true"
+		                  maxmemory="256m">
+		                  <arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher" />
+		                  <arg line="-metadataRepository file:///${eclipseUpdateSubSite}" />
+		                  <arg line="-categoryDefinition file:///${basedir}/category.xml" />
+		                  <arg line="-categoryQualifier apache-uima" />
+		                  <arg line="-compress"/>
+		                </java>  
+		      
+
+                    <!-- ========================================== -->
+                    <!--   If apache-release, do checksums and sign -->
+                    <!-- ========================================== -->
+                    		      
+		                <if>
+		                  <equals arg1="${isApacheRelease}" arg2="true"/>
+		                  <then>
+
+		                    <echo message="Generating checksums for new features and plugins"/>
+		                    <checksum algorithm="sha1" format="MD5SUM">
+		                      <fileset dir="${eusWork}">
+		                        <include name="**/*.gz" />
+		                        <include name ="**/*.jar" />
+		                      </fileset>
+		                    </checksum>
+		                    <checksum algorithm="md5" format="MD5SUM">
+		                      <fileset dir="${eusWork}">
+		                        <include name="**/*.gz" />
+		                        <include name ="**/*.jar" />
+		                      </fileset>
+		                    </checksum>
+		
+		                    <echo message="Generating gpg signatures for new features and plugins"/>
+		                    <apply executable="gpg" dir="${eusWork}"> 
+		                      <arg value="--detach-sign"/>
+		                      <arg value="--armor"/>
+		                      <!-- batch flag needed to avoid gpg hang up -->
+		                      <arg value="--batch"/>
+		                      <fileset dir="${eusWork}">
+		                        <include name="**/*.jar"/>
+		                        <include name="**/*.jar.pack.gz"/>
+		                      </fileset>
+		                    </apply> 
+		                    
+		                    <copy todir="${eclipseUpdateSubSite}">
+		                      <fileset dir="${eusWork}">
+		                        <include name="**/*.asc"/>
+		                        <include name="**/*.md5"/>
+		                        <include name="**/*.sha1"/>
+		                      </fileset>
+		                    </copy>
+		
+		                    <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar"/>
+		                    <delete dir="${eclipseUpdateSubSite}">
+		                      <include name="*.sha1"/>
+		                      <include name="*.md5"/>
+		                      <include name="*.asc"/>
+		                    </delete>                   
+		                    <echo message="Generating checksums for updated artifacts.jar and content.jar"/>
+		
+		                    <checksum algorithm="sha1" format="MD5SUM">
+		                      <fileset dir="${eclipseUpdateSubSite}">
+		                         <include name ="*.jar" />
+		                      </fileset>
+		                    </checksum>
+		
+		                    <checksum algorithm="md5" format="MD5SUM">
+		                      <fileset dir="${eclipseUpdateSubSite}">
+		                        <include name ="*.jar" />
+		                      </fileset>
+		                    </checksum>
+		
+		                    <echo message="Generating gpg signatures for artifacts.jar and content.jar"/>
+		                    <apply executable="gpg" dir="${eclipseUpdateSubSite}"> 
+		                      <arg value="--detach-sign"/>
+		                      <arg value="--armor"/>
+		                      <!-- batch flag needed to avoid gpg hang up -->
+		                      <arg value="--batch"/>
+		                      <fileset dir="${eclipseUpdateSubSite}">
+		                        <include name="*.jar"/>
+		                      </fileset>
+		                    </apply> 
+		
+		                  </then>		                  
+		                </if>          
+		                              
+		                
+		              </target>
+		            </configuration>
+		          </execution>
+		          
+		        </executions>
+		      </plugin>
+		    </plugins>
+      
+      </build>
+    </profile>
 
     <!-- **************************************** -->
     <!-- * Build Simple Project Binary Assembly * -->

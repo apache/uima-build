@@ -1409,9 +1409,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </resource>
         </resources>
 
+        <!-- The feature.xml is filtered here, rather than in going from the 
+             top level place to the Jar, because Eclipse feature manipulation
+             uses the top level value.         
+         -->
         <plugins>
           <!-- filter the feature.xml to have the right version info 
-               for Eclipse at the top level-->
+              for Eclipse at the top level --> 
           <plugin>
             <artifactId>maven-resources-plugin</artifactId>
             <executions>

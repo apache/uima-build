@@ -57,44 +57,6 @@
   </properties>
 
   <build>
-    <pluginManagement>
-      <plugins>
-                      
-        <!-- generate the issuesFixed report of Jiras fixed in this release -->
-        <!-- uses the property "jiraVersion" to select the version -->
-        <!-- run using mvn changes:jira-report -N -DjiraVersion=xxxxxx  where
-             xxxxxx is the jira internal version number which you can get 
-             from the Jira url (see parameter fixforversion=xxxxxx) 
-             by going to https://issues.apache.org/jira/browse/UIMA 
-             and selecting "Releases" and then going to the 
-             particular version and looking in the url for
-             that version. -->        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-changes-plugin</artifactId>
-          <version>2.3</version>
-          <executions>
-            <execution>
-              <id>default-cli</id>
-              <goals><goal>jira-report</goal></goals>
-              <!-- don't use generate-sources - because javadoc plugin re-exec's that -->
-              <phase>generate-resources</phase>        
-              <configuration>
-                <fixVersionIds>${jiraVersion}</fixVersionIds>
-                <columnNames>Type,Key,Status,Summary</columnNames>
-                <resolutionIds>Fixed</resolutionIds>
-                <statusIds>Closed,Resolved</statusIds>
-                <sortColumnNames>Type,Key,Status</sortColumnNames>
-                <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
-                <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
-              </configuration>
-            </execution>
-          </executions>
-          
-        </plugin>
-
-      </plugins>
-    </pluginManagement>
     
     <plugins>
       

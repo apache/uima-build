@@ -24,7 +24,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>4</version>
+    <version>5-SNAPSHOT</version>
     <relativePath>../parent-pom</relativePath>
   </parent>
 
@@ -52,10 +52,10 @@
     <uimaScmRoot>uimaj</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
     <eclipseUpdateSite>${project.build.directory}/eclipse-update-site</eclipseUpdateSite>
+    <distsvnroot>https://dist.apache.org/</distsvnroot>
+<!--     <distsvnroot>file:///svn/t/</distsvnroot>    -->
+    
   </properties>
-
-  <!-- don't use dependency mechanism - use dependency:copy because we need to get multiple versions 
-    for the eclipse-feature-projects, and Maven wants to resolve multiple versions into one. -->
 
   <build>
     <plugins>
@@ -68,6 +68,8 @@
             <phase>package</phase>
             <configuration>
               <target>
+                <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask"/>
+                
                 <!-- if the property uima-maven-build-eclipse-home is set, use it, otherwise don't -->
                 <condition property="eclipse.home" value="${uima-maven-build-eclipse-home}">
                   <not>
@@ -83,12 +85,87 @@
                 <fail unless="eclipse.home"
                   message="********** Please set up and use an ant property eclipse.home set to an Eclipse installation at level 3.3 or later, e.g. c:/eclipses/3.3/eclipse" />
 
+                !<!-- The only reason to check out from SVN these 2 files and their signatures is to set things up
+                      so the relase can be done via a svn swtich (from dev to release) and then a commit 
+                      Because Jars are being released, it's unlikely there is any diff encoding that SVN can do -->
+                      
+                <!-- =================================== -->
+                <!-- SVN remote copy from release to dev -->
+                <!--   and checkout                      -->
+                <!-- =================================== -->
+                <echo>copying svn dist release to dev for eclipse composite update site version ${project.version}</echo>
+                <exec executable="svn">
+                  <arg value="delete" />
+                  <arg value="${distsvnroot}repos/dist/dev/uima//eclipse-update-site/composite-update-site/${project.version}" />
+                  <arg value="--force"/> 
+                  <arg value="-m"/>
+                  <arg value="prepare for building eclipse composite update site ${project.version}"/>
+                </exec> 
+
+                <exec executable="svn">
+                  <arg value="copy" />
+                  <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/" />
+                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/composite-update-site/${project.version}" />
+                  <arg value="--parents"/>
+                  <arg value="-m"/>
+                  <arg value="prepare for building eclipse composite update site ${project.version}"/>
+                </exec> 
+
+                <echo>checking out eclipse composite update site from dist ...dev...</echo>
+                <delete dir="${eclipseUpdateSite}"/>
+                <exec executable="svn">
+                  <arg value="checkout" />
+                  <arg value="--quiet" />
+                  <arg value="--depth" />
+                  <arg value="immediates"/>
+                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/composite-update-site/${project.version}" />
+                  <arg value="${eclipseUpdateSite}"/>
+                </exec> 
+
+                <!-- We run an internal Ant this way in order to have the Ant impl have the special
+                     defined tasks for p2 -->
                 <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true" maxmemory="256m">
                   <arg line="-application org.eclipse.ant.core.antRunner" />
                   <arg line="-f buildCompositeRepository.xml" />
                   <arg line="-verbose"/>
                 </java>
-                 -->
+                
+                <!-- ========================================== -->
+                <!--   If apache-release, do checksums and sign -->
+                <!-- ========================================== -->
+                          
+                <if>
+                  <equals arg1="${isApacheRelease}" arg2="true"/>
+                  <then>
+
+                    <echo message="Generating checksums for artifacts.jar and content.jar"/>
+                    <checksum algorithm="sha1" format="MD5SUM">
+                      <fileset dir="${eclipseUpdateSite}">
+                        <include name="*.jar.pack.gz" />
+                        <include name ="*.jar" />
+                      </fileset>
+                    </checksum>
+                    <checksum algorithm="md5" format="MD5SUM">
+                      <fileset dir="${eclipseUpdateSite}">
+                        <include name ="*.jar.pack.gz" />
+                        <include name ="*.jar" />
+                      </fileset>
+                    </checksum>
+
+                    <echo message="Generating gpg signatures for artifacts.jar and content.jar"/>
+                    <apply executable="gpg" dir="${eclipseUpdateSite}"> 
+                      <arg value="--detach-sign"/>
+                      <arg value="--armor"/>
+                      <!-- batch flag needed to avoid gpg hang up -->
+                      <arg value="--batch"/>
+                      <fileset dir="${eclipseUpdateSite}">
+                        <include name="*.jar"/>
+                        <include name="*.jar.pack.gz"/>
+                      </fileset>
+                    </apply> 
+                    
+                  </then>                     
+                </if>          
 
               </target>
             </configuration>

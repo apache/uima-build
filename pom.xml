@@ -166,7 +166,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>12321547</jiraVersion>  <!-- for parent-pom-x change for each release -->
+    <jiraVersion>12323929</jiraVersion>  <!-- for parent-pom-5 change for each release -->
     <uimaBuildResourcesVersion>4</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
@@ -594,7 +594,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
-          <version>2.8</version>
+          <version>2.8</version>  <!-- Apache-wide pom has no entry for this plugin -->
           <executions>
             <execution>
               <id>default-cli</id>
@@ -1454,60 +1454,60 @@ Copyright (c) 2003, 2006 IBM Corporation.
       <properties>
         <eusWork>${project.build.directory}/eus-work</eusWork>          
         <toBePacked>${project.build.directory}/toBePacked</toBePacked>
-<!--     <distsvnroot>https://dist.apache.org/</distsvnroot> -->
-        <distsvnroot>file:///svn/t/</distsvnroot>   
+        <distsvnroot>https://dist.apache.org/</distsvnroot>
+<!--         <distsvnroot>file:///svn/t/</distsvnroot>    -->
       </properties>
       <build>
           <plugins>
 
-		      <!-- ============================================================================ --> 
-		      <!--           U s e   o f   d i s t . a p a c h e . o r g    S V N               -->
-		      <!--                                                                              --> 
-		      <!--  Goals: avoid copying to /release/, use svn commit to do                     --> 
-		      <!--           just the changed files                                             --> 
-		      <!--         for safety, work in the /dev/ area                                   --> 
+          <!-- ============================================================================ --> 
+          <!--           U s e   o f   d i s t . a p a c h e . o r g    S V N               -->
+          <!--                                                                              --> 
+          <!--  Goals: avoid copying to /release/, use svn commit to do                     --> 
+          <!--           just the changed files                                             --> 
+          <!--         for safety, work in the /dev/ area                                   --> 
           <!--         For vote, user can do commit to /dev/ area                           --> 
           <!--         After vote, user does svn switch to /release/ area and commits       --> 
-		      <!--                                                                              --> 
-		      <!--  svn (release) -> svn (dev) -> checkout +                                    --> 
-		      <!--  srcs -> toBePacked -> eus-work - - - - +-> subsite -> (manual) commit       --> 
-		      <!--                                    SC         SC                             --> 
-		      <!--                                                                              --> 
-		      <!--    SC = sign & checksum                                                      --> 
-		      <!--         the 2nd SC is for the updated artifacts and contents of the subsite  --> 
-		      <!-- ============================================================================ --> 
+          <!--                                                                              --> 
+          <!--  svn (release) -> svn (dev) -> checkout +                                    --> 
+          <!--  srcs -> toBePacked -> eus-work - - - - +-> subsite -> (manual) commit       --> 
+          <!--                                    SC         SC                             --> 
+          <!--                                                                              --> 
+          <!--    SC = sign & checksum                                                      --> 
+          <!--         the 2nd SC is for the updated artifacts and contents of the subsite  --> 
+          <!-- ============================================================================ --> 
 		       
-		      <!-- ============================================================================ --> 
-		      <!--                   O v e r a l l    F l o w                                   -->
-		      <!--                                                                              --> 
-		      <!--  PROCESS-SOURCES                                                             --> 
-		      <!--     New plugins to be compressed -> target/toBePacked                        --> 
-		      <!--                                                                              --> 
-		      <!--     New features to be included -> target/eus-work                           --> 
-		      <!--         (eus = Eclipse Update Site)                                          --> 
+          <!-- ============================================================================ --> 
+          <!--                   O v e r a l l    F l o w                                   -->
+          <!--                                                                              --> 
+          <!--  PROCESS-SOURCES                                                             --> 
+          <!--     New plugins to be compressed -> target/toBePacked                        --> 
+          <!--                                                                              --> 
+          <!--     New features to be included -> target/eus-work                           --> 
+          <!--         (eus = Eclipse Update Site)                                          --> 
           <!--                                                                              --> 
           <!--     filter category.xml to pick up version #                                 --> 
           <!--                                                                              --> 
-		      <!--  PACKAGE                                                                     --> 
-		      <!--     Pack step goes from target/toBePacked -> target/eus-work                 --> 
-		      <!--                                                                              --> 
+          <!--  PACKAGE                                                                     --> 
+          <!--     Pack step goes from target/toBePacked -> target/eus-work                 --> 
+          <!--                                                                              --> 
           <!--     svn del in .../dev/... the eclipse-update-site/[componnt]                --> 
           <!--     svn copy from .../release/ to dev the [component]                        --> 
-		      <!--     Dev SVN checkout -> target/eclipse-update-site/[component]               -->
-		      <!--           (This is the current site - to be updated)                         --> 
-		      <!--                                                                              --> 
-		      <!--     Publish metadata goes from target/eus-work -> eclipse-update-site/[comp] -->
-		      <!--         (publish run in "append" mode)                                       --> 
-		      <!--                                                                              --> 
-		      <!--     Category update goes from target/eus-work -> eclipse-update-site/[comp]  --> 
-		      <!--                                                                              -->
-		      <!--     (if apache-release:                                                      -->
+          <!--     Dev SVN checkout -> target/eclipse-update-site/[component]               -->
+          <!--           (This is the current site - to be updated)                         --> 
+          <!--                                                                              --> 
+          <!--     Publish metadata goes from target/eus-work -> eclipse-update-site/[comp] -->
+          <!--         (publish run in "append" mode)                                       --> 
+          <!--                                                                              --> 
+          <!--     Category update goes from target/eus-work -> eclipse-update-site/[comp]  --> 
+          <!--                                                                              -->
+          <!--     (if apache-release:                                                      -->
           <!--        do checksums and sign in target/eus-work                              --> 
-		      <!--        delete prev checksums and signature for artifacts/content.jar         -->
-		      <!--        add new checksum/sign for these two jars                              -->
-		      <!--        copy all checksums/signatures from eus-work                           -->
-		      <!--     )                                                                        -->
-		      <!--                                                                              -->
+          <!--        delete prev checksums and signature for artifacts/content.jar         -->
+          <!--        add new checksum/sign for these two jars                              -->
+          <!--        copy all checksums/signatures from eus-work                           -->
+          <!--     )                                                                        -->
+          <!--                                                                              -->
 		      <!-- ============================================================================ --> 
 		
 		      <!-- filter the category.xml to have the right version info 
@@ -2193,4 +2193,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
        
   </profiles>
        
+  <modules>
+  	<module>../uima-build-helper-maven-plugin</module>
+  	<module>../uima-build-resources</module>
+  </modules>
 </project>

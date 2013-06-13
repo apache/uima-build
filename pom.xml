@@ -608,10 +608,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <resolutionIds>Fixed</resolutionIds>
                 <statusIds>Closed,Resolved</statusIds>
                 <sortColumnNames>Type, Status, Key</sortColumnNames>
-                <!-- 
-                changed sortColumnNames for Jira 5
-                was:
-                 <sortColumnNames>Status, Key, Type</sortColumnNames>
+                <!-- changed sortColumnNames for Jira 5
+                     was: <sortColumnNames>Status, Key, Type</sortColumnNames>
                  -->
                 <outputDirectory>${basedir}/issuesFixed/</outputDirectory>
                 <maxEntries>1000</maxEntries> <!-- hopefully, bigger than ever needed -->
@@ -775,7 +773,30 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </plugins>
       </build>     
     </profile>
-    
+
+    <!-- *************************************************** -->
+    <!-- *   Run Rat report - for Jenkins                  * -->
+    <!-- * https://issues.apache.org/jira/browse/UIMA-2590 * -->
+    <!-- *************************************************** -->
+    <profile>
+      <id>run-rat-report</id>
+      
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.rat</groupId>
+            <artifactId>apache-rat-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>default-cli</id>
+              </execution>
+            </executions>
+          </plugin>          
+          
+        </plugins>
+      </build>     
+    </profile>
+
     <!-- **************************************** -->
     <!-- *   Produce Jira report                * -->
     <!-- **************************************** -->

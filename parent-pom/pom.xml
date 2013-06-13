@@ -705,23 +705,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
       </plugin>
       
-      <plugin> <!-- https://issues.apache.org/jira/browse/UIMA-2966  -->
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-antrun-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>dup-meta-jar-cleanup</id>
-            <goals><goal>run</goal></goals>
-            <phase>prepare-package</phase>  <!--  before Jar plugin -->
-            <configuration>
-              <target>
-                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true"/>
-                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true"/>
-              </target>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>     
     
   </build>
@@ -1363,6 +1346,25 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </pluginManagement> 
         
         <plugins>
+        
+		      <plugin> <!-- https://issues.apache.org/jira/browse/UIMA-2966  -->
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-antrun-plugin</artifactId>
+		        <executions>
+		          <execution>
+		            <id>dup-meta-jar-cleanup</id>
+		            <goals><goal>run</goal></goals>
+		            <phase>prepare-package</phase>  <!--  before Jar plugin -->
+		            <configuration>
+		              <target>
+		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true"/>
+		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true"/>
+		              </target>
+		            </configuration>
+		          </execution>
+		        </executions>
+		      </plugin>
+        
           <!-- https://issues.apache.org/jira/browse/UIMA-2967  -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
@@ -1498,16 +1500,16 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!--                                                                              --> 
           <!--     Publish metadata goes from target/eus-work -> eclipse-update-site/[comp] -->
           <!--         (publish run in "append" mode)                                       --> 
-          <!--                                                                              --> 
-          <!--     Category update goes from target/eus-work -> eclipse-update-site/[comp]  --> 
-          <!--                                                                              -->
-          <!--     (if apache-release:                                                      -->
+		      <!--                                                                              --> 
+		      <!--     Category update goes from target/eus-work -> eclipse-update-site/[comp]  --> 
+		      <!--                                                                              -->
+		      <!--     (if apache-release:                                                      -->
           <!--        do checksums and sign in target/eus-work                              --> 
-          <!--        delete prev checksums and signature for artifacts/content.jar         -->
-          <!--        add new checksum/sign for these two jars                              -->
-          <!--        copy all checksums/signatures from eus-work                           -->
-          <!--     )                                                                        -->
-          <!--                                                                              -->
+		      <!--        delete prev checksums and signature for artifacts/content.jar         -->
+		      <!--        add new checksum/sign for these two jars                              -->
+		      <!--        copy all checksums/signatures from eus-work                           -->
+		      <!--     )                                                                        -->
+		      <!--                                                                              -->
 		      <!-- ============================================================================ --> 
 		
 		      <!-- filter the category.xml to have the right version info 

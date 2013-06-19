@@ -41,7 +41,7 @@ public class ParseDateTime extends AbstractMojo {
    * Collection of parseSpecs. Each parseSpec has a name - the property name,
    * and a format - see "Usage"
    * 
-   * @parameter
+   * @Parameter
    * @required
    * @since 1.0.0
    */
@@ -50,7 +50,7 @@ public class ParseDateTime extends AbstractMojo {
   /**
    * The Maven project to analyze.
    * 
-   * @parameter expression="${project}"
+   * @Parameter ( expression = "${project}" )
    * @required
    * @readonly
    */

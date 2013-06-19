@@ -44,13 +44,13 @@ public class CopyFromApacheDist extends AbstractMojo {
   private static final int MINTOTALSIZE = 100;
   /**
    * Group Id
-   * @parameter default-value="${project.groupId}"
+   * @Parameter ( default-value = "${project.groupId}" )
    */
   private String groupId;
 
   /**
    * Artifact Id
-   * @parameter default-value="uimaj"  
+   * @Parameter ( default-value = "uimaj" )  
    */
   private String artifactId;
 
@@ -64,21 +64,21 @@ public class CopyFromApacheDist extends AbstractMojo {
   /**
    * Type 
    *
-   * @parameter default-value="zip"
+   * @Parameter ( default-value = "zip" )
    */
   private String type;
 
   /**
    * Classifier
    *
-   * @parameter default-value="bin"
+   * @Parameter ( default-value = "bin" )
    */
   private String classifier;
 
   /**
    * Repository
    *
-   * @parameter default-value="${settings.localRepository}"
+   * @Parameter ( default-value = "${settings.localRepository}" )
    */
   private String repository;
   

@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>5</version>
+  <version>6-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -122,13 +122,13 @@
         
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-5-rc1/parent-pom
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-5-rc1/parent-pom
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-5-rc1/parent-pom
+      http://svn.apache.org/viewvc/uima/build/trunk/parent-pom
     </url>
   </scm>
   
@@ -167,7 +167,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>12323929</jiraVersion>  <!-- for parent-pom-5 change for each release -->
-    <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
+    <uimaBuildResourcesVersion>6-SNAPSHOT</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>

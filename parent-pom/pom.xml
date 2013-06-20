@@ -607,7 +607,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <columnNames>Type,Key,Status,Summary</columnNames>
                 <resolutionIds>Fixed</resolutionIds>
                 <statusIds>Closed,Resolved</statusIds>
-                <sortColumnNames>Type, Status, Key</sortColumnNames>
+                <sortColumnNames>Type, Key</sortColumnNames>
                 <!-- changed sortColumnNames for Jira 5
                      was: <sortColumnNames>Status, Key, Type</sortColumnNames>
                  -->

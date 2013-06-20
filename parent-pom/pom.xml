@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>5-SNAPSHOT</version>
+  <version>5</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -122,13 +122,13 @@
         
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-5-rc1/parent-pom
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-5-rc1/parent-pom
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-pom
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-5-rc1/parent-pom
     </url>
   </scm>
   
@@ -167,7 +167,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>12323929</jiraVersion>  <!-- for parent-pom-5 change for each release -->
-    <uimaBuildResourcesVersion>5-SNAPSHOT</uimaBuildResourcesVersion>
+    <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
@@ -379,7 +379,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 		</goals>
                 	</pluginExecutionFilter>
                 	<action>
-                		<ignore></ignore>
+                		<ignore />
                 	</action>
                 </pluginExecution>
 	            </pluginExecutions>
@@ -1430,8 +1430,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		            <phase>prepare-package</phase>  <!--  before Jar plugin -->
 		            <configuration>
 		              <target>
-		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true"/>
-		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true"/>
+		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true" />
+		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true" />
 		              </target>
 		            </configuration>
 		          </execution>
@@ -1443,7 +1443,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <phase>compile</phase>  <!--  before maven-bundle-plugin plugin -->
                 <configuration>
                   <target>
-                    <delete file="META-INF/MANIFEST.MF" quiet="true"/>
+                    <delete file="META-INF/MANIFEST.MF" quiet="true" />
                   </target>
                 </configuration>
               </execution>
@@ -1614,8 +1614,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		            <goals><goal>run</goal></goals>
 		            <configuration>
 		              <target>
-		                <delete dir="${toBePacked}" quiet="true"/>
-		                <delete dir="${eusWork}"/>
+		                <delete dir="${toBePacked}" quiet="true" />
+		                <delete dir="${eusWork}" />
 		              </target>
 		            </configuration>
 		          </execution>
@@ -1626,7 +1626,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		            <goals><goal>run</goal></goals>
 		            <configuration>
 		              <target>
-		              <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask"/>
+		              <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
 		                
 		                <!-- =================================== -->
 		                <!--   Check we can access build tools   -->
@@ -1643,11 +1643,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                  <isset property="envVar.ECLIPSE_HOME" />
 		                </condition>
 		
-		                <fail unless="eclipse.home"
-		                  message="********** Please set up and use an ant property eclipse.home set to an Eclipse installation at level 3.3 or later, e.g. c:/eclipses/3.3/eclipse" />
+		                <fail unless="eclipse.home" message="********** Please set up and use an ant property eclipse.home set to an Eclipse installation at level 3.3 or later, e.g. c:/eclipses/3.3/eclipse" />
 		
-		                <fail unless="uima-eclipse-jar-processor"
-		                  message="********** Please add to your settings.xml file the property uima-eclipse-jar-processor, point to this within an Eclipse installation at level 4.2 or later, e.g. \$\{uima-maven-build-eclipse-home\}/plugins/org.eclipse.equinox.p2.jarprocessor_1.0.200.v20110808-1657.jar" />
+		                <fail unless="uima-eclipse-jar-processor" message="********** Please add to your settings.xml file the property uima-eclipse-jar-processor, point to this within an Eclipse installation at level 4.2 or later, e.g. \$\{uima-maven-build-eclipse-home\}/plugins/org.eclipse.equinox.p2.jarprocessor_1.0.200.v20110808-1657.jar" />
 		
 		                <!-- =================================== -->
 		                <!-- SVN remote copy from release to dev -->
@@ -1657,67 +1655,65 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                <exec executable="svn">
 		                  <arg value="delete" />
 		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                  <arg value="--force"/> 
-		                  <arg value="-m"/>
-		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}"/>
+		                  <arg value="--force" /> 
+		                  <arg value="-m" />
+		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
 		                </exec> 
 		
 		                <exec executable="svn">
 		                  <arg value="copy" />
 		                  <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
 		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/" />
-		                  <arg value="-m"/>
-		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}"/>
+		                  <arg value="-m" />
+		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
 		                </exec> 
 		
                     <echo>checking out eclipse update subsite ${eclipseUpdateSiteComponent} from dist ...dev...</echo>
-		                <delete dir="${eclipseUpdateSubSite}"/>
+		                <delete dir="${eclipseUpdateSubSite}" />
 		                <exec executable="svn">
 		                  <arg value="checkout" />
 		                  <arg value="--quiet" />
 		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                  <arg value="${eclipseUpdateSubSite}"/>
+		                  <arg value="${eclipseUpdateSubSite}" />
 		                </exec> 
 		                  
 		                <echo>Compress plugin Jars using pack200 - this may take a minute or 2</echo>
 		                <java jar="${uima-eclipse-jar-processor}" fork="true" failonerror="true" maxmemory="256m">
-		                  <arg line="-processAll"/>
-		                  <arg line="-repack"/>
-		                  <arg line="-pack"/>
-		                  <arg line="-verbose"/>
+		                  <arg line="-processAll" />
+		                  <arg line="-repack" />
+		                  <arg line="-pack" />
+		                  <arg line="-verbose" />
 		                       <!--  only pack the plugins.  The publisher won't copy packed "features", 
 		                             they are tiny anyways --> 
-		                  <arg line="-outputDir ${eusWork}/plugins"/>
-		                  <arg line="${toBePacked}"/>
+		                  <arg line="-outputDir ${eusWork}/plugins" />
+		                  <arg line="${toBePacked}" />
 		                </java>
 		 
 		                <!-- copy also the original unpacked jars to the subsite in the plugins dir -->               
 		                <copy todir="${eusWork}/plugins">
-		                  <fileset dir="${toBePacked}"/>
+		                  <fileset dir="${toBePacked}" />
 		                </copy>
 		                
 		                <echo>Generate p2 metadata</echo>
-		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true"
-		                  maxmemory="256m">
+		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true" maxmemory="256m">
 		                  <arg line="-application org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" />
 		                  <arg line="-metadataRepository file:///${eclipseUpdateSubSite}" />
 		                  <arg line="-artifactRepository file:///${eclipseUpdateSubSite}" />
 		                  <arg line="-source ${eusWork}" />
 		                  <arg line="-configs ANY.ANY.ANY" />
 		                  <arg line="-publishArtifacts" />
-		                  <arg line="-reusePack200Files"/>
-		                  <arg line="-compress"/>
-		                  <arg line="-append"/>
+		                  <arg line="-reusePack200Files" />
+		                  <arg line="-compress" />
+		                  <arg line="-append" />
 		                </java>
 		                
 		                <echo>Generate category information</echo>
-		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true"
-		                  maxmemory="256m">
+		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true" maxmemory="256m">
 		                  <arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher" />
 		                  <arg line="-metadataRepository file:///${eclipseUpdateSubSite}" />
 		                  <arg line="-categoryDefinition file:///${basedir}/category.xml" />
 		                  <arg line="-categoryQualifier apache-uima" />
-		                  <arg line="-compress"/>
+		                  <arg line="-compress" />
 		                </java>  
 		      
 
@@ -1726,71 +1722,71 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <!-- ========================================== -->
                     		      
 		                <if>
-		                  <equals arg1="${isApacheRelease}" arg2="true"/>
+		                  <equals arg1="${isApacheRelease}" arg2="true" />
 		                  <then>
 
-		                    <echo message="Generating checksums for new features and plugins"/>
+		                    <echo message="Generating checksums for new features and plugins" />
 		                    <checksum algorithm="sha1" format="MD5SUM">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.gz" />
-		                        <include name ="**/*.jar" />
+		                        <include name="**/*.jar" />
 		                      </fileset>
 		                    </checksum>
 		                    <checksum algorithm="md5" format="MD5SUM">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.gz" />
-		                        <include name ="**/*.jar" />
+		                        <include name="**/*.jar" />
 		                      </fileset>
 		                    </checksum>
 		
-		                    <echo message="Generating gpg signatures for new features and plugins"/>
+		                    <echo message="Generating gpg signatures for new features and plugins" />
 		                    <apply executable="gpg" dir="${eusWork}"> 
-		                      <arg value="--detach-sign"/>
-		                      <arg value="--armor"/>
+		                      <arg value="--detach-sign" />
+		                      <arg value="--armor" />
 		                      <!-- batch flag needed to avoid gpg hang up -->
-		                      <arg value="--batch"/>
+		                      <arg value="--batch" />
 		                      <fileset dir="${eusWork}">
-		                        <include name="**/*.jar"/>
-		                        <include name="**/*.jar.pack.gz"/>
+		                        <include name="**/*.jar" />
+		                        <include name="**/*.jar.pack.gz" />
 		                      </fileset>
 		                    </apply> 
 		                    
 		                    <copy todir="${eclipseUpdateSubSite}">
 		                      <fileset dir="${eusWork}">
-		                        <include name="**/*.asc"/>
-		                        <include name="**/*.md5"/>
-		                        <include name="**/*.sha1"/>
+		                        <include name="**/*.asc" />
+		                        <include name="**/*.md5" />
+		                        <include name="**/*.sha1" />
 		                      </fileset>
 		                    </copy>
 		
-		                    <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar"/>
+		                    <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar" />
 		                    <delete dir="${eclipseUpdateSubSite}">
-		                      <include name="*.sha1"/>
-		                      <include name="*.md5"/>
-		                      <include name="*.asc"/>
+		                      <include name="*.sha1" />
+		                      <include name="*.md5" />
+		                      <include name="*.asc" />
 		                    </delete>                   
-		                    <echo message="Generating checksums for updated artifacts.jar and content.jar"/>
+		                    <echo message="Generating checksums for updated artifacts.jar and content.jar" />
 		
 		                    <checksum algorithm="sha1" format="MD5SUM">
 		                      <fileset dir="${eclipseUpdateSubSite}">
-		                         <include name ="*.jar" />
+		                         <include name="*.jar" />
 		                      </fileset>
 		                    </checksum>
 		
 		                    <checksum algorithm="md5" format="MD5SUM">
 		                      <fileset dir="${eclipseUpdateSubSite}">
-		                        <include name ="*.jar" />
+		                        <include name="*.jar" />
 		                      </fileset>
 		                    </checksum>
 		
-		                    <echo message="Generating gpg signatures for artifacts.jar and content.jar"/>
+		                    <echo message="Generating gpg signatures for artifacts.jar and content.jar" />
 		                    <apply executable="gpg" dir="${eclipseUpdateSubSite}"> 
-		                      <arg value="--detach-sign"/>
-		                      <arg value="--armor"/>
+		                      <arg value="--detach-sign" />
+		                      <arg value="--armor" />
 		                      <!-- batch flag needed to avoid gpg hang up -->
-		                      <arg value="--batch"/>
+		                      <arg value="--batch" />
 		                      <fileset dir="${eclipseUpdateSubSite}">
-		                        <include name="*.jar"/>
+		                        <include name="*.jar" />
 		                      </fileset>
 		                    </apply> 
 		

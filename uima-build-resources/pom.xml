@@ -23,12 +23,12 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>5-SNAPSHOT</version>
+    <version>5</version>
     <relativePath>../parent-pom</relativePath>
   </parent>
   
   <artifactId>uima-build-resources</artifactId>
-  <version>5-SNAPSHOT</version>
+  <version>5</version>
   
   <name>Apache UIMA ${project.artifactId}</name>
   <description>This Jar contains resources
@@ -40,13 +40,13 @@
   
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/uima-build-resources
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-5-rc1/uima-build-resources
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-build-resources
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-5-rc1/uima-build-resources
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/uima-build-resources
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-5-rc1/uima-build-resources
     </url>
   </scm>
       

@@ -430,6 +430,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
+          <!-- remove version after moving to apache parent pom 14 or later -->
+          <version>2.9.1</version> <!-- pick up fix for javadoc security issue, June 2013 -->
           <configuration>
             <source>5</source> <!-- needed to do Enums -->
             <notimestamp>true</notimestamp>

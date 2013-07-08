@@ -1490,6 +1490,11 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		      <!--                                                                              -->
 		      <!-- ============================================================================ --> 
 		
+          <!-- ============================================================================ -->
+          <!--    Alternate flow if apache-release is not defined -                         -->
+          <!--      skip getting previous update site from dist.apache.org                  -->
+          <!-- ============================================================================ -->
+		      		
 		      <!-- filter the category.xml to have the right version info 
 		           for Eclipse at the top level-->
 		      <plugin>
@@ -1561,31 +1566,39 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                <!-- SVN remote copy from release to dev -->
 		                <!--   and checkout to subsite           -->
 		                <!-- =================================== -->
-		                <echo>copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
-		                <exec executable="svn">
-		                  <arg value="delete" />
-		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                  <arg value="--force" /> 
-		                  <arg value="-m" />
-		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
-		                </exec> 
-		
-		                <exec executable="svn">
-		                  <arg value="copy" />
-		                  <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/" />
-		                  <arg value="-m" />
-		                  <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
-		                </exec> 
-		
-                    <echo>checking out eclipse update subsite ${eclipseUpdateSiteComponent} from dist ...dev...</echo>
-		                <delete dir="${eclipseUpdateSubSite}" />
-		                <exec executable="svn">
-		                  <arg value="checkout" />
-		                  <arg value="--quiet" />
-		                  <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                  <arg value="${eclipseUpdateSubSite}" />
-		                </exec> 
+		                <if>
+		                  <isset property="apacheRelease"/>
+		                  <then>
+		                    <echo>copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
+		                    <exec executable="svn">
+		                      <arg value="delete" />
+		                      <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                      <arg value="--force" /> 
+		                      <arg value="-m" />
+		                      <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
+		                    </exec> 
+		    
+		                    <exec executable="svn">
+		                      <arg value="copy" />
+		                      <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                      <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/" />
+		                      <arg value="-m" />
+		                      <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
+		                    </exec> 
+		    
+		                    <echo>checking out eclipse update subsite ${eclipseUpdateSiteComponent} from dist ...dev...</echo>
+		                    <delete dir="${eclipseUpdateSubSite}" />
+		                    <exec executable="svn">
+		                      <arg value="checkout" />
+		                      <arg value="--quiet" />
+		                      <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                      <arg value="${eclipseUpdateSubSite}" />
+		                    </exec> 
+		                  </then>
+		                  <else>
+		                    <echo>skipping (because not apache-release) copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
+		                  </else>
+		                </if>
 		                  
 		                <echo>Compress plugin Jars using pack200 - this may take a minute or 2</echo>
 		                <java jar="${uima-eclipse-jar-processor}" fork="true" failonerror="true" maxmemory="256m">

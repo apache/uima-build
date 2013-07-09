@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>7-SNAPSHOT</version>
+  <version>6-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -167,7 +167,7 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>12324673</jiraVersion>  <!-- for parent-pom-5 change for each release -->
-    <uimaBuildResourcesVersion>6-SNAPSHOT</uimaBuildResourcesVersion>
+    <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>

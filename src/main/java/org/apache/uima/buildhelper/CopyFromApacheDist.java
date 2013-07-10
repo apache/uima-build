@@ -29,57 +29,59 @@ import java.net.URL;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
+import org.apache.maven.plugins.annotations.Execute;
+import org.apache.maven.plugins.annotations.LifecyclePhase;
+import org.apache.maven.plugins.annotations.Mojo;
+import org.apache.maven.plugins.annotations.Parameter;
 
 /**
  * Check if the requested artifact is already in the .m2 repository
  *   if so, just return
  * else, download the requested artifact from archive.apache.org/dist/uima/
  * 
- * @goal copy-from-apache-dist
- * @phase validate
- *
  */
+@Mojo( name = "copy-from-apache-dist")
+@Execute( goal = "copy-from-apache-dist", phase = LifecyclePhase.VALIDATE)
+
 public class CopyFromApacheDist extends AbstractMojo {
   private static final int MAXRETRIES = 6;
   private static final int MINTOTALSIZE = 100;
   /**
    * Group Id
-   * @Parameter ( default-value = "${project.groupId}" )
    */
+  @Parameter ( defaultValue = "${project.groupId}" )
   private String groupId;
 
   /**
    * Artifact Id
-   * @Parameter ( default-value = "uimaj" )  
    */
+  @Parameter ( defaultValue = "uimaj" )
   private String artifactId;
 
   /**
    * Version, e.g. 2.4.0
-   * @parameter
-   * @required
    */
+  @Parameter (required = true)
   private String version = null;
 
   /**
    * Type 
-   *
-   * @Parameter ( default-value = "zip" )
    */
+  @Parameter ( defaultValue = "zip" )
   private String type;
 
   /**
    * Classifier
-   *
-   * @Parameter ( default-value = "bin" )
    */
+  @Parameter ( defaultValue = "bin" )
   private String classifier;
 
   /**
    * Repository
    *
-   * @Parameter ( default-value = "${settings.localRepository}" )
+   * 
    */
+  @Parameter ( defaultValue = "${settings.localRepository}" )
   private String repository;
   
   public void execute() throws MojoExecutionException {

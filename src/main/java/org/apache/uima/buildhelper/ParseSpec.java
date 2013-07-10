@@ -18,24 +18,22 @@
  */
 package org.apache.uima.buildhelper;
 
+import org.apache.maven.plugins.annotations.Parameter;
+
 public class ParseSpec {
   
   /**
    * The name of the property to set
-   * 
-   * @parameter
-   * @required
    * @since 1.0.0
    */
+  @Parameter(required = true)
   private String name;
   
   /**
    * The format string to use
-   * 
-   * @parameter
-   * @required
    * @since 1.0.0
    */
+  @Parameter(required = true)
   private String format;
 
   public ParseSpec() {}

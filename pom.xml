@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>7-SNAPSHOT</version>
+  <version>6-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -532,7 +532,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.uima</groupId>
           <artifactId>uima-build-helper-maven-plugin</artifactId>
-          <version>4</version>
+          <version>6-SNAPSHOT</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -765,7 +765,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		            <goals><goal>process</goal></goals>
 		            <configuration>
 		              <resourceBundles>
-		                <resourceBundle>org.apache.uima:uima-build-resources:4</resourceBundle>
+		                <resourceBundle>org.apache.uima:uima-build-resources:${uimaBuildResourcesVersion}</resourceBundle>
 		              </resourceBundles>
 		            </configuration>
 		          </execution>
@@ -778,7 +778,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <dependency>
                 <groupId>org.apache.uima</groupId>
                 <artifactId>uima-build-resources</artifactId>
-                <version>4</version>
+                <version>${uimaBuildResourcesVersion}</version>
               </dependency>
             </dependencies>
           </plugin>
@@ -943,7 +943,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <artifactItem>
                       <groupId>org.apache.uima</groupId>
                       <artifactId>uima-build-resources</artifactId>
-                      <version>1</version>
+                      <version>${uimaBuildResourcesVersion}</version>
                       <includes>docbook-shared/**</includes>
                       <outputDirectory>${dolRepo}</outputDirectory>
                     </artifactItem>
@@ -2295,6 +2295,39 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                    <ignore />
 		                  </action>
 		                </pluginExecution>
+
+                    <!-- *********************************************** -->
+                    <!-- EXECUTE most javacc goals                       -->
+                    <!-- *********************************************** -->
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>javacc-maven-plugin</artifactId>
+                        <versionRange>[2,)</versionRange>
+                        <goals>
+                          <goal>javacc</goal>
+                          <goal>jjtree-javacc</goal>
+                          <goal>jjtree</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <execute />
+                      </action>
+                    </pluginExecution>                    
+
+                    <pluginExecution>
+                      <pluginExecutionFilter>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>javacc-maven-plugin</artifactId>
+                        <versionRange>[2,)</versionRange>
+                        <goals>
+                          <goal>jjdoc</goal>
+                        </goals>
+                      </pluginExecutionFilter>
+                      <action>
+                        <ignore />
+                      </action>
+                    </pluginExecution>                    
 		              </pluginExecutions>
 		            </lifecycleMappingMetadata>
 		          </configuration>
@@ -2305,10 +2338,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
     </profile>      
   </profiles>
  
-  <!--  Was used for v 5, not normally needed       
+  <!-- for v 6, build with the uima-build-helper-maven-plugin because of mutual version dependencies -->
   <modules>
-    <module>../uima-build-resources</module>
   	<module>../uima-build-helper-maven-plugin</module>
   </modules>
-  -->
+ 
 </project>

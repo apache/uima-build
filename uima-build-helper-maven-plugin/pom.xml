@@ -96,11 +96,25 @@
   <build>
     <plugins>
       <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>precompile-for-maven-plugin-plugin</id>
+            <phase>initialize</phase>
+            <goals>
+              <goal>compile</goal>
+            </goals> 
+          </execution>
+        </executions>       
+      </plugin>
+      
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <configuration>
           <!-- drop maven-plugin per maven conventions -->
           <goalPrefix>uima-build-helper</goalPrefix>
+<!--           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound> -->
         </configuration>
         <executions>
           <execution>

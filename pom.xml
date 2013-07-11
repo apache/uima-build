@@ -94,35 +94,25 @@
   </dependencies>
 
   <build>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>precompile-for-maven-plugin-plugin</id>
-            <phase>initialize</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals> 
-          </execution>
-        </executions>       
-      </plugin>
-      
+    <plugins>     
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-plugin-plugin</artifactId>
         <configuration>
           <!-- drop maven-plugin per maven conventions -->
           <goalPrefix>uima-build-helper</goalPrefix>
-<!--           <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound> -->
+          <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
         </configuration>
         <executions>
           <execution>
-            <id>generated-helpmojo</id>
-            <goals>
-              <goal>helpmojo</goal>
-            </goals>
+            <id>generate-helpmojo</id>
+            <goals><goal>helpmojo</goal></goals>
           </execution>
+          <execution>
+            <!-- force to use process-classes phase so runs after Java Annotations are available -->
+            <id>default-descriptor</id>
+            <phase>process-classes</phase>
+         </execution>
         </executions>
       </plugin>
     </plugins>

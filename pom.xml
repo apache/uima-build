@@ -551,7 +551,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.uima</groupId>
           <artifactId>uima-build-helper-maven-plugin</artifactId>
-          <version>6-SNAPSHOT</version>
+          <version>6</version>
         </plugin>
       </plugins>
     </pluginManagement>

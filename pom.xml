@@ -319,6 +319,25 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <version>1.7</version>
         </plugin>
         
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-plugin-plugin</artifactId>
+	        <configuration>
+            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
+	        </configuration>	        
+	        <executions>
+	          <execution>
+	            <!-- force to use process-classes phase so runs after Java Annotations are available -->
+	            <!-- https://issues.apache.org/jira/browse/UIMA-3072 -->
+	            <id>default-descriptor</id>
+	            <phase>process-classes</phase>
+	            <goals><goal>descriptor</goal></goals>
+	          </execution>
+	          <execution>
+	          </execution>
+	        </executions>
+        </plugin>
+        
         <!-- set Java 1.5 as the source and target of compilation -->
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
@@ -2337,10 +2356,5 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </build>
     </profile>      
   </profiles>
- 
-  <!-- for v 6, build with the uima-build-helper-maven-plugin because of mutual version dependencies -->
-  <modules>
-  	<module>../uima-build-helper-maven-plugin</module>
-  </modules>
  
 </project>

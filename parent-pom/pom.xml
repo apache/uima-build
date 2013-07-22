@@ -1585,8 +1585,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                <!-- SVN remote copy from release to dev -->
 		                <!--   and checkout to subsite           -->
 		                <!-- =================================== -->
+		               
 		                <if>
-		                  <isset property="apacheRelease" />
+		                  <equals arg1="${isApacheRelease}" arg2="true" />
 		                  <then>
 		                    <echo>copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
 		                    <exec executable="svn">

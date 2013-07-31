@@ -721,7 +721,35 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <id>default-cli</id>
               </execution>
             </executions>
-          </plugin>          
+          </plugin>      
+          
+          <!-- to fix up any generated Javadocs to have consistent line ends in html files -->
+          <!-- runs in phase after package -->
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>maybe-fix-javadoc-line-ends</id>
+                <phase>pre-integration-test</phase>
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />                
+                    <if>
+                      <available file="${project.build.directory}/site/apidocs/"/>
+                      <then>
+                        <echo>Fixing line-endings for ${project.build.directory}/site/apidocs/</echo>
+                        <fixcrlf srcdir="${project.build.directory}/site/apidocs/">
+                          <include name="**/*.html"/>
+                        </fixcrlf>
+                      </then>
+                    </if>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+          
+          </plugin>    
           
         </plugins>
       </build>     

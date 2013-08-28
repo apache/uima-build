@@ -38,8 +38,8 @@ import org.apache.maven.project.MavenProject;
  * Users specify the property name and the format of the parsing; multiple sets
  * of these can be configured to represent the same time.
  */
-@Mojo(name = "parse-date-time")
-@Execute(goal = "parse-date-time", phase = LifecyclePhase.VALIDATE)
+@Mojo(defaultPhase = LifecyclePhase.VALIDATE, name = "parse-date-time")
+
 public class ParseDateTime extends AbstractMojo {
   /**
    * Collection of parseSpecs. Each parseSpec has a name - the property name,
@@ -61,7 +61,7 @@ public class ParseDateTime extends AbstractMojo {
     
     for (int i = 0; i < parseSpecs.length; i++) {
       ParseSpec ps = parseSpecs[i]; 
-      String v = MessageFormat.format("{0,date," + ps.getFormat() + "}", (Object)now);
+      String v = MessageFormat.format("{0,date," + ps.getFormat() + "}", (Object[]) now);
       if (getLog().isDebugEnabled()) {
         getLog().debug("Setting property " +
             ps.getName() +

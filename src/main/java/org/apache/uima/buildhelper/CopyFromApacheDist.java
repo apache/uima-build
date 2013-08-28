@@ -40,8 +40,7 @@ import org.apache.maven.plugins.annotations.Parameter;
  * else, download the requested artifact from archive.apache.org/dist/uima/
  * 
  */
-@Mojo( name = "copy-from-apache-dist")
-@Execute( goal = "copy-from-apache-dist", phase = LifecyclePhase.VALIDATE)
+@Mojo( name = "copy-from-apache-dist", defaultPhase = LifecyclePhase.VALIDATE)
 
 public class CopyFromApacheDist extends AbstractMojo {
   private static final int MAXRETRIES = 6;

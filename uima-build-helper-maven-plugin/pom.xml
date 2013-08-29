@@ -23,7 +23,7 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>5</version>
+    <version>6</version>
     <relativePath>../parent-pom</relativePath>
   </parent>
   
@@ -58,7 +58,7 @@
   </scm>
   
   <properties>
-    <jiraVersion>12319859</jiraVersion>
+    <jiraVersion>12324958</jiraVersion>
     <uimaScmRoot>build</uimaScmRoot>
     <uimaScmProject>${project.artifactId}</uimaScmProject>
   </properties>

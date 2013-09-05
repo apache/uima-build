@@ -166,6 +166,31 @@
               </execution>
             </executions>
           </plugin>
+          
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>sign and checksum source-release.zip</id>
+                <phase>verify</phase>  <!-- after source-release is built -->
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <echo message="Generating checksums for source-release.zip" />
+                    <checksum format="MD5SUM" algorithm="sha1" file="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" />
+                    <checksum format="MD5SUM" algorithm="md5" file="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" />
+                    <echo message="Generating gpg signatures for source-release.zip" />
+                    <exec executable="gpg">
+                      <arg value="--detach-sign" />
+                      <arg value="--armor" />
+                      <arg value="--batch" />
+                      <arg value="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" />
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>                          
+          </plugin>
         </plugins>
       </build>
     </profile>

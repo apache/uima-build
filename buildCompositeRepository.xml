@@ -26,6 +26,7 @@
 				<repository location="uimaj"/>
 				<repository location="uima-as"/>
 				<repository location="ruta-2.0.1"/>
+				<repository location="ruta"/>
 			</add>
 			<remove>
 				<repository location="textmarker-2.0.0"/>

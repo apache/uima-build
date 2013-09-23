@@ -396,7 +396,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <execution>
               <id>attach-javadocs</id>          
               <goals><goal>jar</goal></goals>
-              <!-- turn off javadoc build for each module by default 
+              <!-- turn off javadoc build for each module by default
+                   (unless apache-release - for speed) 
                    override in individual cases to turn back on if wanted --> 
               <phase />            
             </execution>
@@ -488,6 +489,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
+          <version>0.10</version>
           <executions>
             <execution>
               <id>default-cli</id>
@@ -551,7 +553,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.uima</groupId>
           <artifactId>uima-build-helper-maven-plugin</artifactId>
-          <version>6</version>
+          <version>7</version>
         </plugin>
       </plugins>
     </pluginManagement>
@@ -682,6 +684,25 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </properties>
       
       <build>
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-javadoc-plugin</artifactId> 
+              <executions>
+                <execution>
+                  <id>attach-javadocs</id>          
+                  <goals><goal>jar</goal></goals>
+                  <!-- turn back on javadoc build for each module by default  
+                       https://issues.apache.org/jira/browse/UIMA-3251 --> 
+                  <phase>package</phase>            
+                </execution>
+              </executions>          
+            </plugin>            
+          </plugins>
+        </pluginManagement>
+
+
         <plugins>
         
           <!-- to support multi-module source-release builds -->
@@ -694,8 +715,18 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <version>${uimaBuildResourcesVersion}</version>
               </dependency>
             </dependencies>
+            <executions>
+              <execution>
+                <id>source-release-assembly</id>
+                <!-- note: this is configured above to run only at execution root -->
+                <configuration>
+                  <!-- by not attaching, we prevent the source release from going to Maven repos -->
+                  <!-- https://issues.apache.org/jira/browse/UIMA-3247 -->
+                  <attach>false</attach>
+                </configuration>
+              </execution>
+            </executions>            
           </plugin>
-
           
           <!-- to run source plugin without forking -->
           <plugin>
@@ -747,8 +778,28 @@ Copyright (c) 2003, 2006 IBM Corporation.
                   </target>
                 </configuration>
               </execution>
-            </executions>
-          
+              <execution>
+                <id>sign and checksum source-release.zip</id>
+                <phase>verify</phase>  <!-- after source-release is built -->
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <echo message="Generating checksums for source-release.zip" />
+                    <checksum format="MD5SUM" algorithm="sha1"
+                              file="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"/>
+                    <checksum format="MD5SUM" algorithm="md5"
+                              file="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"/>
+                    <echo message="Generating gpg signatures for source-release.zip" />
+                    <exec executable="gpg">
+                      <arg value="--detach-sign" />
+                      <arg value="--armor" />
+                      <arg value="--batch" />
+                      <arg value="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" />
+                    </exec>
+                  </target>
+                </configuration>
+              </execution>             
+            </executions>          
           </plugin>    
           
         </plugins>
@@ -1485,7 +1536,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 <!--         <distsvnroot>file:///svn/t/</distsvnroot>    -->
       </properties>
       <build>
-          <plugins>
+        <plugins>
 
           <!-- ============================================================================ --> 
           <!--           U s e   o f   d i s t . a p a c h e . o r g    S V N               -->
@@ -1495,8 +1546,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!--         for safety, work in the /dev/ area                                   --> 
           <!--         For vote, user can do commit to /dev/ area                           --> 
           <!--         After vote, user does svn switch to /release/ area and commits       --> 
+          <!--    Above aproach abandoned, just be careful not to commit before vote        -->
+          
           <!--                                                                              --> 
-          <!--  svn (release) -> svn (dev) -> checkout +                                    --> 
+          <!--  svn (release) -> checkout                                                   --> 
           <!--  srcs -> toBePacked -> eus-work - - - - +-> subsite -> (manual) commit       --> 
           <!--                                    SC         SC                             --> 
           <!--                                                                              --> 
@@ -1518,9 +1571,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!--  PACKAGE                                                                     --> 
           <!--     Pack step goes from target/toBePacked -> target/eus-work                 --> 
           <!--                                                                              --> 
-          <!--     svn del in .../dev/... the eclipse-update-site/[componnt]                --> 
-          <!--     svn copy from .../release/ to dev the [component]                        --> 
-          <!--     Dev SVN checkout -> target/eclipse-update-site/[component]               -->
+          <!--     Release SVN checkout -> target/eclipse-update-site/[component]           --> 
           <!--           (This is the current site - to be updated)                         --> 
           <!--                                                                              --> 
           <!--     Publish metadata goes from target/eus-work -> eclipse-update-site/[comp] -->
@@ -1543,7 +1594,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!-- ============================================================================ -->
 		      		
 		      <!-- filter the category.xml to have the right version info 
-		           for Eclipse at the top level-->
+		           for Eclipse at the top level -->
 		      <plugin>
 		        <artifactId>maven-resources-plugin</artifactId>
 		        <executions>
@@ -1610,41 +1661,36 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                <fail unless="uima-eclipse-jar-processor" message="********** Please add to your settings.xml file the property uima-eclipse-jar-processor, point to this within an Eclipse installation at level 4.2 or later, e.g. \$\{uima-maven-build-eclipse-home\}/plugins/org.eclipse.equinox.p2.jarprocessor_1.0.200.v20110808-1657.jar" />
 		
 		                <!-- =================================== -->
-		                <!-- SVN remote copy from release to dev -->
+		                <!-- SVN checkout from release           -->
 		                <!--   and checkout to subsite           -->
 		                <!-- =================================== -->
 		               
 		                <if>
 		                  <equals arg1="${isApacheRelease}" arg2="true" />
 		                  <then>
-		                    <echo>copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
-		                    <exec executable="svn">
-		                      <arg value="delete" />
-		                      <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                      <arg value="--force" /> 
-		                      <arg value="-m" />
-		                      <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
-		                    </exec> 
-		    
-		                    <exec executable="svn">
-		                      <arg value="copy" />
-		                      <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
-		                      <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/" />
-		                      <arg value="-m" />
-		                      <arg value="prepare for building eclipse update site component ${eclipseUpdateSiteComponent}" />
-		                    </exec> 
-		    
-		                    <echo>checking out eclipse update subsite ${eclipseUpdateSiteComponent} from dist ...dev...</echo>
-		                    <delete dir="${eclipseUpdateSubSite}" />
+    
+		                    <echo>checking out eclipse update subsite ${eclipseUpdateSiteComponent} from dist ...release...</echo>
+		                    <delete dir="${eclipseUpdateSubSite}" quiet="true" />
 		                    <exec executable="svn">
 		                      <arg value="checkout" />
-		                      <arg value="--quiet" />
-		                      <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+		                      <arg value="${distsvnroot}repos/dist/release/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
 		                      <arg value="${eclipseUpdateSubSite}" />
 		                    </exec> 
+                        
+                        <!-- abandon safety for now
+                        <echo>switching this checkout to ...dev... for safety</echo>
+                        <exec executable="svn">
+                          <arg value="switch" />
+                          <arg value="- -force" />  remove space between 2 dashes if uncommented
+                          <arg value="- -accept" />  remove space between 2 dashes if uncommented
+                          <arg value="mine-full" />
+                          <arg value="${distsvnroot}repos/dist/dev/uima/eclipse-update-site/${eclipseUpdateSiteComponent}" />
+                          <arg value="${eclipseUpdateSubSite}" />
+                        </exec> 
+                         -->
 		                  </then>
 		                  <else>
-		                    <echo>skipping (because not apache-release) copying svn dist release to dev for eclipse update subsite ${eclipseUpdateSiteComponent}</echo>
+		                    <echo>skipping checkout of current svn dist release (because not apache-release)</echo>
 		                  </else>
 		                </if>
 		                  
@@ -1842,7 +1888,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               <execution>
                 <id>attach-javadocs</id>          
                 <!-- turn on javadoc build for each module --> 
-                <phase>package</phase> 
+                <phase>prepare-package</phase>  <!-- before package, in case package needs the result -->
               </execution>
             </executions>           
           </plugin>
@@ -1856,8 +1902,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                        PLEASE LIST EXPLICITLY AND MODIFY THE LICENSE/NOTICE
                        APPROPRIATELY
                   
-                 Runs during process-resources -->
-                         
+                 Runs during process-resources -->                        
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-dependency-plugin</artifactId>

@@ -321,6 +321,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>1.3</version>
+        </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-plugin-plugin</artifactId>
 	        <configuration>
             <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
@@ -432,24 +438,35 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
+          <version>1.7</version>
+
           <dependencies>
+            <!-- 1.8.2 is used by v 1.7 of this plugin
             <dependency>
               <groupId>org.apache.ant</groupId>
               <artifactId>ant</artifactId>
-              <!-- version 1.8.0 seems to be incompatible with some part of maven or m2eclipse -->
+                version 1.8.0 seems to be incompatible with some part of maven or m2eclipse 
               <version>1.7.1</version>
             </dependency>
+             -->
             <dependency> <!-- for ant extension supporting "if" -->
               <groupId>ant-contrib</groupId>
               <artifactId>ant-contrib</artifactId>
               <version>1.0b3</version>
               <scope>runtime</scope>
+              <exclusions>
+                <exclusion> <!-- is dragging in ant 1.5 -->
+                  <groupId>ant</groupId>
+                  <artifactId>ant</artifactId>
+                </exclusion>
+              </exclusions>
+              
             </dependency>
             <!-- next two enable <containsregexp> form for filesets -->
             <dependency>
-              <groupId>ant</groupId>
+              <groupId>org.apache.ant</groupId>
               <artifactId>ant-apache-regexp</artifactId>
-              <version>1.6.5</version>
+              <version>1.9.2</version>
             </dependency>
             <dependency>
               <groupId>jakarta-regexp</groupId>
@@ -505,7 +522,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
                   <exclude>src/main/resources/docbook-shared/titlepage/*.xsl</exclude>
                   <exclude>marker-file-identifying-*</exclude> <!-- empty file -->
                   <exclude>DEPENDENCIES</exclude>  <!-- generated file -->
-				  <exclude>**/*/MANIFEST.MF</exclude> <!-- MANIFEST.MF files cannot have comments -->
+				          <exclude>**/MANIFEST.MF</exclude> <!-- MANIFEST.MF files cannot have comments -->
+                  <exclude>**/*.ppt</exclude> <!--  power point sources -->
                 </excludes>
               </configuration>
             </execution>
@@ -784,18 +802,26 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <goals><goal>run</goal></goals>
                 <configuration>
                   <target>
-                    <echo message="Generating checksums for source-release.zip" />
-                    <checksum format="MD5SUM" algorithm="sha1"
-                              file="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"/>
-                    <checksum format="MD5SUM" algorithm="md5"
-                              file="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"/>
-                    <echo message="Generating gpg signatures for source-release.zip" />
-                    <exec executable="gpg">
-                      <arg value="--detach-sign" />
-                      <arg value="--armor" />
-                      <arg value="--batch" />
-                      <arg value="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip" />
-                    </exec>
+                    <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
+                    <property name="source-release" 
+                      location="${project.build.directory}/${project.artifactId}-${project.version}-source-release.zip"/>                
+                    <if>
+                      <available file="${source-release}"/> 
+                      <then>
+                        <echo message="Generating checksums for source-release.zip" />
+                        <checksum format="MD5SUM" algorithm="sha1"
+                                  file="${source-release}"/>
+                        <checksum format="MD5SUM" algorithm="md5"
+                                  file="${source-release}"/>
+                        <echo message="Generating gpg signatures for source-release.zip" />
+                        <exec executable="gpg">
+                          <arg value="--detach-sign" />
+                          <arg value="--armor" />
+                          <arg value="--batch" />
+                          <arg value="${source-release}" />
+                        </exec>
+                      </then>
+                    </if>
                   </target>
                 </configuration>
               </execution>             

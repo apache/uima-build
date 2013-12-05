@@ -368,7 +368,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!-- remove version after moving to apache parent pom 14 or later -->
           <version>2.9.1</version> <!-- pick up fix for javadoc security issue, June 2013 -->
           <configuration>
-            <additionalparam>-Xdoclint:none</additionalparam> <!-- http://stackoverflow.com/questions/15886209/maven-is-not-working-in-java-8-when-javadoc-tags-are-incomplete -->
             <source>5</source> <!-- needed to do Enums -->
             <notimestamp>true</notimestamp>
             <encoding>UTF-8</encoding>

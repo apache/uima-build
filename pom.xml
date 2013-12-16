@@ -677,6 +677,23 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
       </plugin>
       
+      <plugin> <!-- https://issues.apache.org/jira/browse/UIMA-2966  -->
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-antrun-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>dup-meta-jar-cleanup</id>
+            <goals><goal>run</goal></goals>
+            <phase>prepare-package</phase>  <!--  before Jar plugin -->
+            <configuration>
+              <target>
+                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true" />
+                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true" />
+              </target>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
     </plugins>     
     
   </build>
@@ -1460,22 +1477,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
         <plugins>
         
-		      <plugin> <!-- https://issues.apache.org/jira/browse/UIMA-2966  -->
+		      <plugin> 
 		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-antrun-plugin</artifactId>
-		        <executions>
-		          <execution>
-		            <id>dup-meta-jar-cleanup</id>
-		            <goals><goal>run</goal></goals>
-		            <phase>prepare-package</phase>  <!--  before Jar plugin -->
-		            <configuration>
-		              <target>
-		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true" />
-		                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true" />
-		              </target>
-		            </configuration>
-		          </execution>
-		          
+		        <executions>		          
               <!-- https://issues.apache.org/jira/browse/UIMA-2967  -->
 		          <execution>
                 <id>clear-META-INF</id>
@@ -1562,7 +1567,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </file>
       </activation>
       <properties>
-        <eusWork>${project.build.directory}/eus-work</eusWork>          
+        <eusWork>${project.build.directory}/eus-work</eusWork>
         <toBePacked>${project.build.directory}/toBePacked</toBePacked>
         <distsvnroot>https://dist.apache.org/</distsvnroot>
 <!--         <distsvnroot>file:///svn/t/</distsvnroot>    -->
@@ -1574,12 +1579,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!--           U s e   o f   d i s t . a p a c h e . o r g    S V N               -->
           <!--                                                                              --> 
           <!--  Goals: avoid copying to /release/, use svn commit to do                     --> 
-          <!--           just the changed files                                             --> 
+          <!--           just the changed files                                             -->
+          <!--                                                                              -->
+          <!--      Safety (abandonded)                                                     --> 
           <!--         for safety, work in the /dev/ area                                   --> 
           <!--         For vote, user can do commit to /dev/ area                           --> 
           <!--         After vote, user does svn switch to /release/ area and commits       --> 
-          <!--    Above aproach abandoned, just be careful not to commit before vote        -->
-          
+          <!--         Above aproach abandoned, just be careful not to commit before vote   -->
           <!--                                                                              --> 
           <!--  svn (release) -> checkout                                                   --> 
           <!--  srcs -> toBePacked -> eus-work - - - - +-> subsite -> (manual) commit       --> 
@@ -1671,7 +1677,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		            <goals><goal>run</goal></goals>
 		            <configuration>
 		              <target>
-		              <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
+		                <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
 		                
 		                <!-- =================================== -->
 		                <!--   Check we can access build tools   -->
@@ -1723,6 +1729,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                  </then>
 		                  <else>
 		                    <echo>skipping checkout of current svn dist release (because not apache-release)</echo>
+		                    <!-- https://issues.apache.org/jira/browse/UIMA-3501 -->
+		                    <delete dir="${eclipseUpdateSubSite}" quiet="true" />
 		                  </else>
 		                </if>
 		                  
@@ -1743,20 +1751,50 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                  <fileset dir="${toBePacked}" />
 		                </copy>
 		                
-		                <echo>Generate p2 metadata</echo>
+		                <!--FAILED EXPERIMENT: COMMENTED OUT
+		                       manually publish - eusWork to subsite
+		                       rename to follow Eclipse conventions 
+		                <echo>Copy jar and jar.pack.gz artifacts to the target subsite</echo>
+		                -->
+                    <!-- mimic publish action of renaming artifacts from -SNAPSHOT to .SNAPSHOT -->
+                    <!-- We do an ANT copy because the publishArtifacts won't copy if the target
+                           has an indentically-named artifact (as is often the case during
+                           testing, with the artifact ending in -SNAPSHOT) -->
+                    <!--  
+                    <copy todir="${eclipseUpdateSubSite}">
+                      <fileset dir="${eusWork}"/>
+                      <compositemapper>
+                        <globmapper from="*-SNAPSHOT.jar" to="*.SNAPSHOT.jar"/>
+                        <globmapper from="*-SNAPSHOT.jar.pack.gz" to="*.SNAPSHOT.jar.pack.gz"/>
+                        <regexpmapper from="^(.(?!-SNAPSHOT))*\.jar(.*)$$" to="\0"/>                     
+                      </compositemapper>
+                    </copy>
+                     -->
+		                       
+		                
+		                <echo>Generate the p2 metadata and publish new artifacts</echo>
+		                <!-- Append is needed because category info is incremental with each additional release -->
+		                <!-- publishArtifacts is needed to generate p2 metadata for the pack.gz forms -->
+		                <!--   - tried and failed: using ANT to copy artifacts to the target - doesn't update metadata
+		                         for pack.gz form ! if you don't publish artifacts
+		                         - doesn't update artifacts.jar 
+		                       - deleting SNAPSHOT jars in the eclipse update subsite 
+		                         - fails because the previous metadata has info about those jars  
+		                           and that isn't deleted, and continues to be used
+		                -->
 		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true" maxmemory="256m">
 		                  <arg line="-application org.eclipse.equinox.p2.publisher.FeaturesAndBundlesPublisher" />
 		                  <arg line="-metadataRepository file:///${eclipseUpdateSubSite}" />
 		                  <arg line="-artifactRepository file:///${eclipseUpdateSubSite}" />
-		                  <arg line="-source ${eusWork}" />
+ 		                  <arg line="-source ${eusWork}" />
 		                  <arg line="-configs ANY.ANY.ANY" />
 		                  <arg line="-publishArtifacts" />
 		                  <arg line="-reusePack200Files" />
 		                  <arg line="-compress" />
-		                  <arg line="-append" />
+ 		                  <arg line="-append" />     
 		                </java>
 		                
-		                <echo>Generate category information</echo>
+		                <echo>Augment p2 metadata with category information</echo>
 		                <java jar="${eclipse-equinox-launcher}" fork="true" failonerror="true" maxmemory="256m">
 		                  <arg line="-application org.eclipse.equinox.p2.publisher.CategoryPublisher" />
 		                  <arg line="-metadataRepository file:///${eclipseUpdateSubSite}" />
@@ -1800,6 +1838,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                      </fileset>
 		                    </apply> 
 		                    
+		                    <echo message="Copying the checksums and signatures to the update subsite" />
 		                    <copy todir="${eclipseUpdateSubSite}">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.asc" />
@@ -1813,9 +1852,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                      <include name="*.sha1" />
 		                      <include name="*.md5" />
 		                      <include name="*.asc" />
-		                    </delete>                   
+		                    </delete> 
+		                                      
 		                    <echo message="Generating checksums for updated artifacts.jar and content.jar" />
-		
 		                    <checksum algorithm="sha1" format="MD5SUM">
 		                      <fileset dir="${eclipseUpdateSubSite}">
 		                         <include name="*.jar" />

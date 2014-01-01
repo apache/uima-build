@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>8-SNAPSHOT</version>
+  <version>8</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -122,13 +122,13 @@
         
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-8
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-8
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-pom
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-8
     </url>
   </scm>
   
@@ -1762,11 +1762,11 @@ Copyright (c) 2003, 2006 IBM Corporation.
                            testing, with the artifact ending in -SNAPSHOT) -->
                     <!--  
                     <copy todir="${eclipseUpdateSubSite}">
-                      <fileset dir="${eusWork}"/>
+                      <fileset dir="${eusWork}" />
                       <compositemapper>
-                        <globmapper from="*-SNAPSHOT.jar" to="*.SNAPSHOT.jar"/>
-                        <globmapper from="*-SNAPSHOT.jar.pack.gz" to="*.SNAPSHOT.jar.pack.gz"/>
-                        <regexpmapper from="^(.(?!-SNAPSHOT))*\.jar(.*)$$" to="\0"/>                     
+                        <globmapper from="*-SNAPSHOT.jar" to="*.SNAPSHOT.jar" />
+                        <globmapper from="*-SNAPSHOT.jar.pack.gz" to="*.SNAPSHOT.jar.pack.gz" />
+                        <regexpmapper from="^(.(?!-SNAPSHOT))*\.jar(.*)$$" to="\0" />                     
                       </compositemapper>
                     </copy>
                      -->

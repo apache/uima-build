@@ -166,7 +166,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>12325064</jiraVersion>  <!-- for parent-pom-8. Change for each release -->
+    <jiraVersion>12325859</jiraVersion>  <!-- for parent-pom-9. Change for each release -->
     <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>

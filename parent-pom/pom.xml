@@ -545,7 +545,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
-          <version>2.9</version>  <!-- Apache-wide pom has no entry for this plugin -->
+          <!-- version 2.10 see https://issues.apache.org/jira/browse/UIMA-3764 -->
+          <version>2.10</version>  <!-- Apache-wide pom has no entry for this plugin -->
           <executions>
             <execution>
               <id>default-cli</id>

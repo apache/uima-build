@@ -329,6 +329,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-plugin-plugin</artifactId>
+			<!-- Version 3.3 required for Java 8 builds, see also 
+				http://jira.codehaus.org/browse/MPLUGIN-244 -->
+			<version>3.3</version>
 	        <configuration>
             <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
 	        </configuration>	        

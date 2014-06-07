@@ -329,21 +329,15 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-plugin-plugin</artifactId>
-			<!-- Version 3.3 required for Java 8 builds, see also 
-				http://jira.codehaus.org/browse/MPLUGIN-244 -->
+			<!-- Version 3.3 required for Java 8 builds -->
+			<!-- http://jira.codehaus.org/browse/MPLUGIN-244 -->
 			<version>3.3</version>
-	        <configuration>
-            <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-	        </configuration>	        
 	        <executions>
 	          <execution>
 	            <!-- force to use process-classes phase so runs after Java Annotations are available -->
-	            <!-- https://issues.apache.org/jira/browse/UIMA-3072 -->
+	            <!-- http://jira.codehaus.org/browse/MPLUGIN-267 -->
 	            <id>default-descriptor</id>
 	            <phase>process-classes</phase>
-	            <goals><goal>descriptor</goal></goals>
-	          </execution>
-	          <execution>
 	          </execution>
 	        </executions>
         </plugin>

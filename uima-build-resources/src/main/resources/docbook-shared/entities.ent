@@ -19,7 +19,7 @@
 -->
 <!ENTITY url_eclipse "http://www.eclipse.org" >
 <!ENTITY url_emf "http://www.eclipse.org/emf" >
-<!ENTITY url_apache_uima_download "http://incubator.apache.org/uima">
+<!ENTITY url_apache_uima_download "http://uima.apache.org">
 
 <!ENTITY ae "Analysis Engine">
 <!ENTITY aae "Aggregate Analysis Engine">

@@ -24,13 +24,13 @@
   <parent>
     <groupId>org.apache.uima</groupId>
     <artifactId>parent-pom</artifactId>
-    <version>6</version>
+    <version>10</version>
     <relativePath>../parent-pom</relativePath>
   </parent>
 
   <artifactId>uima-eclipse-composite-update-site</artifactId>
   <packaging>pom</packaging>
-  <version>2</version>
+  <version>3</version>
 
   <name>Apache UIMA Eclipse: ${project.artifactId}</name>
   <description>The UIMA Eclipse composite update site</description>
@@ -86,7 +86,7 @@
                   message="********** Please set up and use an ant property eclipse.home set to an Eclipse installation at level 3.3 or later, e.g. c:/eclipses/3.3/eclipse" />
 
                 !<!-- The only reason to check out from SVN these 2 files and their signatures is to set things up
-                      so the relase can be done via a svn swtich (from dev to release) and then a commit 
+                      so the release can be done via a svn swtich (from dev to release) and then a commit 
                       Because Jars are being released, it's unlikely there is any diff encoding that SVN can do -->
                       
                 <!-- =================================== -->

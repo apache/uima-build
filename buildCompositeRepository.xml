@@ -25,11 +25,13 @@
 			<add>
 				<repository location="uimaj"/>
 				<repository location="uima-as"/>
-				<repository location="ruta-2.0.1"/>
+				<!-- repository location="ruta-2.0.1"/-->
 				<repository location="ruta"/>
+				<repository location="uimaj-v3"/>
 			</add>
 			<remove>
 				<repository location="textmarker-2.0.0"/>
+        <repository location="ruta-2.0.1"/>
 			</remove>
 		</p2.composite.repository>
 		<echo>done</echo>

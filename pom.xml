@@ -137,7 +137,6 @@
                 <if>
                   <equals arg1="${isApacheRelease}" arg2="true"/>
                   <then>
-
                     <echo message="Generating checksums for artifacts.jar and content.jar"/>
                     <checksum algorithm="sha1" format="MD5SUM">
                       <fileset dir="${eclipseUpdateSite}">
@@ -153,6 +152,10 @@
                     </checksum>
 
                     <echo message="Generating gpg signatures for artifacts.jar and content.jar"/>
+                    <!-- gpg fails if sig file already exists, so delete it if it exists -->
+                    <delete>
+                      <fileset dir="${eclipseUpdateSite}" includes="*.asc"/>
+                    </delete>
                     <apply executable="gpg" dir="${eclipseUpdateSite}"> 
                       <arg value="--detach-sign"/>
                       <arg value="--armor"/>

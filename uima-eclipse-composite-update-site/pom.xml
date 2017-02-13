@@ -30,7 +30,7 @@
 
   <artifactId>uima-eclipse-composite-update-site</artifactId>
   <packaging>pom</packaging>
-  <version>3</version>
+  <version>3-SNAPSHOT</version>
 
   <name>Apache UIMA Eclipse: ${project.artifactId}</name>
   <description>The UIMA Eclipse composite update site</description>

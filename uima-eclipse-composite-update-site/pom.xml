@@ -29,7 +29,7 @@
 
   <artifactId>uima-eclipse-composite-update-site</artifactId>
   <packaging>pom</packaging>
-  <version>3</version>
+  <version>4-SNAPSHOT</version>
 
   <name>Apache UIMA Eclipse: ${project.artifactId}</name>
   <description>The UIMA Eclipse composite update site</description>
@@ -37,13 +37,13 @@
 
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/uima-eclipse-composite-update-site-3
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/uima-eclipse-composite-update-site
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/uima-eclipse-composite-update-site-3
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/uima-eclipse-composite-update-site
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/tags/uima-eclipse-composite-update-site-3
+      http://svn.apache.org/viewvc/uima/build/trunk/uima-eclipse-composite-update-site
     </url>
   </scm>
 

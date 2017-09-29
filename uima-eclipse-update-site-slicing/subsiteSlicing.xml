@@ -46,6 +46,9 @@
 			<!-- insert the name of all features -->
       <iu id='org.apache.uima.runtime.feature.group'/>
       <iu id='org.apache.uima.tools.feature.group'/>
+			<!-- for the category info -->
+			<!-- version info can't be defaulted - look into the content.xml to see which one you need -->
+			<iu id='apache-uima.uima-tooling-and-runtimes' version='1.0.0.787c3cKzm6h'/>
 			
 		</p2.mirror>	
 		

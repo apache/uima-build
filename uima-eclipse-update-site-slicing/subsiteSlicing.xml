@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   Licensed to the Apache Software Foundation (ASF) under one
+   or more contributor license agreements.  See the NOTICE file
+   distributed with this work for additional information
+   regarding copyright ownership.  The ASF licenses this file
+   to you under the Apache License, Version 2.0 (the
+   "License"); you may not use this file except in compliance
+   with the License.  You may obtain a copy of the License at
+
+     http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing,
+   software distributed under the License is distributed on an
+   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+   KIND, either express or implied.  See the License for the
+   specific language governing permissions and limitations
+   under the License.    
+-->
+<project name="subsiteSlicing" basedir="." default="subsiteSlicing">
+	<target name="subsiteSlicing">
+    <property name="eclipseUpdateSlice" value="target/eclipse-update-site/${subsite}"/>
+
+		<echo>starting Eclipse update site slicing for ${subsite}</echo>
+		
+    <!-- ============================================== -->
+    <!--   maintenance to slice out most recent version -->
+		<!--                                                -->
+    <!--   change iu's below to the feature groups      -->
+    <!--   appropriate to your subsite                  -->
+    <!--                                                -->
+    <!--   Specifying iu's with no version selects      -->
+    <!--   the most recent version                      -->
+    <!--                                                -->
+    <!--     You can specify specific versions if       -->
+    <!--     desired                                    -->
+    <!-- ============================================== -->
+
+		<delete dir="${eclipseUpdateSlice}" quiet="false"/>
+		
+		<!-- don't use raw='false' because all it does is change timestamps and uuids -->
+		<p2.mirror source="https://dist.apache.org/repos/dist/release/uima/eclipse-update-site/${subsite}" verbose='true'>
+			<destination location="${eclipseUpdateSlice}"/>
+			<slicingoptions followStrict='true' includeOptional='false' includeNonGreedy='false'/>
+			
+			<!-- insert the name of all features -->
+      <iu id='org.apache.uima.runtime.feature.group'/>
+      <iu id='org.apache.uima.tools.feature.group'/>
+			
+		</p2.mirror>	
+		
+		<delete dir="${eclipseUpdateSlice}/.blobstore" quiet="false"/>
+		<echo>done</echo>
+	</target>
+</project>

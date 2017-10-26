@@ -1,5 +1,5 @@
 Use this maven project (maven build with a test target) to 
-take a UIMA subsite and "slice off" just the lastest version of the feature groups.
+take a UIMA subsite and "slice off" just the latest version of the feature groups.
 
 Source: the original in dist.apache.org's svn for release of a UIMA Eclipse plugin subsite.
 Destination: this project's target/eclipse-update-site/<subsite-name>
@@ -16,9 +16,13 @@ This is only done if you include the apache-release profile.
 How to run
 ----------
 
-1) update the subsiteSlicing.xml to specify the slicing details - names of the features, 
-   expressed as installable unit names - you need to format these like the example there
-   ending in .feature.group.
+1) update the subsiteSlicing.xml to specify the slicing details 
+  - names of the features, 
+      expressed as installable unit names - you need to format these like the example there
+      ending in .feature.group.
+    -- without version numbers - this means select the most recent
+    -- with version numbers - this means select those version(s)
+  - names of the categories with the version number specified
 
 2) mvn test -Dsubsite=xxxxx  -Papache-release 
   - change property subsite to "uimaj", "ruta", "uimaj-v3-pre-production", etc.

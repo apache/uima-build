@@ -32,8 +32,8 @@
     <!--   Specifying iu's with no version selects      -->
     <!--   the most recent version                      -->
     <!--                                                -->
-    <!--     You can specify specific versions if       -->
-    <!--     desired                                    -->
+    <!--     You can specify multiple,                  -->
+    <!--     specific versions if desired               -->
     <!-- ============================================== -->
 
 		<delete dir="${eclipseUpdateSlice}" quiet="false"/>
@@ -43,7 +43,7 @@
 			<destination location="${eclipseUpdateSlice}"/>
 			<slicingoptions followStrict='true' includeOptional='false' includeNonGreedy='false'/>
 			
-			<!-- insert the name of all features -->
+			<!-- insert the name of all features to keep. others will be removed -->
       <iu id='org.apache.uima.runtime.feature.group'/>
       <iu id='org.apache.uima.tools.feature.group'/>
 			<!-- for the category info -->

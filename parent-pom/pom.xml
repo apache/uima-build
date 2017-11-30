@@ -48,7 +48,7 @@
   <parent>
     <artifactId>apache</artifactId>
     <groupId>org.apache</groupId>
-    <version>14</version>
+    <version>18</version>
     <relativePath />
   </parent>
 
@@ -75,11 +75,11 @@
       <unsubscribe>dev-unsubscribe@uima.apache.org</unsubscribe>
       <post>mailto:dev@uima.apache.org</post>
       <archive>
-        http://mail-archives.apache.org/mod_mbox/uima-dev
+        https://mail-archives.apache.org/mod_mbox/uima-dev
       </archive>
       <otherArchives>
         <otherArchive>
-          http://dir.gmane.org/gmane.comp.apache.uima.devel
+          https://dir.gmane.org/gmane.comp.apache.uima.devel
         </otherArchive>
          <otherArchive>       
            http://uima.markmail.org
@@ -92,11 +92,11 @@
       <unsubscribe>user-unsubscribe@uima.apache.org</unsubscribe>
       <post>mailto:user@uima.apache.org</post>
       <archive>
-        http://mail-archives.apache.org/mod_mbox/uima-user
+        https://mail-archives.apache.org/mod_mbox/uima-user
       </archive>
       <otherArchives>
         <otherArchive>
-          http://dir.gmane.org/gmane.comp.apache.uima.general
+          https://dir.gmane.org/gmane.comp.apache.uima.general
         </otherArchive>
          <otherArchive>       
            http://uima.markmail.org
@@ -109,7 +109,7 @@
       <unsubscribe>commits-unsubscribe@uima.apache.org</unsubscribe>
       <post>mailto:commits@uima.apache.org</post>
       <archive>
-        http://mail-archives.apache.org/mod_mbox/uima-commits
+        https://mail-archives.apache.org/mod_mbox/uima-commits
       </archive>
     </mailingList>
   </mailingLists>
@@ -117,7 +117,7 @@
   <prerequisites>
     <!-- 2.2.0 is broken when deploying - checksums invalid -->
     <!-- 2.2.1 doesn't work -->
-    <maven>3.0</maven>
+    <maven>3.3.9</maven>
   </prerequisites>
         
   <scm>
@@ -199,7 +199,22 @@ Copyright (c) 2003, 2006 IBM Corporation.
     </ibmNoticeText> 
     <!-- next line commented out - to let standard source-release assembly descriptor as specified
          in standard Apache parent pom be used -->
-    <!-- SourceReleaseAssemblyDescriptor>multimodule-source-release</sourceReleaseAssemblyDescriptor-->  
+    <!-- SourceReleaseAssemblyDescriptor>multimodule-source-release</sourceReleaseAssemblyDescriptor--> 
+
+
+  <!-- ============================= -->
+  <!-- *  V E R S I O N S            -->
+  <!-- ============================= -->
+    <rat.version>0.12</rat.version>
+    <maven.enforcer.version>3.0.0-M1</maven.enforcer.version>
+    <maven.version>3.0.5</maven.version>
+    <maven.javadoc.version>3.0.0-M1</maven.javadoc.version>
+    <felix.bundle.version>3.3.0</felix.bundle.version>
+  
+    <maven.compiler.target>1.7</maven.compiler.target>
+    <maven.compiler.source>1.7</maven.compiler.source>
+    <maven.surefire.heap>512m</maven.surefire.heap>
+    
   </properties>
  
   <dependencyManagement>
@@ -227,7 +242,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
     <!-- note: inheritance does *NOT* merge subparts,
          so, redeclare them -->           
     <!-- define repositories for getting Eclipse parts
-         because the one in "central" gives broken parts -->
+         because the one in "central" gives broken parts
+    2017 - this repo not there anymore 
     <repository>
       <id>eclipsePlugins</id>
       <name>Eclipse components</name>
@@ -243,6 +259,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <enabled>false</enabled>
       </snapshots>
     </repository>
+    -->
 
     <!-- modify central repository access:
          Turn on checksum checking-->
@@ -250,7 +267,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
       <id>central</id>
       <name>Maven Repository Switchboard</name>
       <layout>default</layout>
-      <url>http://repo1.maven.org/maven2</url>
+      <url>https://repo1.maven.org/maven2</url>
 
       <releases>
         <enabled>true</enabled>
@@ -264,14 +281,15 @@ Copyright (c) 2003, 2006 IBM Corporation.
 
     </repository>
 
+    <!-- inherited
     <repository>
       <id>apache.snapshots</id>
       <name>Apache Snapshot Repository</name>
-      <url>http://repository.apache.org/snapshots</url>
+      <url>https://repository.apache.org/snapshots</url>
       <releases>
         <enabled>false</enabled>
       </releases>
-    </repository>  
+    </repository>  --> 
       
   </repositories>
   
@@ -279,7 +297,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
     <pluginRepository>
       <id>apache.snapshots.plugins</id>
       <name>Apache Snapshot Repository - Maven plugins</name>
-      <url>http://repository.apache.org/snapshots</url>
+      <url>https://repository.apache.org/snapshots</url>
       <layout>default</layout>
       <releases>
         <enabled>false</enabled>
@@ -295,13 +313,31 @@ Copyright (c) 2003, 2006 IBM Corporation.
   <build>
     <pluginManagement>
       <plugins>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-deploy-plugin</artifactId>
+          <version>2.8.2</version>
+        </plugin>
+        
+	      <plugin>
+	        <groupId>org.apache.maven.plugins</groupId>
+	        <artifactId>maven-source-plugin</artifactId>
+	        <version>3.0.1</version>
+	      </plugin>
       
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-resources-plugin</artifactId>
+          <version>3.0.2</version>
+        </plugin>
+        
         <!-- assembly plugin 
              Disable running assembly:assembly with
              warning message to use install instead -->
         <plugin> 
           <artifactId>maven-assembly-plugin</artifactId>
-         <!--  <version>2.4</version>  https://issues.apache.org/jira/browse/UIMA-3332 from superpom-->
+          <version>3.1.0</version> <!-- https://issues.apache.org/jira/browse/UIMA-3332 from superpom-->
           <executions>
             <execution>
               <id>default-cli</id>
@@ -317,21 +353,22 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>build-helper-maven-plugin</artifactId>
-          <version>1.8</version>
+          <version>3.0.0</version>
         </plugin>
-        <!--         
+                
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-enforcer-plugin</artifactId>
-          <version>1.3</version>
+          <version>3.0.0-M1</version>
         </plugin>
-        -->   
+         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-plugin-plugin</artifactId>
     			<!-- Version 3.3 required for Java 8 builds -->
 		    	<!-- http://jira.codehaus.org/browse/MPLUGIN-244 -->
-		    	<version>3.3</version>
+		    	<!-- inherit from apache superpom (3.4 in 2017)  -->
+		    	<version>3.5</version>
 	        <executions>
 	          <execution>
 	            <!-- force to use process-classes phase so runs after Java Annotations are available -->
@@ -341,12 +378,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 	          </execution>
             <execution>
               <id>generate-helpmojo</id>
-              <goals><goal>helpmojo</goal></goals>
-              <configuration>
-                <!-- The following line can be removed when upgrading to maven-plugin-plugin:3.4 -->
-                <!-- https://jira.codehaus.org/browse/MPLUGIN-238 -->
-                <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
-              </configuration>             
+              <goals><goal>helpmojo</goal></goals>            
             </execution>
 	        </executions>
           <configuration>
@@ -358,24 +390,27 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
+          <version>3.7.0</version>
           <configuration>
-            <source>1.6</source>
-            <target>1.6</target>
+            <source>${maven.compiler.source}</source>
+            <target>${maven.compiler.target}</target>
             <!--encoding>UTF-8</encoding this inherited from apache pom 7 -->
           </configuration>
         </plugin>
         
- <!--        <plugin>
+        <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
-          <version>2.8</version>    see https://issues.apache.org/jira/browse/UIMA-2963  from superpom
-        </plugin>  -->
+          <version>3.0.2</version>  <!-- see https://issues.apache.org/jira/browse/UIMA-2963 -->
+        </plugin> 
        
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
+          <version>3.0.0-M1</version>
           <configuration>
-            <source>5</source> <!-- needed to do Enums -->
+            <source>${maven.compiler.source}</source>
+            <javadocVersion>${maven.compiler.source}</javadocVersion> <!-- https://issues.apache.org/jira/browse/UIMA-5369 -->
             <notimestamp>true</notimestamp>
             <encoding>UTF-8</encoding>
             <!-- if next is omitted, causes all projects in reactor that don't
@@ -421,7 +456,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>2.3.2</version>  <!-- version 2.4 gives error org.codehaus.plexus.archiver.jar.Manifest.merge(org.codehaus.plexus.archiver.jar.Manifest) 
+          <version>3.0.2</version>
+          <!-- version>2.3.2</version-->  <!-- version 2.4 gives error org.codehaus.plexus.archiver.jar.Manifest.merge(org.codehaus.plexus.archiver.jar.Manifest) 
                                      see http://comments.gmane.org/gmane.comp.ide.eclipse.plugins.m2eclipse.user/9189 -->
           <configuration>
             <archive>
@@ -446,7 +482,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
-          <!-- version>1.7</version>  from superpom -->
+          <version>1.8</version>
 
           <dependencies>
             <!-- 1.8.2 is used by v 1.7 of this plugin
@@ -460,7 +496,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <dependency> <!-- for ant extension supporting "if" -->
               <groupId>ant-contrib</groupId>
               <artifactId>ant-contrib</artifactId>
-              <version>1.0b3</version>
+              <version>20020829</version>
               <scope>runtime</scope>
               <exclusions>
                 <exclusion> <!-- is dragging in ant 1.5 -->
@@ -474,7 +510,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <dependency>
               <groupId>org.apache.ant</groupId>
               <artifactId>ant-apache-regexp</artifactId>
-              <version>1.9.2</version>
+              <version>1.10.1</version>
             </dependency>
             <dependency>
               <groupId>jakarta-regexp</groupId>
@@ -484,11 +520,11 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </dependencies>          
         </plugin>
       
-        <!-- deprecated - move to m2eclipse, but keeping for now -->  
+        <!-- deprecated - move to m2eclipse, but keeping for now --> 
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-eclipse-plugin</artifactId>
-          <version>2.8</version>
+          <version>2.10</version>
           <configuration>
             <downloadSources>true</downloadSources>
           </configuration>
@@ -500,7 +536,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <!-- version 2.0.0 fails -->
           <!-- version 2.3.4 eliminates spurious warning messages -->
           <!-- version 2.5 has accidental dependency on Java 6 -->
-          <version>2.3.7</version>
+          <version>3.3.0</version>
           <extensions>true</extensions>
           <executions>
             <execution>
@@ -514,7 +550,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
-          <!--  <version>0.10</version> from superPom -->
+          <version>${rat.version}</version>
           <executions>
             <execution>
               <id>default-cli</id>
@@ -553,7 +589,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-changes-plugin</artifactId>
           <!-- version 2.10 see https://issues.apache.org/jira/browse/UIMA-3764 -->
-          <version>2.10</version>  <!-- Apache-wide pom has no entry for this plugin -->
+          <version>2.12.1</version>  <!-- Apache-wide pom has no entry for this plugin -->
           <executions>
             <execution>
               <id>default-cli</id>
@@ -599,10 +635,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>3.0</version>
+                  <version>3.3.9</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>1.6</version>
+                  <version>1.7</version>
                 </requireJavaVersion>
               </rules>
             </configuration>
@@ -665,6 +701,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
+        <version>1.5</version>
         <executions>      
           <execution>
             <goals><goal>process</goal></goals>
@@ -2308,7 +2345,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <plugin>
             <groupId>org.apache.uima</groupId>
             <artifactId>PearPackagingMavenPlugin</artifactId>
-            <version>2.5.0</version>
+            <version>2.10.2</version>
             <extensions>true</extensions>        
             <executions>
               <execution>
@@ -2516,7 +2553,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>findbugs-maven-plugin</artifactId>
-              <version>2.5.4</version>
+              <version>3.0.5</version>
               <executions>
                 <execution>
                   <phase>package</phase>
@@ -2544,7 +2581,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <plugin>
               <groupId>org.codehaus.mojo</groupId>
               <artifactId>cobertura-maven-plugin</artifactId>
-              <version>2.6</version>
+              <version>2.7</version>
               <configuration>
                 <formats>
                   <format>xml</format>
@@ -2577,7 +2614,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <plugin>
               <groupId>org.apache.maven.plugins</groupId>
               <artifactId>maven-pmd-plugin</artifactId>
-              <version>3.1</version>
+              <version>3.8</version>
               <executions>
                 <execution>
                   <phase>package</phase>

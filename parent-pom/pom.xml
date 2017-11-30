@@ -166,7 +166,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>parent-pom-10</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
+    <jiraVersion>parent-pom-11</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
     <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
@@ -210,6 +210,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
     <maven.version>3.0.5</maven.version>
     <maven.javadoc.version>3.0.0-M1</maven.javadoc.version>
     <felix.bundle.version>3.3.0</felix.bundle.version>
+    <surefire.version>2.20.1</surefire.version>
   
     <maven.compiler.target>1.7</maven.compiler.target>
     <maven.compiler.source>1.7</maven.compiler.source>
@@ -407,7 +408,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>3.0.0-M1</version>
+          <version>${maven.javadoc.version}</version>
           <configuration>
             <source>${maven.compiler.source}</source>
             <javadocVersion>${maven.compiler.source}</javadocVersion> <!-- https://issues.apache.org/jira/browse/UIMA-5369 -->

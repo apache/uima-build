@@ -636,10 +636,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <configuration>
               <rules>
                 <requireMavenVersion>
-                  <version>3.3.9</version>
+                  <version>${maven.version}</version>
                 </requireMavenVersion>
                 <requireJavaVersion>
-                  <version>1.7</version>
+                  <version>${maven.compiler.target}</version>
                 </requireJavaVersion>
               </rules>
             </configuration>

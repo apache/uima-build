@@ -873,7 +873,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                       <then>
                         <echo message="Generating checksums for source-release.zip" />
                         <checksum format="MD5SUM" algorithm="sha1" file="${source-release}" />
-                        <checksum format="MD5SUM" algorithm="md5" file="${source-release}" />
+                        <!-- <checksum format="MD5SUM" algorithm="md5" file="${source-release}" />  -->
                         <echo message="Generating gpg signatures for source-release.zip" />
                         <exec executable="gpg" failonerror="true">
                           <arg value="--detach-sign" />
@@ -1397,12 +1397,14 @@ Copyright (c) 2003, 2006 IBM Corporation.
                         <include name="*.gz" />
                       </fileset>
                     </checksum>
+                    <!-- 
                     <checksum algorithm="md5" format="MD5SUM">
                       <fileset dir="${project.build.directory}">
                         <include name="*.zip" />
                         <include name="*.gz" />
                       </fileset>
                     </checksum>
+                     -->
                   </target>
                 </configuration>
               </execution>
@@ -1869,13 +1871,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                        <include name="**/*.jar" />
 		                      </fileset>
 		                    </checksum>
-		                    <checksum algorithm="md5" format="MD5SUM">
+		                    
+		                    <!-- checksum algorithm="md5" format="MD5SUM">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.gz" />
 		                        <include name="**/*.jar" />
 		                      </fileset>
-		                    </checksum>
-		
+		                    </checksum> -->
 		                    <echo message="Generating gpg signatures for new features and plugins" />
 		                    <apply executable="gpg" dir="${eusWork}" failonerror="true"> 
 		                      <arg value="--detach-sign" />
@@ -1892,7 +1894,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                    <copy todir="${eclipseUpdateSubSite}" failonerror="true">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.asc" />
-		                        <include name="**/*.md5" />
+		                        <!-- <include name="**/*.md5" />  -->
 		                        <include name="**/*.sha1" />
 		                      </fileset>
 		                    </copy>
@@ -1900,7 +1902,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                    <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar" />
 		                    <delete dir="${eclipseUpdateSubSite}">
 		                      <include name="*.sha1" />
-		                      <include name="*.md5" />
+		                      <!-- <include name="*.md5" />  -->
 		                      <include name="*.asc" />
 		                    </delete> 
 		                                      
@@ -1911,12 +1913,14 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                      </fileset>
 		                    </checksum>
 		
+		                    <!-- 
 		                    <checksum algorithm="md5" format="MD5SUM">
 		                      <fileset dir="${eclipseUpdateSubSite}">
 		                        <include name="*.jar" />
 		                      </fileset>
 		                    </checksum>
-		
+	                       -->
+	                         	
 		                    <echo message="Generating gpg signatures for artifacts.jar and content.jar" />
 		                    <apply executable="gpg" dir="${eclipseUpdateSubSite}" failonerror="true"> 
 		                      <arg value="--detach-sign" />
@@ -2035,7 +2039,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                <echo>Clearing previous checksums and signatures for eusWork plugins</echo>
 		                <delete dir="${eusWork}">
 		                  <include name="**/*.sha1" />
-		                  <include name="**/*.md5" />
+		                  <!-- include name="**/*.md5" /-->
 		                  <include name="**/*.asc" />
 		                </delete>
 		      
@@ -2047,12 +2051,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
                         <include name="**/*.jar" />
                       </fileset>
                     </checksum>
+                    <!-- 
                     <checksum algorithm="md5" format="MD5SUM">
                       <fileset dir="${eusWork}">
                         <include name="**/*.gz" />
                         <include name="**/*.jar" />
                       </fileset>
-                    </checksum>
+                    </checksum>  -->
     
                     <echo message="Generating gpg signatures for new features and plugins" />
                     <apply executable="gpg" dir="${eusWork}" failonerror="true"> 
@@ -2070,7 +2075,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <copy todir="${eclipseUpdateSubSite}" failonerror="true">
                       <fileset dir="${eusWork}">
                         <include name="**/*.asc" />
-                        <include name="**/*.md5" />
+                        <!-- include name="**/*.md5" /-->
                         <include name="**/*.sha1" />
                       </fileset>
                     </copy>
@@ -2079,7 +2084,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar" />
                     <delete dir="${eclipseUpdateSubSite}">
                       <include name="*.sha1" />
-                      <include name="*.md5" />
+                      <!-- include name="*.md5" /-->
                       <include name="*.asc" />
                     </delete> 
                                      
@@ -2090,11 +2095,11 @@ Copyright (c) 2003, 2006 IBM Corporation.
                       </fileset>
                     </checksum> 
 
-                    <checksum algorithm="md5" format="MD5SUM">
+                    <!-- checksum algorithm="md5" format="MD5SUM">
                       <fileset dir="${eclipseUpdateSubSite}">
                         <include name="*.jar" />
                       </fileset>
-                    </checksum>
+                    </checksum -->
 
                     <echo message="Generating gpg signatures for artifacts.jar and content.jar" />
                     <apply executable="gpg" dir="${eclipseUpdateSubSite}" failonerror="true"> 

@@ -872,7 +872,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                       <available file="${source-release}" /> 
                       <then>
                         <echo message="Generating checksums for source-release.zip" />
-                        <checksum format="MD5SUM" forceoverwrite="yes" algorithm="SHA-512" fileext=".sha512"file="${source-release}" />
+                        <checksum format="MD5SUM" forceoverwrite="yes" algorithm="SHA-512" fileext=".sha512" file="${source-release}" />
                         <!-- <checksum format="MD5SUM" forceoverwrite="yes" algorithm="sha1" file="${source-release}" /> -->
                         <!-- <checksum format="MD5SUM" forceoverwrite="yes" algorithm="md5" file="${source-release}" />  -->
                         <echo message="Generating gpg signatures for source-release.zip" />

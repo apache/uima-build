@@ -48,7 +48,7 @@
   <parent>
     <artifactId>apache</artifactId>
     <groupId>org.apache</groupId>
-    <version>18</version>
+    <version>21</version>
     <relativePath />
   </parent>
 
@@ -872,8 +872,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
                       <available file="${source-release}" /> 
                       <then>
                         <echo message="Generating checksums for source-release.zip" />
-                        <checksum format="MD5SUM" algorithm="sha1" file="${source-release}" />
-                        <!-- <checksum format="MD5SUM" algorithm="md5" file="${source-release}" />  -->
+                        <checksum format="MD5SUM" forceoverwrite="yes" algorithm="SHA-512" fileext=".sha512"file="${source-release}" />
+                        <!-- <checksum format="MD5SUM" forceoverwrite="yes" algorithm="sha1" file="${source-release}" /> -->
+                        <!-- <checksum format="MD5SUM" forceoverwrite="yes" algorithm="md5" file="${source-release}" />  -->
                         <echo message="Generating gpg signatures for source-release.zip" />
                         <exec executable="gpg" failonerror="true">
                           <arg value="--detach-sign" />
@@ -1391,14 +1392,20 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <phase>verify</phase>
                 <configuration>
                   <target>
-                    <checksum algorithm="sha1" format="MD5SUM">
+                    <checksum algorithm="SHA-512" fileext=".sha512" format="MD5SUM" forceoverwrite="yes">
                       <fileset dir="${project.build.directory}">
                         <include name="*.zip" />
                         <include name="*.gz" />
                       </fileset>
                     </checksum>
                     <!-- 
-                    <checksum algorithm="md5" format="MD5SUM">
+                    <checksum algorithm="sha1" format="MD5SUM" forceoverwrite="yes">
+                      <fileset dir="${project.build.directory}">
+                        <include name="*.zip" />
+                        <include name="*.gz" />
+                      </fileset>
+                    </checksum>
+                    <checksum algorithm="md5" format="MD5SUM" forceoverwrite="yes">
                       <fileset dir="${project.build.directory}">
                         <include name="*.zip" />
                         <include name="*.gz" />
@@ -1865,14 +1872,21 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                  <then>
 
 		                    <echo message="Generating checksums for new features and plugins" />
-		                    <checksum algorithm="sha1" format="MD5SUM">
+		                    <checksum algorithm="SHA-512" fileext=".sha512" format="MD5SUM" forceoverwrite="yes">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.gz" />
 		                        <include name="**/*.jar" />
 		                      </fileset>
 		                    </checksum>
 		                    
-		                    <!-- checksum algorithm="md5" format="MD5SUM">
+		                    <!-- 
+                        <checksum algorithm="sha1" format="MD5SUM" forceoverwrite="yes">
+                          <fileset dir="${eusWork}">
+                            <include name="**/*.gz" />
+                            <include name="**/*.jar" />
+                          </fileset>
+                        </checksum>
+                        <checksum algorithm="md5" format="MD5SUM" forceoverwrite="yes">
 		                      <fileset dir="${eusWork}">
 		                        <include name="**/*.gz" />
 		                        <include name="**/*.jar" />
@@ -1893,28 +1907,35 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                    <echo message="Copying the checksums and signatures to the update subsite" />
 		                    <copy todir="${eclipseUpdateSubSite}" failonerror="true">
 		                      <fileset dir="${eusWork}">
-		                        <include name="**/*.asc" />
-		                        <!-- <include name="**/*.md5" />  -->
-		                        <include name="**/*.sha1" />
+                            <include name="**/*.asc" />
+                            <include name="**/*.sha512" />
+		                        <!-- <include name="**/*.md5" /> -->
+		                        <!-- <include name="**/*.sha1" /> -->
 		                      </fileset>
 		                    </copy>
 		
 		                    <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar" />
 		                    <delete dir="${eclipseUpdateSubSite}">
-		                      <include name="*.sha1" />
-		                      <!-- <include name="*.md5" />  -->
-		                      <include name="*.asc" />
+                          <include name="*.asc" />
+                          <include name="**/*.sha512" />
+		                      <!-- <include name="*.md5" /> -->
+                          <!-- <include name="*.sha1" /> -->
 		                    </delete> 
 		                                      
 		                    <echo message="Generating checksums for updated artifacts.jar and content.jar" />
-		                    <checksum algorithm="sha1" format="MD5SUM">
+		                    <checksum algorithm="SHA-512" fileext=".sha512" format="MD5SUM" forceoverwrite="yes">
 		                      <fileset dir="${eclipseUpdateSubSite}">
 		                         <include name="*.jar" />
 		                      </fileset>
 		                    </checksum>
 		
 		                    <!-- 
-		                    <checksum algorithm="md5" format="MD5SUM">
+                        <checksum algorithm="sha1" format="MD5SUM" forceoverwrite="yes">
+                          <fileset dir="${eclipseUpdateSubSite}">
+                             <include name="*.jar" />
+                          </fileset>
+                        </checksum>
+		                    <checksum algorithm="md5" format="MD5SUM" forceoverwrite="yes">
 		                      <fileset dir="${eclipseUpdateSubSite}">
 		                        <include name="*.jar" />
 		                      </fileset>
@@ -2038,21 +2059,28 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                <echo> </echo>
 		                <echo>Clearing previous checksums and signatures for eusWork plugins</echo>
 		                <delete dir="${eusWork}">
-		                  <include name="**/*.sha1" />
+                      <include name="**/*.asc" />
+                      <include name="**/*.sha512" />
 		                  <!-- include name="**/*.md5" /-->
-		                  <include name="**/*.asc" />
+                      <!-- <include name="**/*.sha1" /> -->
 		                </delete>
 		      
 		                <echo message="Generating checksums for signed plugins" />
 
-                    <checksum algorithm="sha1" format="MD5SUM">
+                    <checksum algorithm="SHA-512" fileext=".sha512" format="MD5SUM" forceoverwrite="yes">
                       <fileset dir="${eusWork}">
                         <include name="**/*.gz" />
                         <include name="**/*.jar" />
                       </fileset>
                     </checksum>
                     <!-- 
-                    <checksum algorithm="md5" format="MD5SUM">
+                    <checksum algorithm="sha1" format="MD5SUM" forceoverwrite="yes">
+                      <fileset dir="${eusWork}">
+                        <include name="**/*.gz" />
+                        <include name="**/*.jar" />
+                      </fileset>
+                    </checksum>
+                    <checksum algorithm="md5" format="MD5SUM" forceoverwrite="yes">
                       <fileset dir="${eusWork}">
                         <include name="**/*.gz" />
                         <include name="**/*.jar" />
@@ -2075,31 +2103,40 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <copy todir="${eclipseUpdateSubSite}" failonerror="true">
                       <fileset dir="${eusWork}">
                         <include name="**/*.asc" />
+                        <include name="**/*.sha512" />
                         <!-- include name="**/*.md5" /-->
-                        <include name="**/*.sha1" />
+                        <!-- <include name="**/*.sha1" /> -->
                       </fileset>
                     </copy>
 
 		                <echo> </echo>
                     <echo message="Clearing previous checksums and signatures for update artifacts.jar and content.jar" />
                     <delete dir="${eclipseUpdateSubSite}">
-                      <include name="*.sha1" />
-                      <!-- include name="*.md5" /-->
                       <include name="*.asc" />
+                      <include name="*.sha512" />
+                      <!-- <include name="*.md5" /> -->
+                      <!-- <include name="*.sha1" /> -->
                     </delete> 
                                      
                     <echo message="Generating checksums for updated artifacts.jar and content.jar" />
-                    <checksum algorithm="sha1" format="MD5SUM">
+                    <checksum algorithm="SHA-512" fileext=".sha512" format="MD5SUM" forceoverwrite="yes">
                       <fileset dir="${eclipseUpdateSubSite}">
                          <include name="*.jar" />
                       </fileset>
                     </checksum> 
 
-                    <!-- checksum algorithm="md5" format="MD5SUM">
+                    <!-- 
+                    <checksum algorithm="sha1" format="MD5SUM" forceoverwrite="yes">
+                      <fileset dir="${eclipseUpdateSubSite}">
+                         <include name="*.jar" />
+                      </fileset>
+                    </checksum> 
+                    <checksum algorithm="md5" format="MD5SUM" forceoverwrite="yes">
                       <fileset dir="${eclipseUpdateSubSite}">
                         <include name="*.jar" />
                       </fileset>
-                    </checksum -->
+                    </checksum>
+                     -->
 
                     <echo message="Generating gpg signatures for artifacts.jar and content.jar" />
                     <apply executable="gpg" dir="${eclipseUpdateSubSite}" failonerror="true"> 

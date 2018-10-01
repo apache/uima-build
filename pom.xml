@@ -166,7 +166,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>parent-pom-11</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
+    <jiraVersion>parent-pom-12</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
     <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
@@ -202,18 +202,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
     <!-- SourceReleaseAssemblyDescriptor>multimodule-source-release</sourceReleaseAssemblyDescriptor--> 
 
 
-  <!-- ============================= -->
-  <!-- *  V E R S I O N S            -->
-  <!-- ============================= -->
-    <rat.version>0.12</rat.version>
-    <maven.enforcer.version>3.0.0-M1</maven.enforcer.version>
+  <!-- ============================================= -->
+  <!-- *  V E R S I O N S                            -->
+  <!-- *  most inherited from apache-wide parent pom -->
+  <!-- ============================================= -->
     <maven.version>3.0.5</maven.version>
-    <maven.javadoc.version>3.0.0-M1</maven.javadoc.version>
     <felix.bundle.version>3.3.0</felix.bundle.version>
-    <surefire.version>2.20.1</surefire.version>
-  
-    <maven.compiler.target>1.7</maven.compiler.target>
-    <maven.compiler.source>1.7</maven.compiler.source>
+    
     <maven.surefire.heap>512m</maven.surefire.heap>
     
   </properties>
@@ -314,24 +309,19 @@ Copyright (c) 2003, 2006 IBM Corporation.
   <build>
     <pluginManagement>
       <plugins>
-        
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
+
+        <!-- inherited from apache-wide parent pom -->
+        <!-- 
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>2.8.2</version>
-        </plugin>
-        
-	      <plugin>
-	        <groupId>org.apache.maven.plugins</groupId>
-	        <artifactId>maven-source-plugin</artifactId>
-	        <version>3.0.1</version>
-	      </plugin>
-      
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-source-plugin</artifactId>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.0.2</version>
-        </plugin>
+          <artifactId>maven-dependency-plugin</artifactId><version>3.0.2</version>  see https://issues.apache.org/jira/browse/UIMA-2963
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <artifactId>maven-javadoc-plugin</artifactId>
+          <artifactId>apache-rat-plugin</artifactId>
+          <artifactId>maven-remote-resources-plugin</artifactId>
+          
+         -->        
         
         <!-- assembly plugin 
              Disable running assembly:assembly with
@@ -356,20 +346,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <artifactId>build-helper-maven-plugin</artifactId>
           <version>3.0.0</version>
         </plugin>
-                
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-enforcer-plugin</artifactId>
-          <version>3.0.0-M1</version>
-        </plugin>
-         
+                         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-plugin-plugin</artifactId>
     			<!-- Version 3.3 required for Java 8 builds -->
 		    	<!-- http://jira.codehaus.org/browse/MPLUGIN-244 -->
-		    	<!-- inherit from apache superpom (3.4 in 2017)  -->
-		    	<version>3.5</version>
+		    	<!-- inherit from apache superpom (3.52 in 2018)  -->
 	        <executions>
 	          <execution>
 	            <!-- force to use process-classes phase so runs after Java Annotations are available -->
@@ -387,7 +370,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </configuration>    
         </plugin>
         
-        <!-- set Java 1.6 as the source and target of compilation -->
+        
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
@@ -401,14 +384,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-dependency-plugin</artifactId>
-          <version>3.0.2</version>  <!-- see https://issues.apache.org/jira/browse/UIMA-2963 -->
-        </plugin> 
-       
-        <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-javadoc-plugin</artifactId>
-          <version>${maven.javadoc.version}</version>
           <configuration>
             <source>${maven.compiler.source}</source>
             <javadocVersion>${maven.compiler.source}</javadocVersion> <!-- https://issues.apache.org/jira/browse/UIMA-5369 -->
@@ -457,9 +433,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-jar-plugin</artifactId>
-          <version>3.0.2</version>
-          <!-- version>2.3.2</version-->  <!-- version 2.4 gives error org.codehaus.plexus.archiver.jar.Manifest.merge(org.codehaus.plexus.archiver.jar.Manifest) 
-                                     see http://comments.gmane.org/gmane.comp.ide.eclipse.plugins.m2eclipse.user/9189 -->
           <configuration>
             <archive>
               <manifestEntries>
@@ -551,7 +524,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.rat</groupId>
           <artifactId>apache-rat-plugin</artifactId>
-          <version>${rat.version}</version>
           <executions>
             <execution>
               <id>default-cli</id>
@@ -702,7 +674,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-remote-resources-plugin</artifactId>
-        <version>1.5</version>
         <executions>      
           <execution>
             <goals><goal>process</goal></goals>
@@ -1907,9 +1878,9 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                    <echo message="Copying the checksums and signatures to the update subsite" />
 		                    <copy todir="${eclipseUpdateSubSite}" failonerror="true">
 		                      <fileset dir="${eusWork}">
-                            <include name="**/*.asc" />
+		                        <include name="**/*.asc" />
                             <include name="**/*.sha512" />
-		                        <!-- <include name="**/*.md5" /> -->
+		                        <!-- <include name="**/*.md5" />  -->
 		                        <!-- <include name="**/*.sha1" /> -->
 		                      </fileset>
 		                    </copy>
@@ -1918,7 +1889,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
 		                    <delete dir="${eclipseUpdateSubSite}">
                           <include name="*.asc" />
                           <include name="**/*.sha512" />
-		                      <!-- <include name="*.md5" /> -->
+		                      <!-- <include name="*.md5" />  -->
                           <!-- <include name="*.sha1" /> -->
 		                    </delete> 
 		                                      
@@ -2846,7 +2817,6 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 </execution>
               </executions>
               <configuration>
-                <targetJdk>1.6</targetJdk>
                 <linkXRef>false</linkXRef>
               </configuration>
             </plugin>
@@ -2860,5 +2830,94 @@ Copyright (c) 2003, 2006 IBM Corporation.
         </plugins>
       </build>
     </profile>
+    
+        <!-- **********  Backwards compatibility report generation profile ************** -->
+    <profile>
+      <id>enforce-compatibility</id>
+      <activation>
+        <file>
+          <exists>marker-file-identifying-api-compatibility-check</exists>
+        </file>
+      </activation>
+      <build>
+        
+        <pluginManagement>
+          <plugins>
+            <plugin>
+              <groupId>org.apache.rat</groupId>
+              <artifactId>apache-rat-plugin</artifactId>
+              <executions>
+                <execution>
+                  <id>default-cli</id>
+                  <configuration>
+                    <excludes combine.children="append">
+                      <exclude>**/api-change-report/**/*.*</exclude>
+                    </excludes>
+                  </configuration>
+                </execution>
+            </executions>
+            </plugin>
+          </plugins>
+        </pluginManagement> 
+        
+        <plugins>
+          <!-- https://siom79.github.io/japicmp/MavenPlugin.html -->
+          <plugin>              
+            <groupId>com.github.siom79.japicmp</groupId>
+            <artifactId>japicmp-maven-plugin</artifactId>
+            <version>0.9.4</version>
+            <configuration>
+              <oldVersion>
+                <dependency>
+                  <groupId>${project.groupId}</groupId>
+                  <artifactId>${project.artifactId}</artifactId>
+                  <version>${api_check_oldVersion}</version>
+                </dependency>
+              </oldVersion>
+              <parameter>
+                <onlyModified>true</onlyModified>
+                <!-- filter out classes with impl in their package or class name -->
+                <postAnalysisScript>${project.basedir}/../uimaj-parent/src/main/groovy/api-report.groovy</postAnalysisScript>                  
+              </parameter>
+            </configuration>
+            <executions>
+              <execution>
+                <phase>verify</phase>
+                <goals>
+                  <goal>cmp</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <!-- This copy is to have the api change report included in the source distribution -->
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>copy-API-change-report</id>
+                <phase>install</phase>  <!-- must follow verify -->
+                <goals><goal>run</goal></goals>
+                <configuration>
+                  <target>
+                    <taskdef name="if" classname="net.sf.antcontrib.logic.IfTask" />
+                    <if>
+                      <available file="${project.build.directory}/japicmp/" />
+                      <then>
+                        <copy toDir="${basedir}/api-change-report">
+                          <fileset dir="${project.build.directory}/japicmp" />
+                        </copy>
+                      </then>
+                    </if>
+                  </target>
+                </configuration>
+              </execution>
+            </executions>
+            
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    
   </profiles>
 </project>

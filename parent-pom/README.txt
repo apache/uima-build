@@ -1,7 +1,7 @@
 Building from SVN Checkout:
 ---------------------------
 
-Download and install Maven 3, and Java 1.5, if needed.
+Download and install Maven 3, and Java 1.8, if needed.
 
 Go into the parent-pom directory, and issue the maven command:
 

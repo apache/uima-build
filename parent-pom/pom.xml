@@ -317,12 +317,17 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <artifactId>maven-resources-plugin</artifactId>
           <artifactId>maven-dependency-plugin</artifactId><version>3.0.2</version>  see https://issues.apache.org/jira/browse/UIMA-2963
           <artifactId>maven-enforcer-plugin</artifactId>
-          <artifactId>maven-javadoc-plugin</artifactId>
           <artifactId>apache-rat-plugin</artifactId>
           <artifactId>maven-remote-resources-plugin</artifactId>
-          
-         -->        
-        
+         -->
+         
+        <plugin>
+          <groupId>net.nicoulaj.maven.plugins</groupId>
+          <artifactId>checksum-maven-plugin</artifactId>
+          <version>1.8</version>
+          <!-- Cannot use 1.7 used by ASF parent pom because of https://github.com/nicoulaj/checksum-maven-plugin/issues/62 -->
+        </plugin>
+
         <!-- assembly plugin 
              Disable running assembly:assembly with
              warning message to use install instead -->
@@ -595,7 +600,28 @@ Copyright (c) 2003, 2006 IBM Corporation.
     </pluginManagement>
     
     <plugins>
-            
+      <plugin>
+        <groupId>net.nicoulaj.maven.plugins</groupId>
+        <artifactId>checksum-maven-plugin</artifactId>
+        <version>1.8</version>
+        <!-- Cannot use 1.7 used by ASF parent pom because of https://github.com/nicoulaj/checksum-maven-plugin/issues/62 -->
+        <executions>
+          <execution>
+            <id>artifacts-checksum</id>
+            <goals>
+              <goal>artifacts</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <algorithms>
+            <algorithm>SHA-512</algorithm>
+          </algorithms>
+          <appendFilename>true</appendFilename>
+          <attachChecksums>true</attachChecksums>
+        </configuration>
+      </plugin>
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>

@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>13-SNAPSHOT</version>
+  <version>12-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -113,12 +113,6 @@
       </archive>
     </mailingList>
   </mailingLists>
-
-  <prerequisites>
-    <!-- 2.2.0 is broken when deploying - checksums invalid -->
-    <!-- 2.2.1 doesn't work -->
-    <maven>3.3.9</maven>
-  </prerequisites>
         
   <scm>
     <connection>
@@ -167,6 +161,12 @@
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
     <jiraVersion>parent-pom-12</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
+    <!--  *********************************************************************************************************** -->
+    <!--                                 U  G  H   change manually for release                                      * -->
+    <!--  *********************************************************************************************************** -->
+    <!--  *********************************************************************************************************** -->
+    <!--  *********************************************************************************************************** -->
+    <parentPomPatchVersion>12-SNAPSHOT</parentPomPatchVersion>  <!-- UGH need to change this manually for release !!! -->
     <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
@@ -316,18 +316,18 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <artifactId>maven-source-plugin</artifactId>
           <artifactId>maven-resources-plugin</artifactId>
           <artifactId>maven-dependency-plugin</artifactId><version>3.0.2</version>  see https://issues.apache.org/jira/browse/UIMA-2963
-          <artifactId>maven-enforcer-plugin</artifactId>
+          <artifactId>maven-javadoc-plugin</artifactId>  at 3.0.1 Oct 2018
           <artifactId>apache-rat-plugin</artifactId>
           <artifactId>maven-remote-resources-plugin</artifactId>
-         -->
+          
+         -->  
          
-        <plugin>
-          <groupId>net.nicoulaj.maven.plugins</groupId>
-          <artifactId>checksum-maven-plugin</artifactId>
-          <version>1.8</version>
-          <!-- Cannot use 1.7 used by ASF parent pom because of https://github.com/nicoulaj/checksum-maven-plugin/issues/62 -->
-        </plugin>
-
+         <plugin>
+           <groupId>org.apache.maven.plugins</groupId>
+           <artifactId>maven-surefire-plugin</artifactId>
+           <version>2.22.1</version>
+         </plugin>         
+        
         <!-- assembly plugin 
              Disable running assembly:assembly with
              warning message to use install instead -->
@@ -379,7 +379,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.7.0</version>
+          <version>3.8.0</version>
           <configuration>
             <source>${maven.compiler.source}</source>
             <target>${maven.compiler.target}</target>
@@ -461,17 +461,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-antrun-plugin</artifactId>
-          <version>1.8</version>
 
           <dependencies>
-            <!-- 1.8.2 is used by v 1.7 of this plugin
-            <dependency>
-              <groupId>org.apache.ant</groupId>
-              <artifactId>ant</artifactId>
-                version 1.8.0 seems to be incompatible with some part of maven or m2eclipse 
-              <version>1.7.1</version>
-            </dependency>
-             -->
             <dependency> <!-- for ant extension supporting "if" -->
               <groupId>ant-contrib</groupId>
               <artifactId>ant-contrib</artifactId>
@@ -546,6 +537,8 @@ Copyright (c) 2003, 2006 IBM Corporation.
                   <exclude>DEPENDENCIES</exclude>  <!-- generated file -->
 				          <exclude>**/MANIFEST.MF</exclude> <!-- MANIFEST.MF files cannot have comments -->
                   <exclude>**/*.ppt</exclude> <!--  power point sources -->
+                  <exclude>**/*.sha512</exclude>
+                  <exclude>**/*.patch.txt</exclude>
                 </excludes>
               </configuration>
             </execution>
@@ -568,6 +561,15 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <artifactId>maven-changes-plugin</artifactId>
           <!-- version 2.10 see https://issues.apache.org/jira/browse/UIMA-3764 -->
           <version>2.12.1</version>  <!-- Apache-wide pom has no entry for this plugin -->
+          <dependencies>   <!-- needed for java 11 -->
+             <dependency>
+	           <groupId>javax.annotation</groupId>
+	           <artifactId>javax.annotation-api</artifactId>
+	           <version>1.3.2</version>
+             </dependency>
+           </dependencies>
+          
+          
           <executions>
             <execution>
               <id>default-cli</id>
@@ -596,32 +598,17 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <artifactId>uima-build-helper-maven-plugin</artifactId>
           <version>7</version>
         </plugin>
+        
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-enforcer-plugin</artifactId>
+          <version>3.0.0-M2</version>
+        </plugin>
       </plugins>
     </pluginManagement>
     
     <plugins>
-      <plugin>
-        <groupId>net.nicoulaj.maven.plugins</groupId>
-        <artifactId>checksum-maven-plugin</artifactId>
-        <version>1.8</version>
-        <!-- Cannot use 1.7 used by ASF parent pom because of https://github.com/nicoulaj/checksum-maven-plugin/issues/62 -->
-        <executions>
-          <execution>
-            <id>artifacts-checksum</id>
-            <goals>
-              <goal>artifacts</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <algorithms>
-            <algorithm>SHA-512</algorithm>
-          </algorithms>
-          <appendFilename>true</appendFilename>
-          <attachChecksums>true</attachChecksums>
-        </configuration>
-      </plugin>
-
+            
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-enforcer-plugin</artifactId>
@@ -709,15 +696,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
               </resourceBundles>
             </configuration>
           </execution>
-        </executions>
-        <!--dependencies>  maybe for m2e
-	        <dependency>
-	          <groupId>org.slf4j</groupId>
-	          <artifactId>slf4j-simple</artifactId>
-	          <version>1.6.1</version>
-	        </dependency>
-        </dependencies-->
-        
+        </executions>        
       </plugin>
       
       <plugin> <!-- https://issues.apache.org/jira/browse/UIMA-2966  -->
@@ -731,12 +710,13 @@ Copyright (c) 2003, 2006 IBM Corporation.
             <configuration>
               <target>
                 <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.xml" quiet="true" />
-                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true" />
+                <delete file="${project.build.directory}/classes/META-INF/maven/${project.groupId}/${project.artifactId}/pom.properties" quiet="true" />              
               </target>
             </configuration>
           </execution>
         </executions>
       </plugin>
+      
     </plugins>     
     
   </build>
@@ -777,13 +757,18 @@ Copyright (c) 2003, 2006 IBM Corporation.
                   <phase>package</phase>            
                 </execution>
               </executions>          
+            </plugin>
+            <plugin>
+              <groupId>net.nicoulaj.maven.plugins</groupId>
+              <artifactId>checksum-maven-plugin</artifactId>
+              <version>1.8</version>
             </plugin>            
           </plugins>
         </pluginManagement>
 
 
         <plugins>
-        
+                 
           <!-- to support multi-module source-release builds -->
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
@@ -834,7 +819,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </plugin>      
           
           <!-- to fix up any generated Javadocs to have consistent line ends in html files -->
-          <!-- runs in phase after package -->
+          <!-- runs in several phases after package -->
           <plugin>
             <artifactId>maven-antrun-plugin</artifactId>
             <executions>
@@ -854,9 +839,23 @@ Copyright (c) 2003, 2006 IBM Corporation.
                         </fixcrlf>
                       </then>
                     </if>
+                    <!-- copy to target so checksum-maven-plugin can sha512 checkum it -->
+                    <property name="pom-file-tgt" location="${project.build.directory}/${project.build.finalName}.pom" />
+                    <property name="pom-file-src" location="${project.build.directory}/../pom.xml" />
+                    <copy file="${pom-file-src}" tofile="${pom-file-tgt}"/>
+                    
+                    <!-- patch gpg and checksum jars in local .m2 -->
+		            <echo message="patch maven-gpg-plugin and checksum-maven-plugin.  if get copy failure message, rerun this build" />
+		            <copy verbose="true" overwrite="true" failonerror="false"
+		               file="${settings.localRepository}/org/apache/uima/parent-pom/${parentPomPatchVersion}/parent-pom-${parentPomPatchVersion}-gpg-plugin-patch.jar"
+		               tofile="${settings.localRepository}/org/apache/maven/plugins/maven-gpg-plugin/1.6/maven-gpg-plugin-1.6.jar" />
+		            <copy verbose="true" overwrite="true" failonerror="false"
+		               file="${settings.localRepository}/org/apache/uima/parent-pom/${parentPomPatchVersion}/parent-pom-${parentPomPatchVersion}-checksum-plugin-patch.jar"
+		               tofile="${settings.localRepository}/net/nicoulaj/maven/plugins/checksum-maven-plugin/1.8/checksum-maven-plugin-1.8.jar" />
                   </target>
                 </configuration>
               </execution>
+
               <execution>
                 <id>sign and checksum source-release.zip</id>
                 <phase>verify</phase>  <!-- after source-release is built -->
@@ -883,9 +882,60 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     </if>
                   </target>
                 </configuration>
-              </execution>             
+              </execution>                                         
             </executions>          
-          </plugin>    
+          </plugin>
+
+
+
+
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-gpg-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>load-plugin</id>
+                <phase>validate</phase>
+                <goals><goal>sign</goal></goals>
+                <configuration>
+                  <skip>true</skip>
+                </configuration>
+              </execution>
+              <execution>
+                <id>sign-release-artifacts</id>
+                
+                <configuration>
+                  <excludes>
+                    <exclude>**/*.sha512</exclude>
+                    <exclude>**/*.asc</exclude>
+                  </excludes>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+          
+          <plugin>
+            <groupId>net.nicoulaj.maven.plugins</groupId>
+            <artifactId>checksum-maven-plugin</artifactId>
+            <version>1.8</version>
+            <executions>            
+                             
+              <execution>
+                <id>artifacts-checksum</id>
+                <phase>post-integration-test</phase>
+                <goals>
+                  <goal>artifacts</goal>
+                </goals>
+                <configuration>
+                  <attachChecksums>true</attachChecksums>
+                  <appendFilename>true</appendFilename>
+                  <algorithms>
+                    <algorithm>SHA-512</algorithm>
+                  </algorithms>
+                </configuration>                
+              </execution>
+            </executions>
+          </plugin>   
           
         </plugins>
       </build>     
@@ -914,9 +964,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </build>     
     </profile>
 
-    <!-- **************************************** -->
-    <!-- *   Produce Jira report                * -->
-    <!-- **************************************** -->
+    <!-- *********************************************** -->
+    <!-- *  Run actions only for uima-wide parent pom  * -->
+    <!-- *    ** not inherited by sub projects **      * -->
+    <!-- *   Produce Jira report                       * -->
+    <!-- *   attach patches for gpg and chksum plugins * -->
+    <!-- *********************************************** -->
 
     <profile>
       <id>mavenJirareport</id>
@@ -938,23 +991,11 @@ Copyright (c) 2003, 2006 IBM Corporation.
       </activation>
       <build>
         <plugins>
-          <!-- overrides to enable release -->
-          <!-- to release 5-SNAPSHOT which includes uima-build-resources, hard code that version to 4 -->
 	        <plugin>
-		        <groupId>org.apache.maven.plugins</groupId>
 		        <artifactId>maven-remote-resources-plugin</artifactId>
-		        <executions>      
-		          <execution>
-		            <goals><goal>process</goal></goals>
-		            <configuration>
-		              <resourceBundles>
-		                <resourceBundle>org.apache.uima:uima-build-resources:${uimaBuildResourcesVersion}</resourceBundle>
-		              </resourceBundles>
-		            </configuration>
-		          </execution>
-		        </executions>		        
-		      </plugin>
-          
+		    </plugin>
+
+          <!-- 
           <plugin>
             <artifactId>maven-assembly-plugin</artifactId>
             <dependencies>            
@@ -966,16 +1007,60 @@ Copyright (c) 2003, 2006 IBM Corporation.
             </dependencies>
           </plugin>
           
+ -->
           <plugin>
             <artifactId>maven-changes-plugin</artifactId>
+          </plugin>
+
+          
+          <!-- copy patch jars to project-build-dir with name change
+                 otherwise the checksum plugin wont work on them -->
+          <plugin>
+            <artifactId>maven-antrun-plugin</artifactId>
             <executions>
               <execution>
-                <id>default-cli</id>
+                <id>setup-patch-jars</id>
+                <phase>process-resources</phase>
+                <goals><goal>run</goal></goals>
                 <configuration>
-                  <fixVersionIds>${jiraVersion}</fixVersionIds>
+                  <target>                                      
+                    <property name="checksum-tgt" location="${project.build.directory}/${project.artifactId}-${project.version}-checksum-plugin-patch.jar" />
+                    <property name="checksum-src" location="${project.build.directory}/../src/resources/checksum-maven-plugin-1.8.jar" />
+                    <copy file="${checksum-src}" tofile="${checksum-tgt}" verbose="true"/>
+                    <property name="gpg-tgt" location="${project.build.directory}/${project.artifactId}-${project.version}-gpg-plugin-patch.jar" />
+                    <property name="gpg-src" location="${project.build.directory}/../src/resources/maven-gpg-plugin-1.6.jar" />
+                    <copy file="${gpg-src}" tofile="${gpg-tgt}" verbose="true"/>
+                  </target>
                 </configuration>
               </execution>
             </executions>
+          </plugin>
+          
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>build-helper-maven-plugin</artifactId>
+            <executions>
+              <execution>
+                <id>attach-gpg-checksum-patch-jars</id>
+                <goals><goal>attach-artifact</goal></goals>
+                <phase>process-resources</phase>  <!-- before signing and checksum -->
+                <configuration>
+                  <artifacts>
+                    <artifact>
+                      <file>${project.build.directory}/${project.artifactId}-${project.version}-checksum-plugin-patch.jar</file>
+                      <type>jar</type>
+                      <classifier>checksum-plugin-patch</classifier>
+                    </artifact>
+                    <artifact>
+                      <file>${project.build.directory}/${project.artifactId}-${project.version}-gpg-plugin-patch.jar</file>
+                      <type>jar</type>
+                      <classifier>gpg-plugin-patch</classifier>
+                    </artifact>            
+                  </artifacts>
+                </configuration>
+              </execution>
+            </executions>
+            
           </plugin>
         </plugins>
       </build>
@@ -2943,6 +3028,80 @@ Copyright (c) 2003, 2006 IBM Corporation.
           </plugin>
         </plugins>
       </build>
+    </profile>
+    
+        <!-- ************ Java 11 enablement ************** -->
+    <profile>
+      <id>java11</id>
+      <activation>
+        <jdk>11</jdk>
+      </activation>
+      <properties>
+        <jaxb.version>2.3.1</jaxb.version> 
+        <jaxb.version01>2.3.0.1</jaxb.version01>
+        <java.version>8</java.version>
+        <maven.compiler.source>${java.version}</maven.compiler.source>  <!-- can't do 11 with target 8  -->
+        <maven.compiler.target>${java.version}</maven.compiler.target>   <!-- still want to run in Java 8 -->
+        
+      </properties>
+      
+      <dependencies>
+         <!-- 
+           - java.xml.bind and javax.annotation-api have been removed in Java 11 from the JDK, need to add it as dependency
+           -->
+         <dependency>
+           <groupId>javax.xml.bind</groupId>
+           <artifactId>jaxb-api</artifactId>
+           <version>${jaxb.version}</version>
+           <scope>runtime</scope>
+         </dependency>
+         <dependency>
+           <groupId>com.sun.xml.bind</groupId>
+           <artifactId>jaxb-core</artifactId>
+           <version>${jaxb.version01}</version>
+           <scope>runtime</scope>
+         </dependency>
+         <dependency>
+           <groupId>com.sun.xml.bind</groupId>
+           <artifactId>jaxb-impl</artifactId>
+           <version>${jaxb.version}</version>
+           <scope>runtime</scope>
+         </dependency>
+                  
+         <dependency>
+           <groupId>javax.annotation</groupId>
+           <artifactId>javax.annotation-api</artifactId>
+           <version>1.3.2</version>
+         </dependency>
+       </dependencies>
+       
+      <build>
+        <pluginManagement>
+          <plugins>
+                                  
+            <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-surefire-plugin</artifactId>
+              <configuration>
+                  <argLine>
+                      --illegal-access=permit
+                  </argLine>
+              </configuration>
+          </plugin>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-failsafe-plugin</artifactId>
+              <configuration>
+                  <argLine>
+                      --illegal-access=permit
+                  </argLine>
+              </configuration>
+          </plugin>
+            
+          </plugins>
+        </pluginManagement>
+      </build>
+
     </profile>
     
   </profiles>

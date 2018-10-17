@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>12-SNAPSHOT</version>
+  <version>12</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -116,13 +116,13 @@
         
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:http://svn.apache.org/repos/asf/uima/build/tags/parent-pom-12
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-12
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-pom
+      http://svn.apache.org/viewvc/uima/build/tags/parent-pom-12
     </url>
   </scm>
   
@@ -842,16 +842,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
                     <!-- copy to target so checksum-maven-plugin can sha512 checkum it -->
                     <property name="pom-file-tgt" location="${project.build.directory}/${project.build.finalName}.pom" />
                     <property name="pom-file-src" location="${project.build.directory}/../pom.xml" />
-                    <copy file="${pom-file-src}" tofile="${pom-file-tgt}"/>
+                    <copy file="${pom-file-src}" tofile="${pom-file-tgt}" />
                     
                     <!-- patch gpg and checksum jars in local .m2 -->
-		            <echo message="patch maven-gpg-plugin and checksum-maven-plugin.  if get copy failure message, rerun this build" />
-		            <copy verbose="true" overwrite="true" failonerror="false"
-		               file="${settings.localRepository}/org/apache/uima/parent-pom/${parentPomPatchVersion}/parent-pom-${parentPomPatchVersion}-gpg-plugin-patch.jar"
-		               tofile="${settings.localRepository}/org/apache/maven/plugins/maven-gpg-plugin/1.6/maven-gpg-plugin-1.6.jar" />
-		            <copy verbose="true" overwrite="true" failonerror="false"
-		               file="${settings.localRepository}/org/apache/uima/parent-pom/${parentPomPatchVersion}/parent-pom-${parentPomPatchVersion}-checksum-plugin-patch.jar"
-		               tofile="${settings.localRepository}/net/nicoulaj/maven/plugins/checksum-maven-plugin/1.8/checksum-maven-plugin-1.8.jar" />
+		            <echo message="patch maven-gpg-plugin and checksum-maven-plugin. if get copy failure message, rerun this build" />
+		            <copy verbose="true" overwrite="true" failonerror="false" file="${settings.localRepository}/org/apache/uima/parent-pom/${parentPomPatchVersion}/parent-pom-${parentPomPatchVersion}-gpg-plugin-patch.jar" tofile="${settings.localRepository}/org/apache/maven/plugins/maven-gpg-plugin/1.6/maven-gpg-plugin-1.6.jar" />
+		            <copy verbose="true" overwrite="true" failonerror="false" file="${settings.localRepository}/org/apache/uima/parent-pom/${parentPomPatchVersion}/parent-pom-${parentPomPatchVersion}-checksum-plugin-patch.jar" tofile="${settings.localRepository}/net/nicoulaj/maven/plugins/checksum-maven-plugin/1.8/checksum-maven-plugin-1.8.jar" />
                   </target>
                 </configuration>
               </execution>
@@ -1026,10 +1022,10 @@ Copyright (c) 2003, 2006 IBM Corporation.
                   <target>                                      
                     <property name="checksum-tgt" location="${project.build.directory}/${project.artifactId}-${project.version}-checksum-plugin-patch.jar" />
                     <property name="checksum-src" location="${project.build.directory}/../src/resources/checksum-maven-plugin-1.8.jar" />
-                    <copy file="${checksum-src}" tofile="${checksum-tgt}" verbose="true"/>
+                    <copy file="${checksum-src}" tofile="${checksum-tgt}" verbose="true" />
                     <property name="gpg-tgt" location="${project.build.directory}/${project.artifactId}-${project.version}-gpg-plugin-patch.jar" />
                     <property name="gpg-src" location="${project.build.directory}/../src/resources/maven-gpg-plugin-1.6.jar" />
-                    <copy file="${gpg-src}" tofile="${gpg-tgt}" verbose="true"/>
+                    <copy file="${gpg-src}" tofile="${gpg-tgt}" verbose="true" />
                   </target>
                 </configuration>
               </execution>

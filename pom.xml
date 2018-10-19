@@ -162,11 +162,11 @@
           generates a giant request for all changes -->
     <jiraVersion>parent-pom-12</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
     <!--  *********************************************************************************************************** -->
-    <!--                                 U  G  H   change manually for release                                      * -->
+    <!--                                 U  G  H   change manually for release (to remove -SNAPSHOT                 * -->
     <!--  *********************************************************************************************************** -->
     <!--  *********************************************************************************************************** -->
     <!--  *********************************************************************************************************** -->
-    <parentPomPatchVersion>12-SNAPSHOT</parentPomPatchVersion>  <!-- UGH need to change this manually for release !!! -->
+    <parentPomPatchVersion>12</parentPomPatchVersion>  <!-- UGH need to change this manually for release !!! -->
     <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
     <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
@@ -902,7 +902,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 
                 <configuration>
                   <excludes>
-                    <exclude>**/*.sha512</exclude>
+                    <!--  <exclude>**/*.sha512</exclude>  https://issues.apache.org/jira/browse/UIMA-5897 -->
                     <exclude>**/*.asc</exclude>
                   </excludes>
                 </configuration>
@@ -918,7 +918,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                              
               <execution>
                 <id>artifacts-checksum</id>
-                <phase>post-integration-test</phase>
+                <phase>post-integration-test</phase>  <!-- run before gpg signing, so gpg can sign (ugh) the .sha512 needed for workaround -->
                 <goals>
                   <goal>artifacts</goal>
                 </goals>

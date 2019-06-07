@@ -9,7 +9,7 @@
     "License"); you may not use this file except in compliance
     with the License.  You may obtain a copy of the License at
     
-     http://www.apache.org/licenses/LICENSE-2.0
+     https://www.apache.org/licenses/LICENSE-2.0
     
     Unless required by applicable law or agreed to in writing,
     software distributed under the License is distributed on an
@@ -42,7 +42,7 @@
     
 -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
   <parent>
@@ -82,7 +82,7 @@
           https://dir.gmane.org/gmane.comp.apache.uima.devel
         </otherArchive>
          <otherArchive>       
-           http://uima.markmail.org
+           https://uima.markmail.org
         </otherArchive>
       </otherArchives>
     </mailingList>
@@ -99,7 +99,7 @@
           https://dir.gmane.org/gmane.comp.apache.uima.general
         </otherArchive>
          <otherArchive>       
-           http://uima.markmail.org
+           https://uima.markmail.org
         </otherArchive>
       </otherArchives>
     </mailingList>
@@ -116,19 +116,19 @@
         
   <scm>
     <connection>
-      scm:svn:http://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
     </connection>
     <developerConnection>
       scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
     </developerConnection>
     <url>
-      http://svn.apache.org/viewvc/uima/build/trunk/parent-pom
+      https://svn.apache.org/viewvc/uima/build/trunk/parent-pom
     </url>
   </scm>
   
   <issueManagement>
     <system>Jira</system>
-    <!-- the form of the url is from http://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
+    <!-- the form of the url is from https://maven.apache.org/plugins/maven-changes-plugin/usage.html -->
     <!--url>https://issues.apache.org/jira/BrowseProject.jspa?projectId=12310570</url-->
     <url>https://issues.apache.org/jira/browse/UIMA</url>
         
@@ -160,7 +160,7 @@
           Jira release category(ies) 
           We specify something here, because if accidentally left blank, it 
           generates a giant request for all changes -->
-    <jiraVersion>parent-pom-12</jiraVersion>  <!-- for parent-pom-10. Change for each release -->
+    <jiraVersion>parent-pom-13</jiraVersion>  <!-- for parent-pom-13. Change for each release -->
     <!--  *********************************************************************************************************** -->
     <!--                                 U  G  H   change manually for release (to remove -SNAPSHOT                 * -->
     <!--  *********************************************************************************************************** -->
@@ -168,7 +168,7 @@
     <!--  *********************************************************************************************************** -->
     <parentPomPatchVersion>12</parentPomPatchVersion>  <!-- UGH need to change this manually for release !!! -->
     <uimaBuildResourcesVersion>5</uimaBuildResourcesVersion>
-    <uimaWebsiteUrl>http://uima.apache.org</uimaWebsiteUrl>
+    <uimaWebsiteUrl>https://uima.apache.org</uimaWebsiteUrl>
     <uimaWebsiteDistributionUrl>scp://people.apache.org/www/uima.apache.org/</uimaWebsiteDistributionUrl>
     <maven.build.timestamp.format>yyMMdd_HHmm</maven.build.timestamp.format>
     <buildDateTime>${maven.build.timestamp}</buildDateTime>
@@ -244,7 +244,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
       <id>eclipsePlugins</id>
       <name>Eclipse components</name>
       <layout>default</layout>
-      <url>http://repo1.maven.org/eclipse</url>
+      <url>https://repo1.maven.org/eclipse</url>
       
       <releases>
         <updatePolicy>never</updatePolicy>
@@ -356,12 +356,12 @@ Copyright (c) 2003, 2006 IBM Corporation.
           <groupId>org.apache.maven.plugins</groupId>
 	        <artifactId>maven-plugin-plugin</artifactId>
     			<!-- Version 3.3 required for Java 8 builds -->
-		    	<!-- http://jira.codehaus.org/browse/MPLUGIN-244 -->
+		    	<!-- https://jira.codehaus.org/browse/MPLUGIN-244 -->
 		    	<!-- inherit from apache superpom (3.52 in 2018)  -->
 	        <executions>
 	          <execution>
 	            <!-- force to use process-classes phase so runs after Java Annotations are available -->
-	            <!-- http://jira.codehaus.org/browse/MPLUGIN-267 -->
+	            <!-- https://jira.codehaus.org/browse/MPLUGIN-267 -->
 	            <id>default-descriptor</id>
 	            <phase>process-classes</phase>
 	          </execution>
@@ -448,7 +448,7 @@ Copyright (c) 2003, 2006 IBM Corporation.
                 <!-- also added by default: 
                        Implementation-Vendor-Id: ${pom.groupId} -->
                 <Implementation-Url>${uimaWebsiteUrl}</Implementation-Url>
-                <Implementation-License>http://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
+                <Implementation-License>https://www.apache.org/licenses/LICENSE-2.0.txt</Implementation-License>
                 <Build-Date>${buildDateTime}</Build-Date>
               </manifestEntries>
               <manifest>

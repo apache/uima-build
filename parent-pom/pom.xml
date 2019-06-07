@@ -54,7 +54,7 @@
 
   <groupId>org.apache.uima</groupId>
   <artifactId>parent-pom</artifactId>
-  <version>13</version>
+  <version>14-SNAPSHOT</version>
   <packaging>pom</packaging>
   
   <name>Apache UIMA ${project.artifactId}</name>
@@ -116,13 +116,13 @@
         
   <scm>
     <connection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-13
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
     </connection>
     <developerConnection>
-      scm:svn:https://svn.apache.org/repos/asf/uima/build/tags/parent-pom-13
+      scm:svn:https://svn.apache.org/repos/asf/uima/build/trunk/parent-pom
     </developerConnection>
     <url>
-      https://svn.apache.org/viewvc/uima/build/tags/parent-pom-13
+      https://svn.apache.org/viewvc/uima/build/trunk/parent-pom
     </url>
   </scm>
   
